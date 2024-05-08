@@ -39,8 +39,8 @@
                             <div class="ltn__top-bar-menu">
                                 <ul>
                                     <li><a href="mailto:cskh@phusagenomics.com?Subject=Flower%20greetings%20to%20you"><i class="icon-mail"></i> cskh@phusagenomics.com</a></li>
-                                    <li><a href="#"><i class="icon-placeholder"></i> 503 30/04 St., Hung
-                                            Loi Ward, Ninh Kieu Dist., Can Tho City</a></li>
+                                    <!-- <li><a href="#"><i class="icon-placeholder"></i> K1.15-16, Vo Nguyen Giap, Phu Thu ward, Cai Rang district,
+                                            City. Can Tho. Viet Nam</a></li> -->
                                 </ul>
                             </div>
                         </div>
