@@ -312,16 +312,16 @@
                                     <nav>
                                         <div class="ltn__main-menu">
                                             <ul>
-                                                <li><a href="{{ route('home.index') }}">Home</a></li>
-                                                <li><a href="{{ route('home.about') }}">About</a></li>
-                                                <li><a href="{{ route('home.shop') }}">Shop</a></li>
-                                                <li class="menu-icon"><a href="#">News</a>
+                                                <li class="{{ Request::path() == '/' ? 'active' : '' }}"><a href="{{ route('home.index') }}">Home</a></li>
+                                                <li class="{{ Request::path() == 'about' ? 'active' : '' }}"><a href="{{ route('home.about') }}">About</a></li>
+                                                <li class="{{ Request::path() == 'shop' ? 'active' : '' }}"><a href="{{ route('home.shop') }}">Shop</a></li>
+                                                <li class="menu-icon {{ Request::path() == 'posts' ? 'active' : '' }}"><a href="#">News</a>
                                                     <ul>
                                                         <li><a href="{{ route('home.posts') }}">News</a></li>
                                                         <li><a href="{{ route('home.posts') }}">Recruitment</a></li>
                                                     </ul>
                                                 </li>
-                                                <li class="menu-icon"><a href="#">Policies</a>
+                                                <li class="menu-icon {{ Request::path() == 'post' ? 'active' : '' }}"><a href="#">Policies</a>
                                                     <ul>
                                                         <li><a href="{{ route('home.post') }}">Sales policy</a></li>
                                                         <li><a href="{{ route('home.post') }}">Delivery & return policy</a>
@@ -329,7 +329,7 @@
                                                         <li><a href="{{ route('home.post') }}">Payment Guide</a></li>
                                                     </ul>
                                                 </li>
-                                                <li><a href="{{ route('home.contact') }}">Contact</a></li>
+                                                <li class="{{ Request::path() == 'contact' ? 'active' : '' }}"><a href="{{ route('home.contact') }}">Contact</a></li>
                                             </ul>
                                         </div>
                                     </nav>
@@ -431,10 +431,10 @@
                 </div>
                 <div class="ltn__utilize-menu">
                     <ul>
-                        <li><a href="{{ route('home.index') }}">Home</a></li>
-                        <li><a href="{{ route('home.about') }}">About</a></li>
-                        <li><a href="{{ route('home.shop') }}">Shop</a> </li>
-                        <li><a href="#">News</a>
+                        <li class="{{ Request::path() == '/' ? 'active' : '' }}"><a href="{{ route('home.index') }}">Home</a></li>
+                        <li class="{{ Request::path() == 'about' ? 'active' : '' }}"><a href="{{ route('home.about') }}">About</a></li>
+                        <li class="{{ Request::path() == 'shop' ? 'active' : '' }}"><a href="{{ route('home.shop') }}">Shop</a> </li>
+                        <li class="{{ Request::path() == 'posts' ? 'active' : '' }}"><a href="#">News</a>
                             <ul class="sub-menu">
                                 <li><a href="{{ route('home.posts') }}">News</a></li>
                                 <li><a href="{{ route('home.posts') }}">Recruitment</a></li>
@@ -447,7 +447,7 @@
                                 <li><a href="{{ route('home.post') }}">Payment Guide</a></li>
                             </ul>
                         </li>
-                        <li><a href="{{ route('home.contact') }}">Contact</a></li>
+                        <li class="{{ Request::path() == '/' ? 'contact' : '' }}"><a href="{{ route('home.contact') }}">Contact</a></li>
                     </ul>
                 </div>
                 <div class="ltn__utilize-buttons ltn__utilize-buttons-2">
