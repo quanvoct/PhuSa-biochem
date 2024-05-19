@@ -24,14 +24,14 @@
                                                     </div>
                                                     <h5 class="color-orange  animated">Starting at &16.99</h5> -->
                                                 <div class="btn-wrapper  animated">
-                                                    <a href="{{ route('home.shop') }}" class="theme-btn-1 btn btn-effect-1">Shop now</a>
+                                                    <a href="{{ route('shop.index') }}" class="theme-btn-1 btn btn-effect-1">Shop now</a>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-lg-5 col-md-5 col-sm-5 align-self-center">
                                         <div class="slide-item-img">
-                                            <!-- <a href="{{ route('home.shop') }}"><img src="{{ asset('img/product/1.png') }}" alt="Image"></a> -->
+                                            <!-- <a href="{{ route('shop.index') }}"><img src="{{ asset('img/product/1.png') }}" alt="Image"></a> -->
                                         </div>
                                     </div>
                                 </div>
@@ -52,7 +52,7 @@
                                                         <p>Predictive analytics is drastically changing the real estate industry. In the past, providing data for quick</p>
                                                     </div> -->
                                                 <div class="btn-wrapper  animated">
-                                                    <a href="{{ route('home.shop') }}" class="theme-btn-1 btn btn-effect-1 text-uppercase">Shop
+                                                    <a href="{{ route('shop.index') }}" class="theme-btn-1 btn btn-effect-1 text-uppercase">Shop
                                                         now</a>
                                                 </div>
                                             </div>
@@ -60,7 +60,7 @@
                                     </div>
                                     <div class="col-lg-5 col-md-5 col-sm-5 align-self-center">
                                         <div class="slide-item-img">
-                                            <!-- <a href="{{ route('home.shop') }}"><img src="{{ asset('img/slider/62.jpg') }}" alt="Image"></a> -->
+                                            <!-- <a href="{{ route('shop.index') }}"><img src="{{ asset('img/slider/62.jpg') }}" alt="Image"></a> -->
                                         </div>
                                     </div>
                                 </div>
@@ -72,12 +72,12 @@
             <div class="col-lg-5">
                 <div class="ltn__banner-item">
                     <div class="ltn__banner-img">
-                        <a href="{{ route('home.shop') }}"><img src="{{ asset('img/banner/banner_Cong-nghe.jpg') }}" alt="Banner Image"></a>
+                        <a href="{{ route('shop.index') }}"><img src="{{ asset('img/banner/banner_Cong-nghe.jpg') }}" alt="Banner Image"></a>
                     </div>
                 </div>
                 <div class="ltn__banner-item">
                     <div class="ltn__banner-img">
-                        <a href="{{ route('home.shop') }}"><img src="{{ asset('img/banner/img-demo-2.jpg') }}" alt="Banner Image"></a>
+                        <a href="{{ route('shop.index') }}"><img src="{{ asset('img/banner/img-demo-2.jpg') }}" alt="Banner Image"></a>
                     </div>
                 </div>
             </div>
@@ -154,132 +154,132 @@
             <div class="col-12">
                 <div class="ltn__category-item ltn__category-item-6 text-center">
                     <div class="ltn__category-item-img">
-                        <a href="{{ route('home.shop') }}">
+                        <a href="{{ route('shop.index') }}">
                             <i class="bi bi-grid"></i>
                         </a>
                     </div>
                     <div class="ltn__category-item-name">
-                        <h6><a href="{{ route('home.shop') }}">All Products</a></h6>
+                        <h6><a href="{{ route('shop.index') }}">All Products</a></h6>
                     </div>
                 </div>
             </div>
             <div class="col-12">
                 <div class="ltn__category-item ltn__category-item-6 text-center">
                     <div class="ltn__category-item-img">
-                        <a href="{{ route('home.shop') }}">
+                        <a href="{{ route('shop.index') }}">
                             <i class="bi bi-align-bottom"></i>
                         </a>
                     </div>
                     <div class="ltn__category-item-name">
-                        <h6><a href="{{ route('home.shop') }}">Oligo/Primer</a></h6>
+                        <h6><a href="{{ route('shop.index') }}">Oligo/Primer</a></h6>
                     </div>
                 </div>
             </div>
             <div class="col-12">
                 <div class="ltn__category-item ltn__category-item-6 text-center">
                     <div class="ltn__category-item-img">
-                        <a href="{{ route('home.shop') }}">
+                        <a href="{{ route('shop.index') }}">
                             <i class="fas fa-bong"></i>
                         </a>
                     </div>
                     <div class="ltn__category-item-name">
-                        <h6><a href="{{ route('home.shop') }}">Biology Products</a></h6>
+                        <h6><a href="{{ route('shop.index') }}">Biology Products</a></h6>
                     </div>
                 </div>
             </div>
             <div class="col-12">
                 <div class="ltn__category-item ltn__category-item-6 text-center">
                     <div class="ltn__category-item-img">
-                        <a href="{{ route('home.shop') }}">
+                        <a href="{{ route('shop.index') }}">
                             <i class="fas fa-microscope"></i>
                         </a>
                     </div>
                     <div class="ltn__category-item-name">
-                        <h6><a href="{{ route('home.shop') }}">Device</a></h6>
+                        <h6><a href="{{ route('shop.index') }}">Device</a></h6>
                     </div>
                 </div>
             </div>
             <div class="col-12">
                 <div class="ltn__category-item ltn__category-item-6 text-center">
                     <div class="ltn__category-item-img">
-                        <a href="{{ route('home.shop') }}">
+                        <a href="{{ route('shop.index') }}">
                             <i class="fas fa-box-tissue"></i>
                         </a>
                     </div>
                     <div class="ltn__category-item-name">
-                        <h6><a href="{{ route('home.shop') }}">Utility package</a></h6>
+                        <h6><a href="{{ route('shop.index') }}">Utility package</a></h6>
                     </div>
                 </div>
             </div>
             <div class="col-12">
                 <div class="ltn__category-item ltn__category-item-6 text-center">
                     <div class="ltn__category-item-img">
-                        <a href="{{ route('home.shop') }}">
+                        <a href="{{ route('shop.index') }}">
                             <i class="bi bi-noise-reduction"></i>
                         </a>
                     </div>
                     <div class="ltn__category-item-name">
-                        <h6><a href="{{ route('home.shop') }}">Services</a></h6>
+                        <h6><a href="{{ route('shop.index') }}">Services</a></h6>
                     </div>
                 </div>
             </div>
             <div class="col-12">
                 <div class="ltn__category-item ltn__category-item-6 text-center">
                     <div class="ltn__category-item-img">
-                        <a href="{{ route('home.shop') }}">
+                        <a href="{{ route('shop.index') }}">
                             <i class="bi bi-screwdriver"></i>
                         </a>
                     </div>
                     <div class="ltn__category-item-name">
-                        <h6><a href="{{ route('home.shop') }}">Diagnostic kit</a></h6>
+                        <h6><a href="{{ route('shop.index') }}">Diagnostic kit</a></h6>
                     </div>
                 </div>
             </div>
             <!-- <div class="col-12">
                     <div class="ltn__category-item ltn__category-item-6 text-center">
                         <div class="ltn__category-item-img">
-                            <a href="{{ route('home.shop') }}">
+                            <a href="{{ route('shop.index') }}">
                                 <i class="fas fa-syringe"></i>
                             </a>
                         </div>
                         <div class="ltn__category-item-name">
-                            <h6><a href="{{ route('home.shop') }}">All Products</a></h6>
+                            <h6><a href="{{ route('shop.index') }}">All Products</a></h6>
                         </div>
                     </div>
                 </div>
                 <div class="col-12">
                     <div class="ltn__category-item ltn__category-item-6 text-center">
                         <div class="ltn__category-item-img">
-                            <a href="{{ route('home.shop') }}">
+                            <a href="{{ route('shop.index') }}">
                                 <i class="fas fa-stethoscope"></i>
                             </a>
                         </div>
                         <div class="ltn__category-item-name">
-                            <h6><a href="{{ route('home.shop') }}">Germs Pads</a></h6>
+                            <h6><a href="{{ route('shop.index') }}">Germs Pads</a></h6>
                         </div>
                     </div>
                 </div>
                 <div class="col-12">
                     <div class="ltn__category-item ltn__category-item-6 text-center">
                         <div class="ltn__category-item-img">
-                            <a href="{{ route('home.shop') }}">
+                            <a href="{{ route('shop.index') }}">
                                 <i class="fas fa-hand-holding-medical"></i>
                             </a>
                         </div>
                         <div class="ltn__category-item-name">
-                            <h6><a href="{{ route('home.shop') }}">Accessories</a></h6>
+                            <h6><a href="{{ route('shop.index') }}">Accessories</a></h6>
                         </div>
                     </div>
                 </div>
                 <div class="col-12">
                     <div class="ltn__category-item ltn__category-item-6 text-center">
                         <div class="ltn__category-item-img">
-                            <a href="{{ route('home.shop') }}">
+                            <a href="{{ route('shop.index') }}">
                                 <i class="fas fa-procedures"></i>
                             </a>
                         </div>
                         <div class="ltn__category-item-name">
-                            <h6><a href="{{ route('home.shop') }}">Medicine Cap</a></h6>
+                            <h6><a href="{{ route('shop.index') }}">Medicine Cap</a></h6>
                         </div>
                     </div>
                 </div> -->
@@ -304,14 +304,14 @@
                     <div class="col-lg-12 col-sm-6">
                         <div class="ltn__banner-item">
                             <div class="ltn__banner-img">
-                                <a href="{{ route('home.shop') }}"><img src="{{ asset('img/featured-products-banner1.jpg') }}" alt="Banner Image"></a>
+                                <a href="{{ route('shop.index') }}"><img src="{{ asset('img/featured-products-banner1.jpg') }}" alt="Banner Image"></a>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-12 col-sm-6">
                         <div class="ltn__banner-item">
                             <div class="ltn__banner-img">
-                                <a href="{{ route('home.shop') }}"><img src="{{ asset('img/featured-products-banner2.jpg') }}" alt="Banner Image"></a>
+                                <a href="{{ route('shop.index') }}"><img src="{{ asset('img/featured-products-banner2.jpg') }}" alt="Banner Image"></a>
                             </div>
                         </div>
                     </div>
@@ -323,7 +323,7 @@
                     <div class="col-lg-3--- col-md-4 col-sm-6 col-6">
                         <div class="ltn__product-item ltn__product-item-2 text-left">
                             <div class="product-img">
-                                <a href="{{ route('home.product') }}"><img src="{{ asset('img/product/product-demo-1.jpg') }}" alt="#"></a>
+                                <a href="{{ route('shop.index') }}"><img src="{{ asset('img/product/product-demo-1.jpg') }}" alt="#"></a>
                                 <div class="product-badge">
                                     <ul>
                                         <li class="sale-badge">New</li>
@@ -358,7 +358,7 @@
                                         <li><a href="#"><i class="far fa-star"></i></a></li>
                                     </ul>
                                 </div>
-                                <h2 class="product-title"><a href="{{ route('home.product') }}">Master mix 2X SyBr
+                                <h2 class="product-title"><a href="{{ route('shop.index') }}">Master mix 2X SyBr
                                         Green</a></h2>
                                 <div class="product-price">
                                     <span>350,000<sup>đ</sup> - 825,000<sup>đ</sup></span>
@@ -371,7 +371,7 @@
                     <div class="col-lg-3--- col-md-4 col-sm-6 col-6">
                         <div class="ltn__product-item ltn__product-item-2 text-left">
                             <div class="product-img">
-                                <a href="{{ route('home.product') }}"><img src="{{ asset('img/product/product-demo-3.jpg') }}" alt="#"></a>
+                                <a href="{{ route('shop.index') }}"><img src="{{ asset('img/product/product-demo-3.jpg') }}" alt="#"></a>
                                 <div class="product-hover-action">
                                     <ul>
                                         <li>
@@ -401,7 +401,7 @@
                                         <li><a href="#"><i class="far fa-star"></i></a></li>
                                     </ul>
                                 </div>
-                                <h2 class="product-title"><a href="{{ route('home.product') }}">Safe DYE</a></h2>
+                                <h2 class="product-title"><a href="{{ route('shop.index') }}">Safe DYE</a></h2>
                                 <div class="product-price">
                                     <span>1,200,000<sup>đ</sup> - 2,000,000<sup>đ</sup></span>
                                     <!-- <del>990,000<sup>đ</sup></del> -->
@@ -413,7 +413,7 @@
                     <div class="col-lg-3--- col-md-4 col-sm-6 col-6">
                         <div class="ltn__product-item ltn__product-item-2 text-left">
                             <div class="product-img">
-                                <a href="{{ route('home.product') }}"><img src="{{ asset('img/product/product-demo-4.jpg') }}" alt="#"></a>
+                                <a href="{{ route('shop.index') }}"><img src="{{ asset('img/product/product-demo-4.jpg') }}" alt="#"></a>
                                 <div class="product-badge">
                                     <ul>
                                         <li class="sale-badge">New</li>
@@ -448,7 +448,7 @@
                                         <li><a href="#"><i class="far fa-star"></i></a></li>
                                     </ul>
                                 </div>
-                                <h2 class="product-title"><a href="{{ route('home.product') }}">Loading Buffer 6X</a>
+                                <h2 class="product-title"><a href="{{ route('shop.index') }}">Loading Buffer 6X</a>
                                 </h2>
                                 <div class="product-price">
                                     <span>200,000<sup>đ</sup> - 600,000<sup>đ</sup></span>
@@ -461,7 +461,7 @@
                     <div class="col-lg-3--- col-md-4 col-sm-6 col-6">
                         <div class="ltn__product-item ltn__product-item-2 text-left">
                             <div class="product-img">
-                                <a href="{{ route('home.product') }}"><img src="{{ asset('img/product/product-demo-5.jpg') }}" alt="#"></a>
+                                <a href="{{ route('shop.index') }}"><img src="{{ asset('img/product/product-demo-5.jpg') }}" alt="#"></a>
                                 <div class="product-badge">
                                     <ul>
                                         <li class="sale-badge">New</li>
@@ -496,7 +496,7 @@
                                         <li><a href="#"><i class="far fa-star"></i></a></li>
                                     </ul>
                                 </div>
-                                <h2 class="product-title"><a href="{{ route('home.product') }}">Gene Cloned</a></h2>
+                                <h2 class="product-title"><a href="{{ route('shop.index') }}">Gene Cloned</a></h2>
                                 <div class="product-price">
                                     <span>890,000<sup>đ</sup> - 3,890,000<sup>đ</sup></span>
                                     <!-- <del>$85.00</del> -->
@@ -508,7 +508,7 @@
                     <div class="col-lg-3--- col-md-4 col-sm-6 col-6">
                         <div class="ltn__product-item ltn__product-item-2 text-left">
                             <div class="product-img">
-                                <a href="{{ route('home.product') }}"><img src="{{ asset('img/product/product-demo-6.jpg') }}" alt="#"></a>
+                                <a href="{{ route('shop.index') }}"><img src="{{ asset('img/product/product-demo-6.jpg') }}" alt="#"></a>
                                 <div class="product-badge">
                                     <ul>
                                         <li class="sale-badge">New</li>
@@ -543,7 +543,7 @@
                                         <li><a href="#"><i class="far fa-star"></i></a></li>
                                     </ul>
                                 </div>
-                                <h2 class="product-title"><a href="{{ route('home.product') }}">HPV PCR Kit</a></h2>
+                                <h2 class="product-title"><a href="{{ route('shop.index') }}">HPV PCR Kit</a></h2>
                                 <div class="product-price">
                                     <span>3,000,000<sup>đ</sup> - 13,500,000<sup>đ</sup></span>
                                     <!-- <del>$180.00</del> -->
@@ -555,7 +555,7 @@
                     <div class="col-lg-3--- col-md-4 col-sm-6 col-6">
                         <div class="ltn__product-item ltn__product-item-2 text-left">
                             <div class="product-img">
-                                <a href="{{ route('home.product') }}"><img src="{{ asset('img/product/product-demo-7.jpg') }}" alt="#"></a>
+                                <a href="{{ route('shop.index') }}"><img src="{{ asset('img/product/product-demo-7.jpg') }}" alt="#"></a>
                                 <div class="product-badge">
                                     <ul>
                                         <li class="sale-badge">New</li>
@@ -590,7 +590,7 @@
                                         <li><a href="#"><i class="far fa-star"></i></a></li>
                                     </ul>
                                 </div>
-                                <h2 class="product-title"><a href="{{ route('home.product') }}">Master Mix 2X</a></h2>
+                                <h2 class="product-title"><a href="{{ route('shop.index') }}">Master Mix 2X</a></h2>
                                 <div class="product-price">
                                     <span>750,000<sup>đ</sup> - 2,700,000<sup>đ</sup></span>
                                     <!-- <del>$180.00</del> -->
@@ -620,7 +620,7 @@
                     <div class="ltn__countdown ltn__countdown-3 bg-white--" data-countdown="2024/08/31"></div>
                     <div class="btn-wrapper animated">
                         <a href="{{ route('home.contact') }}" class="theme-btn-1 btn btn-effect-1 text-uppercase">Book Now</a>
-                        <a href="{{ route('home.shop') }}" class="ltn__secondary-color text-decoration-underline">Deal of The
+                        <a href="{{ route('shop.index') }}" class="ltn__secondary-color text-decoration-underline">Deal of The
                             Day</a>
                     </div>
                 </div>
@@ -649,7 +649,7 @@
             <div class="col-lg-3 col-md-4 col-sm-6 col-6">
                 <div class="ltn__product-item ltn__product-item-2 text-left">
                     <div class="product-img">
-                        <a href="{{ route('home.product') }}"><img src="{{ asset('img/product/product-demo-1.jpg') }}" alt="#"></a>
+                        <a href="{{ route('shop.index') }}"><img src="{{ asset('img/product/product-demo-1.jpg') }}" alt="#"></a>
                         <div class="product-badge">
                             <ul>
                                 <li class="sale-badge">New</li>
@@ -684,7 +684,7 @@
                                 <li><a href="#"><i class="far fa-star"></i></a></li>
                             </ul>
                         </div>
-                        <h2 class="product-title"><a href="{{ route('home.product') }}">Master mix 2X SyBr Green</a>
+                        <h2 class="product-title"><a href="{{ route('shop.index') }}">Master mix 2X SyBr Green</a>
                         </h2>
                         <div class="product-price">
                             <span>350,000<sup>đ</sup> - 825,000<sup>đ</sup></span>
@@ -697,7 +697,7 @@
             <div class="col-lg-3 col-md-4 col-sm-6 col-6">
                 <div class="ltn__product-item ltn__product-item-2 text-left">
                     <div class="product-img">
-                        <a href="{{ route('home.product') }}"><img src="{{ asset('img/product/product-demo-7.jpg') }}" alt="#"></a>
+                        <a href="{{ route('shop.index') }}"><img src="{{ asset('img/product/product-demo-7.jpg') }}" alt="#"></a>
                         <div class="product-badge">
                             <ul>
                                 <li class="sale-badge">New</li>
@@ -732,7 +732,7 @@
                                 <li><a href="#"><i class="far fa-star"></i></a></li>
                             </ul>
                         </div>
-                        <h2 class="product-title"><a href="{{ route('home.product') }}">Master Mix 2X</a></h2>
+                        <h2 class="product-title"><a href="{{ route('shop.index') }}">Master Mix 2X</a></h2>
                         <div class="product-price">
                             <span>750,000<sup>đ</sup> - 2,700,000<sup>đ</sup></span>
                             <!-- <del>$180.00</del> -->
@@ -744,7 +744,7 @@
             <div class="col-lg-3 col-md-4 col-sm-6 col-6">
                 <div class="ltn__product-item ltn__product-item-2 text-left">
                     <div class="product-img">
-                        <a href="{{ route('home.product') }}"><img src="{{ asset('img/product/product-demo-6.jpg') }}" alt="#"></a>
+                        <a href="{{ route('shop.index') }}"><img src="{{ asset('img/product/product-demo-6.jpg') }}" alt="#"></a>
                         <div class="product-badge">
                             <ul>
                                 <li class="sale-badge">New</li>
@@ -779,7 +779,7 @@
                                 <li><a href="#"><i class="far fa-star"></i></a></li>
                             </ul>
                         </div>
-                        <h2 class="product-title"><a href="{{ route('home.product') }}">HPV PCR Kit</a></h2>
+                        <h2 class="product-title"><a href="{{ route('shop.index') }}">HPV PCR Kit</a></h2>
                         <div class="product-price">
                             <span>3,000,000<sup>đ</sup> - 13,500,000<sup>đ</sup></span>
                             <!-- <del>$180.00</del> -->
@@ -791,7 +791,7 @@
             <div class="col-lg-3 col-md-4 col-sm-6 col-6">
                 <div class="ltn__product-item ltn__product-item-2 text-left">
                     <div class="product-img">
-                        <a href="{{ route('home.product') }}"><img src="{{ asset('img/product/product-demo-5.jpg') }}" alt="#"></a>
+                        <a href="{{ route('shop.index') }}"><img src="{{ asset('img/product/product-demo-5.jpg') }}" alt="#"></a>
                         <div class="product-badge">
                             <ul>
                                 <li class="sale-badge">New</li>
@@ -826,7 +826,7 @@
                                 <li><a href="#"><i class="far fa-star"></i></a></li>
                             </ul>
                         </div>
-                        <h2 class="product-title"><a href="{{ route('home.product') }}">Gene Cloned</a></h2>
+                        <h2 class="product-title"><a href="{{ route('shop.index') }}">Gene Cloned</a></h2>
                         <div class="product-price">
                             <span>890,000<sup>đ</sup> - 3,890,000<sup>đ</sup></span>
                             <!-- <del>$85.00</del> -->
@@ -838,7 +838,7 @@
             <div class="col-lg-3 col-md-4 col-sm-6 col-6">
                 <div class="ltn__product-item ltn__product-item-2 text-left">
                     <div class="product-img">
-                        <a href="{{ route('home.product') }}"><img src="{{ asset('img/product/product-demo-4.jpg') }}" alt="#"></a>
+                        <a href="{{ route('shop.index') }}"><img src="{{ asset('img/product/product-demo-4.jpg') }}" alt="#"></a>
                         <div class="product-badge">
                             <ul>
                                 <li class="sale-badge">New</li>
@@ -873,7 +873,7 @@
                                 <li><a href="#"><i class="far fa-star"></i></a></li>
                             </ul>
                         </div>
-                        <h2 class="product-title"><a href="{{ route('home.product') }}">Loading Buffer 6X</a>
+                        <h2 class="product-title"><a href="{{ route('shop.index') }}">Loading Buffer 6X</a>
                         </h2>
                         <div class="product-price">
                             <span>200,000<sup>đ</sup> - 600,000<sup>đ</sup></span>
@@ -886,7 +886,7 @@
             <div class="col-lg-3 col-md-4 col-sm-6 col-6">
                 <div class="ltn__product-item ltn__product-item-2 text-left">
                     <div class="product-img">
-                        <a href="{{ route('home.product') }}"><img src="{{ asset('img/product/product-demo-3.jpg') }}" alt="#"></a>
+                        <a href="{{ route('shop.index') }}"><img src="{{ asset('img/product/product-demo-3.jpg') }}" alt="#"></a>
                         <div class="product-hover-action">
                             <ul>
                                 <li>
@@ -916,7 +916,7 @@
                                 <li><a href="#"><i class="far fa-star"></i></a></li>
                             </ul>
                         </div>
-                        <h2 class="product-title"><a href="{{ route('home.product') }}">Safe DYE</a></h2>
+                        <h2 class="product-title"><a href="{{ route('shop.index') }}">Safe DYE</a></h2>
                         <div class="product-price">
                             <span>1,200,000<sup>đ</sup> - 2,000,000<sup>đ</sup></span>
                             <!-- <del>990,000<sup>đ</sup></del> -->
@@ -928,7 +928,7 @@
             <div class="col-lg-3 col-md-4 col-sm-6 col-6">
                 <div class="ltn__product-item ltn__product-item-2 text-left">
                     <div class="product-img">
-                        <a href="{{ route('home.product') }}"><img src="{{ asset('img/product/product-demo-2.jpg') }}" alt="#"></a>
+                        <a href="{{ route('shop.index') }}"><img src="{{ asset('img/product/product-demo-2.jpg') }}" alt="#"></a>
                         <div class="product-badge">
                             <ul>
                                 <li class="sale-badge">New</li>
@@ -963,7 +963,7 @@
                                 <li><a href="#"><i class="far fa-star"></i></a></li>
                             </ul>
                         </div>
-                        <h2 class="product-title"><a href="{{ route('home.product') }}">Magnetic stirrer</a></h2>
+                        <h2 class="product-title"><a href="{{ route('shop.index') }}">Magnetic stirrer</a></h2>
                         <div class="product-price">
                             <span>2,920,000<sup>đ</sup></span>
                             <!-- <del>$46.00</del> -->
@@ -975,7 +975,7 @@
             <div class="col-lg-3 col-md-4 col-sm-6 col-6">
                 <div class="ltn__product-item ltn__product-item-2 text-left">
                     <div class="product-img">
-                        <a href="{{ route('home.product') }}"><img src="{{ asset('img/product/product-demo-12.jpg') }}" alt="#"></a>
+                        <a href="{{ route('shop.index') }}"><img src="{{ asset('img/product/product-demo-12.jpg') }}" alt="#"></a>
                         <div class="product-badge">
                             <ul>
                                 <li class="sale-badge">New</li>
@@ -1010,7 +1010,7 @@
                                 <li><a href="#"><i class="far fa-star"></i></a></li>
                             </ul>
                         </div>
-                        <h2 class="product-title"><a href="{{ route('home.product') }}">Vertical electrophoresis
+                        <h2 class="product-title"><a href="{{ route('shop.index') }}">Vertical electrophoresis
                                 machine VE100</a></h2>
                         <div class="product-price">
                             <span>66,000,000<sup>đ</sup></span>
@@ -1064,7 +1064,7 @@
                         </li>
                     </ul>
                     <div class="btn-wrapper animated">
-                        <a href="{{ route('home.about') }}" class="ltn__secondary-color text-uppercase text-decoration-underline">Read more</a>
+                        <a href="{{ route('home.index', ['page' => 'about']) }}" class="ltn__secondary-color text-uppercase text-decoration-underline">Read more</a>
                     </div>
                 </div>
             </div>
@@ -1090,7 +1090,7 @@
             <div class="col-lg-12">
                 <div class="ltn__blog-item ltn__blog-item-3">
                     <div class="ltn__blog-img">
-                        <a href="{{ route('home.post') }}"><img src="{{ asset('img/blog/1.jpg') }}" alt="#"></a>
+                        <a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}"><img src="{{ asset('img/blog/1.jpg') }}" alt="#"></a>
                     </div>
                     <div class="ltn__blog-brief">
                         <div class="ltn__blog-meta">
@@ -1103,7 +1103,7 @@
                                 </li>
                             </ul>
                         </div>
-                        <h3 class="ltn__blog-title"><a href="{{ route('home.post') }}">10 Brilliant Ways To Decorate
+                        <h3 class="ltn__blog-title"><a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">10 Brilliant Ways To Decorate
                                 Your Home</a></h3>
                         <div class="ltn__blog-meta-btn">
                             <div class="ltn__blog-meta">
@@ -1113,7 +1113,7 @@
                                 </ul>
                             </div>
                             <div class="ltn__blog-btn">
-                                <a href="{{ route('home.post') }}">Read more</a>
+                                <a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">Read more</a>
                             </div>
                         </div>
                     </div>
@@ -1123,7 +1123,7 @@
             <div class="col-lg-12">
                 <div class="ltn__blog-item ltn__blog-item-3">
                     <div class="ltn__blog-img">
-                        <a href="{{ route('home.post') }}"><img src="{{ asset('img/blog/2.jpg') }}" alt="#"></a>
+                        <a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}"><img src="{{ asset('img/blog/2.jpg') }}" alt="#"></a>
                     </div>
                     <div class="ltn__blog-brief">
                         <div class="ltn__blog-meta">
@@ -1136,7 +1136,7 @@
                                 </li>
                             </ul>
                         </div>
-                        <h3 class="ltn__blog-title"><a href="{{ route('home.post') }}">The Most Inspiring Interior
+                        <h3 class="ltn__blog-title"><a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">The Most Inspiring Interior
                                 Design Of 2024</a></h3>
                         <div class="ltn__blog-meta-btn">
                             <div class="ltn__blog-meta">
@@ -1146,7 +1146,7 @@
                                 </ul>
                             </div>
                             <div class="ltn__blog-btn">
-                                <a href="{{ route('home.post') }}">Read more</a>
+                                <a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">Read more</a>
                             </div>
                         </div>
                     </div>
@@ -1156,7 +1156,7 @@
             <div class="col-lg-12">
                 <div class="ltn__blog-item ltn__blog-item-3">
                     <div class="ltn__blog-img">
-                        <a href="{{ route('home.post') }}"><img src="{{ asset('img/blog/3.jpg') }}" alt="#"></a>
+                        <a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}"><img src="{{ asset('img/blog/3.jpg') }}" alt="#"></a>
                     </div>
                     <div class="ltn__blog-brief">
                         <div class="ltn__blog-meta">
@@ -1169,7 +1169,7 @@
                                 </li>
                             </ul>
                         </div>
-                        <h3 class="ltn__blog-title"><a href="{{ route('home.post') }}">Recent Commercial Real Estate
+                        <h3 class="ltn__blog-title"><a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">Recent Commercial Real Estate
                                 Transactions</a></h3>
                         <div class="ltn__blog-meta-btn">
                             <div class="ltn__blog-meta">
@@ -1179,7 +1179,7 @@
                                 </ul>
                             </div>
                             <div class="ltn__blog-btn">
-                                <a href="{{ route('home.post') }}">Read more</a>
+                                <a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">Read more</a>
                             </div>
                         </div>
                     </div>
@@ -1189,7 +1189,7 @@
             <div class="col-lg-12">
                 <div class="ltn__blog-item ltn__blog-item-3">
                     <div class="ltn__blog-img">
-                        <a href="{{ route('home.post') }}"><img src="{{ asset('img/blog/4.jpg') }}" alt="#"></a>
+                        <a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}"><img src="{{ asset('img/blog/4.jpg') }}" alt="#"></a>
                     </div>
                     <div class="ltn__blog-brief">
                         <div class="ltn__blog-meta">
@@ -1202,7 +1202,7 @@
                                 </li>
                             </ul>
                         </div>
-                        <h3 class="ltn__blog-title"><a href="{{ route('home.post') }}">Renovating a Living Room?
+                        <h3 class="ltn__blog-title"><a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">Renovating a Living Room?
                                 Experts Share Their Secrets</a></h3>
                         <div class="ltn__blog-meta-btn">
                             <div class="ltn__blog-meta">
@@ -1212,7 +1212,7 @@
                                 </ul>
                             </div>
                             <div class="ltn__blog-btn">
-                                <a href="{{ route('home.post') }}">Read more</a>
+                                <a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">Read more</a>
                             </div>
                         </div>
                     </div>
@@ -1222,7 +1222,7 @@
             <div class="col-lg-12">
                 <div class="ltn__blog-item ltn__blog-item-3">
                     <div class="ltn__blog-img">
-                        <a href="{{ route('home.post') }}"><img src="{{ asset('img/blog/5.jpg') }}" alt="#"></a>
+                        <a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}"><img src="{{ asset('img/blog/5.jpg') }}" alt="#"></a>
                     </div>
                     <div class="ltn__blog-brief">
                         <div class="ltn__blog-meta">
@@ -1235,7 +1235,7 @@
                                 </li>
                             </ul>
                         </div>
-                        <h3 class="ltn__blog-title"><a href="{{ route('home.post') }}">7 home trends that will shape
+                        <h3 class="ltn__blog-title"><a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">7 home trends that will shape
                                 your house in 2024</a></h3>
                         <div class="ltn__blog-meta-btn">
                             <div class="ltn__blog-meta">
@@ -1245,7 +1245,7 @@
                                 </ul>
                             </div>
                             <div class="ltn__blog-btn">
-                                <a href="{{ route('home.post') }}">Read more</a>
+                                <a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">Read more</a>
                             </div>
                         </div>
                     </div>

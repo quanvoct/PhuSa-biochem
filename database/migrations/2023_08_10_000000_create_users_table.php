@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('tax_id', 191)->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->unsignedInteger('alert')->nullable();
+            $table->string('image', 191)->nullable();
             $table->unsignedBigInteger('revision')->nullable();
             $table->tinyInteger('status')->default(1)->comment('0: block, 1: active');
             $table->timestamp('last_login_at')->nullable()->default(DB::raw('CURRENT_TIMESTAMP'));

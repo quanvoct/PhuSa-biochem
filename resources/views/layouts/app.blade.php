@@ -4,22 +4,22 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>@yield('title')- {{ config('app.name') }} </title>
+    <title>@yield('title') - {{ config('app.name') }} </title>
     <meta name="robots" content="noindex, follow" />
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Place favicon.png in the root directory -->
-    <link rel="shortcut icon" href="{{ asset('img/favicon.png') }}" type="image/x-icon" />
+    <link type="image/x-icon" href="{{ asset('img/favicon.svg') }}" rel="shortcut icon" />
     <!-- Font Icons css -->
-    <link rel="stylesheet" href="{{ asset('css/font-icons.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/bootstrap-icons-1.11.1/bootstrap-icons.css') }}">
+    <link href="{{ asset('css/font-icons.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/bootstrap-icons-1.11.1/bootstrap-icons.css') }}" rel="stylesheet">
     <!-- plugins css -->
-    <link rel="stylesheet" href="{{ asset('css/plugins.css') }}">
+    <link href="{{ asset('css/plugins.css') }}" rel="stylesheet">
     <!-- Main Stylesheet -->
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <!-- Responsive css -->
-    <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
+    <link href="{{ asset('css/responsive.css') }}" rel="stylesheet">
 </head>
 
 <body>
@@ -52,7 +52,7 @@
                                             <!-- ltn__language-menu -->
                                             <div class="ltn__drop-menu ltn__currency-menu ltn__language-menu">
                                                 <ul>
-                                                    <li><a href="#" class="dropdown-toggle"><span class="active-currency">English</span></a>
+                                                    <li><a class="dropdown-toggle" href="#"><span class="active-currency">English</span></a>
                                                         <ul>
                                                             <li><a href="#">English</a></li>
                                                             <li><a href="#">Vietnamese</a></li>
@@ -107,7 +107,7 @@
                                 <!-- header-search-2 -->
                                 <div class="header-search-2">
                                     <form id="#123" method="get" action="#">
-                                        <input type="text" name="search" value="" placeholder="Search here..." />
+                                        <input name="search" type="text" value="" placeholder="Search here..." />
                                         <button type="submit">
                                             <span><i class="icon-search"></i></span>
                                         </button>
@@ -119,11 +119,11 @@
                             <!-- header-options -->
                             <div class="ltn__header-options">
                                 <ul>
-                                    <li class="d-none">
+                                    {{-- <li class="">
                                         <!-- ltn__currency-menu -->
                                         <div class="ltn__drop-menu ltn__currency-menu">
                                             <ul>
-                                                <li><a href="#" class="dropdown-toggle"><span class="active-currency">USD</span></a>
+                                                <li><a class="dropdown-toggle" href="#"><span class="active-currency">USD</span></a>
                                                     <ul>
                                                         <li><a href="#">USD - US Dollar</a></li>
                                                         <li><a href="#">VND - Việt Nam Đồng</a></li>
@@ -131,7 +131,7 @@
                                                 </li>
                                             </ul>
                                         </div>
-                                    </li>
+                                    </li> --}}
                                     <li class="d-none--- ">
                                         <!-- header-search-1 -->
                                         <div class="header-search-wrap d-block d-xl-none">
@@ -143,7 +143,7 @@
                                             </div>
                                             <div class="header-search-1-form">
                                                 <form id="#" method="get" action="#">
-                                                    <input type="text" name="search" value="" placeholder="Search here..." />
+                                                    <input name="search" type="text" value="" placeholder="Search here..." />
                                                     <button type="submit">
                                                         <span><i class="icon-search"></i></span>
                                                     </button>
@@ -158,9 +158,26 @@
                                                 <li>
                                                     <a href="#"><i class="icon-user"></i></a>
                                                     <ul>
-                                                        <li><a href="#">Sign in</a></li>
-                                                        <li><a href="#">Register</a></li>
-                                                        <li><a href="#">My Account</a></li>
+                                                        @guest
+                                                            @if (Route::has('login'))
+                                                                <li><a class="dropdown-item" href="{{ route('login') }}">{{ __('Sign in') }}</a></li>
+                                                            @endif
+                                                            @if (Route::has('register'))
+                                                                <li><a class="dropdown-item" href="{{ route('register') }}">{{ __('Register') }}</a></li>
+                                                            @endif
+                                                        @else
+                                                            @if(Auth::user()->can(app\Models\User::ACCESS_ADMIN))
+                                                            <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}">{{ __('Admin Dashbard') }}</a></li>
+                                                            @endif
+                                                            <li><a class="dropdown-item" href="{{ route('profile.index') }}">{{ __('My Account') }}</a></li>
+                                                            <li><a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                                                                    {{ __('Logout') }}
+                                                                </a>
+                                                            </li>
+                                                        @endguest
+                                                        <form class="d-none" id="logout-form" action="{{ route('logout') }}" method="POST">
+                                                            @csrf
+                                                        </form>
                                                     </ul>
                                                 </li>
                                             </ul>
@@ -169,12 +186,12 @@
                                     <li>
                                         <!-- mini-cart 2 -->
                                         <div class="mini-cart-icon mini-cart-icon-2">
-                                            <a href="#ltn__utilize-cart-menu" class="ltn__utilize-toggle">
+                                            <a class="ltn__utilize-toggle" href="#ltn__utilize-cart-menu">
                                                 <span class="mini-cart-icon">
                                                     <i class="icon-shopping-cart"></i>
                                                     <sup>2</sup>
                                                 </span>
-                                                <h6><span>Your Cart</span> <span class="ltn__secondary-color text-lowercase">890.000<sup>đ</sup></span>
+                                                <h6><span>{{ __('Your Cart') }}</span> <span class="ltn__secondary-color text-lowercase">890.000<sup>đ</sup></span>
                                                 </h6>
                                             </a>
                                         </div>
@@ -195,11 +212,11 @@
                             <!-- Mobile Menu Button -->
                             <div class="mobile-menu-toggle d-lg-none">
                                 <span>MENU</span>
-                                <a href="#ltn__utilize-mobile-menu" class="ltn__utilize-toggle">
+                                <a class="ltn__utilize-toggle" href="#ltn__utilize-mobile-menu">
                                     <svg viewBox="0 0 800 600">
-                                        <path d="M300,220 C300,220 520,220 540,220 C740,220 640,540 520,420 C440,340 300,200 300,200" id="top"></path>
-                                        <path d="M300,320 L540,320" id="middle"></path>
-                                        <path d="M300,210 C300,210 520,210 540,210 C740,210 640,530 520,410 C440,330 300,190 300,190" id="bottom" transform="translate(480, 320) scale(1, -1) translate(-480, -318) "></path>
+                                        <path id="top" d="M300,220 C300,220 520,220 540,220 C740,220 640,540 520,420 C440,340 300,200 300,200"></path>
+                                        <path id="middle" d="M300,320 L540,320"></path>
+                                        <path id="bottom" d="M300,210 C300,210 520,210 540,210 C740,210 640,530 520,410 C440,330 300,190 300,190" transform="translate(480, 320) scale(1, -1) translate(-480, -318) "></path>
                                     </svg>
                                 </a>
                             </div>
@@ -223,16 +240,16 @@
                                     <ul>
                                         <!-- Submenu Column - unlimited -->
                                         <li class="ltn__category-menu-item ltn__category-menu-drop">
-                                            <a href="{{ route('home.shop') }}">All products</a>
+                                            <a href="{{ route('shop.index') }}">All products</a>
                                         </li>
                                         <li class="ltn__category-menu-item ltn__category-menu-drop">
                                             <a href="#">Oligo/Primer </a>
                                             <ul class="ltn__category-submenu ">
                                                 <li class="ltn__category-submenu-title ltn__category-menu-drop"><a href="#">Oligo/Primer</a>
                                                     <ul class="ltn__category-submenu-children">
-                                                        <li><a href="{{ route('home.shop') }}">Oligo Tubes</a></li>
-                                                        <li><a href="{{ route('home.shop') }}">Oligo Plate</a></li>
-                                                        <li><a href="{{ route('home.shop') }}">Oligo Modification</a></li>
+                                                        <li><a href="{{ route('shop.index') }}">Oligo Tubes</a></li>
+                                                        <li><a href="{{ route('shop.index') }}">Oligo Plate</a></li>
+                                                        <li><a href="{{ route('shop.index') }}">Oligo Modification</a></li>
                                                     </ul>
                                                 </li>
                                             </ul>
@@ -243,10 +260,10 @@
                                             <ul class="ltn__category-submenu">
                                                 <li class="ltn__category-submenu-title ltn__category-menu-drop"><a href="#">Biology Products</a>
                                                     <ul class="ltn__category-submenu-children">
-                                                        <li><a href="{{ route('home.shop') }}">PCR chemicals</a></li>
-                                                        <li><a href="{{ route('home.shop') }}">Electrophoretic chemicals</a></li>
-                                                        <li><a href="{{ route('home.shop') }}">Diagnostic biological products</a></li>
-                                                        <li><a href="{{ route('home.shop') }}">Flow-forming chemicals</a></li>
+                                                        <li><a href="{{ route('shop.index') }}">PCR chemicals</a></li>
+                                                        <li><a href="{{ route('shop.index') }}">Electrophoretic chemicals</a></li>
+                                                        <li><a href="{{ route('shop.index') }}">Diagnostic biological products</a></li>
+                                                        <li><a href="{{ route('shop.index') }}">Flow-forming chemicals</a></li>
                                                     </ul>
                                                 </li>
                                             </ul>
@@ -256,11 +273,11 @@
                                             <ul class="ltn__category-submenu">
                                                 <li class="ltn__category-submenu-title ltn__category-menu-drop"><a href="#">Device</a>
                                                     <ul class="ltn__category-submenu-children">
-                                                        <li><a href="{{ route('home.shop') }}">PCR machine</a></li>
-                                                        <li><a href="{{ route('home.shop') }}">Mobile phones</a></li>
-                                                        <li><a href="{{ route('home.shop') }}">Extraction machine</a></li>
-                                                        <li><a href="{{ route('home.shop') }}">spot check machine</a></li>
-                                                        <li><a href="{{ route('home.shop') }}">Other equipment</a></li>
+                                                        <li><a href="{{ route('shop.index') }}">PCR machine</a></li>
+                                                        <li><a href="{{ route('shop.index') }}">Mobile phones</a></li>
+                                                        <li><a href="{{ route('shop.index') }}">Extraction machine</a></li>
+                                                        <li><a href="{{ route('shop.index') }}">spot check machine</a></li>
+                                                        <li><a href="{{ route('shop.index') }}">Other equipment</a></li>
                                                     </ul>
                                                 </li>
                                             </ul>
@@ -270,7 +287,7 @@
                                             <ul class="ltn__category-submenu">
                                                 <li class="ltn__category-submenu-title ltn__category-menu-drop"><a href="#">Utility package</a>
                                                     <ul class="ltn__category-submenu-children">
-                                                        <li><a href="{{ route('home.shop') }}">Practice combos</a></li>
+                                                        <li><a href="{{ route('shop.index') }}">Practice combos</a></li>
                                                     </ul>
                                                 </li>
                                             </ul>
@@ -280,8 +297,8 @@
                                             <ul class="ltn__category-submenu">
                                                 <li class="ltn__category-submenu-title ltn__category-menu-drop"><a href="#">Services</a>
                                                     <ul class="ltn__category-submenu-children">
-                                                        <li><a href="{{ route('home.shop') }}">Gene synthesis</a></li>
-                                                        <li><a href="{{ route('home.shop') }}">Other services</a></li>
+                                                        <li><a href="{{ route('shop.index') }}">Gene synthesis</a></li>
+                                                        <li><a href="{{ route('shop.index') }}">Other services</a></li>
                                                     </ul>
                                                 </li>
                                             </ul>
@@ -291,11 +308,11 @@
                                             <ul class="ltn__category-submenu">
                                                 <li class="ltn__category-submenu-title ltn__category-menu-drop"><a href="#">Diagnostic kit</a>
                                                     <ul class="ltn__category-submenu-children">
-                                                        <li><a href="{{ route('home.shop') }}">Shrimp disease diagnosis kit</a></li>
-                                                        <li><a href="{{ route('home.shop') }}">Pangasius disease diagnosis kit</a></li>
-                                                        <li><a href="{{ route('home.shop') }}">Tilapia disease diagnosis kit</a></li>
-                                                        <li><a href="{{ route('home.shop') }}">GMO detection kit</a></li>
-                                                        <li><a href="{{ route('home.shop') }}">Kit detects animal DNA</a></li>
+                                                        <li><a href="{{ route('shop.index') }}">Shrimp disease diagnosis kit</a></li>
+                                                        <li><a href="{{ route('shop.index') }}">Pangasius disease diagnosis kit</a></li>
+                                                        <li><a href="{{ route('shop.index') }}">Tilapia disease diagnosis kit</a></li>
+                                                        <li><a href="{{ route('shop.index') }}">GMO detection kit</a></li>
+                                                        <li><a href="{{ route('shop.index') }}">Kit detects animal DNA</a></li>
                                                     </ul>
                                                 </li>
                                             </ul>
@@ -313,20 +330,20 @@
                                         <div class="ltn__main-menu">
                                             <ul>
                                                 <li class="{{ Request::path() == '/' ? 'active' : '' }}"><a href="{{ route('home.index') }}">Home</a></li>
-                                                <li class="{{ Request::path() == 'about' ? 'active' : '' }}"><a href="{{ route('home.about') }}">About</a></li>
-                                                <li class="{{ Request::path() == 'shop' ? 'active' : '' }}"><a href="{{ route('home.shop') }}">Shop</a></li>
+                                                <li class="{{ Request::path() == 'about' ? 'active' : '' }}"><a href="{{ route('home.index', ['page' => 'about']) }}">About</a></li>
+                                                <li class="{{ Request::path() == 'shop' ? 'active' : '' }}"><a href="{{ route('shop.index') }}">Shop</a></li>
                                                 <li class="menu-icon {{ Request::path() == 'posts' ? 'active' : '' }}"><a href="#">News</a>
                                                     <ul>
-                                                        <li><a href="{{ route('home.posts') }}">News</a></li>
-                                                        <li><a href="{{ route('home.posts') }}">Recruitment</a></li>
+                                                        <li><a href="{{ route('home.index', ['page' => 'code']) }}">News</a></li>
+                                                        <li><a href="{{ route('home.index', ['page' => 'code']) }}">Recruitment</a></li>
                                                     </ul>
                                                 </li>
                                                 <li class="menu-icon {{ Request::path() == 'post' ? 'active' : '' }}"><a href="#">Policies</a>
                                                     <ul>
-                                                        <li><a href="{{ route('home.post') }}">Sales policy</a></li>
-                                                        <li><a href="{{ route('home.post') }}">Delivery & return policy</a>
+                                                        <li><a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">Sales policy</a></li>
+                                                        <li><a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">Delivery & return policy</a>
                                                         </li>
-                                                        <li><a href="{{ route('home.post') }}">Payment Guide</a></li>
+                                                        <li><a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">Payment Guide</a></li>
                                                     </ul>
                                                 </li>
                                                 <li class="{{ Request::path() == 'contact' ? 'active' : '' }}"><a href="{{ route('home.contact') }}">Contact</a></li>
@@ -351,7 +368,7 @@
         <!-- HEADER AREA END -->
 
         <!-- Utilize Cart Menu Start -->
-        <div id="ltn__utilize-cart-menu" class="ltn__utilize ltn__utilize-cart-menu">
+        <div class="ltn__utilize ltn__utilize-cart-menu" id="ltn__utilize-cart-menu">
             <div class="ltn__utilize-menu-inner ltn__scrollbar">
                 <div class="ltn__utilize-menu-head">
                     <span class="ltn__utilize-menu-title">Cart</span>
@@ -404,8 +421,8 @@
                         <h5>Subtotal: <span>2.190.000<sup>đ</sup></span></h5>
                     </div>
                     <div class="btn-wrapper">
-                        <a href="{{ route('home.cart') }}" class="theme-btn-1 btn btn-effect-1">View Cart</a>
-                        <a href="{{ route('home.cart') }}" class="theme-btn-2 btn btn-effect-2">Checkout</a>
+                        <a class="theme-btn-1 btn btn-effect-1" href="{{ route('cart.index') }}">View Cart</a>
+                        <a class="theme-btn-2 btn btn-effect-2" href="{{ route('cart.checkout') }}">Checkout</a>
                     </div>
                     <p>Free Shipping on All Orders Over $100!</p>
                 </div>
@@ -415,7 +432,7 @@
         <!-- Utilize Cart Menu End -->
 
         <!-- Utilize Mobile Menu Start -->
-        <div id="ltn__utilize-mobile-menu" class="ltn__utilize ltn__utilize-mobile-menu">
+        <div class="ltn__utilize ltn__utilize-mobile-menu" id="ltn__utilize-mobile-menu">
             <div class="ltn__utilize-menu-inner ltn__scrollbar">
                 <div class="ltn__utilize-menu-head">
                     <div class="site-logo">
@@ -432,19 +449,19 @@
                 <div class="ltn__utilize-menu">
                     <ul>
                         <li class="{{ Request::path() == '/' ? 'active' : '' }}"><a href="{{ route('home.index') }}">Home</a></li>
-                        <li class="{{ Request::path() == 'about' ? 'active' : '' }}"><a href="{{ route('home.about') }}">About</a></li>
-                        <li class="{{ Request::path() == 'shop' ? 'active' : '' }}"><a href="{{ route('home.shop') }}">Shop</a> </li>
+                        <li class="{{ Request::path() == 'about' ? 'active' : '' }}"><a href="{{ route('home.index', ['page' => 'about']) }}">About</a></li>
+                        <li class="{{ Request::path() == 'shop' ? 'active' : '' }}"><a href="{{ route('shop.index') }}">Shop</a> </li>
                         <li class="{{ Request::path() == 'posts' ? 'active' : '' }}"><a href="#">News</a>
                             <ul class="sub-menu">
-                                <li><a href="{{ route('home.posts') }}">News</a></li>
-                                <li><a href="{{ route('home.posts') }}">Recruitment</a></li>
+                                <li><a href="{{ route('home.index', ['page' => 'code']) }}">News</a></li>
+                                <li><a href="{{ route('home.index', ['page' => 'code']) }}">Recruitment</a></li>
                             </ul>
                         </li>
                         <li><a href="#">Policies</a>
                             <ul class="sub-menu">
-                                <li><a href="{{ route('home.post') }}">Sales policy</a></li>
-                                <li><a href="{{ route('home.post') }}">Delivery & return policy</a></li>
-                                <li><a href="{{ route('home.post') }}">Payment Guide</a></li>
+                                <li><a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">Sales policy</a></li>
+                                <li><a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">Delivery & return policy</a></li>
+                                <li><a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">Payment Guide</a></li>
                             </ul>
                         </li>
                         <li class="{{ Request::path() == '/' ? 'contact' : '' }}"><a href="{{ route('home.contact') }}">Contact</a></li>
@@ -461,7 +478,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('home.cart') }}" title="Shoping Cart">
+                            <a href="{{ route('cart.index') }}" title="Shoping Cart">
                                 <span class="utilize-btn-icon">
                                     <i class="fas fa-shopping-cart"></i>
                                     <sup>5</sup>
@@ -562,9 +579,9 @@
                                 <div class="footer-menu">
                                     <ul>
                                         <li><a href="{{ route('home.index') }}">Home</a></li>
-                                        <li><a href="{{ route('home.about') }}">About</a></li>
-                                        <li><a href="{{ route('home.shop') }}">Shop</a></li>
-                                        <li><a href="{{ route('home.posts') }}">News</a></li>
+                                        <li><a href="{{ route('home.index', ['page' => 'about']) }}">About</a></li>
+                                        <li><a href="{{ route('shop.index') }}">Shop</a></li>
+                                        <li><a href="{{ route('home.index', ['page' => 'code']) }}">News</a></li>
                                         <li><a href="{{ route('home.contact') }}">Contact us</a></li>
                                     </ul>
                                 </div>
@@ -575,11 +592,11 @@
                                 <h4 class="footer-title">Policies</h4>
                                 <div class="footer-menu">
                                     <ul>
-                                        <li><a href="{{ route('home.post') }}">Shopping guide</a></li>
-                                        <li><a href="{{ route('home.post') }}">Sales policy</a></li>
-                                        <li><a href="{{ route('home.post') }}">Delivery &amp; return policy</a></li>
-                                        <li><a href="{{ route('home.post') }}">Payment Guide</a></li>
-                                        <li><a href="{{ route('home.posts') }}">Privacy Policy</a></li>
+                                        <li><a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">Shopping guide</a></li>
+                                        <li><a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">Sales policy</a></li>
+                                        <li><a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">Delivery &amp; return policy</a></li>
+                                        <li><a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">Payment Guide</a></li>
+                                        <li><a href="{{ route('home.index', ['page' => 'code']) }}">Privacy Policy</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -589,12 +606,12 @@
                                 <h4 class="footer-title">Product Categories</h4>
                                 <div class="footer-menu">
                                     <ul>
-                                        <li><a href="{{ route('home.shop') }}">Oligo/Primer </a></li>
-                                        <li><a href="{{ route('home.shop') }}">Biology Products</a></li>
-                                        <li><a href="{{ route('home.shop') }}">Device</a></li>
-                                        <li><a href="{{ route('home.shop') }}">Utility package</a></li>
-                                        <li><a href="{{ route('home.shop') }}">Services</a></li>
-                                        <li><a href="{{ route('home.shop') }}">Diagnostic kit</a></li>
+                                        <li><a href="{{ route('shop.index') }}">Oligo/Primer </a></li>
+                                        <li><a href="{{ route('shop.index') }}">Biology Products</a></li>
+                                        <li><a href="{{ route('shop.index') }}">Device</a></li>
+                                        <li><a href="{{ route('shop.index') }}">Utility package</a></li>
+                                        <li><a href="{{ route('shop.index') }}">Services</a></li>
+                                        <li><a href="{{ route('shop.index') }}">Diagnostic kit</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -606,7 +623,7 @@
                                 <p>Subscribe to our weekly Newsletter and receive updates via email.</p>
                                 <div class="footer-newsletter">
                                     <form action="#">
-                                        <input type="email" name="email" placeholder="Email*">
+                                        <input name="email" type="email" placeholder="Email*">
                                         <div class="btn-wrapper">
                                             <button class="theme-btn-1 btn" type="submit"><i class="fas fa-location-arrow"></i></button>
                                         </div>
@@ -649,7 +666,7 @@
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <button class="close" data-bs-dismiss="modal" type="button" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                                 <!-- <i class="fas fa-times"></i> -->
                             </button>
@@ -697,11 +714,11 @@
                                                     <ul>
                                                         <li>
                                                             <div class="cart-plus-minus">
-                                                                <input type="text" value="02" name="qtybutton" class="cart-plus-minus-box">
+                                                                <input class="cart-plus-minus-box" name="qtybutton" type="text" value="02">
                                                             </div>
                                                         </li>
                                                         <li>
-                                                            <a href="#" class="theme-btn-1 btn btn-effect-1" title="Add to Cart" data-bs-toggle="modal" data-bs-target="#add_to_cart_modal">
+                                                            <a class="theme-btn-1 btn btn-effect-1" data-bs-toggle="modal" data-bs-target="#add_to_cart_modal" href="#" title="Add to Cart">
                                                                 <i class="fas fa-shopping-cart"></i>
                                                                 <span>ADD TO CART</span>
                                                             </a>
@@ -711,13 +728,13 @@
                                                 <div class="ltn__product-details-menu-3">
                                                     <ul>
                                                         <li>
-                                                            <a href="#" class="" title="Wishlist" data-bs-toggle="modal" data-bs-target="#liton_wishlist_modal">
+                                                            <a class="" data-bs-toggle="modal" data-bs-target="#liton_wishlist_modal" href="#" title="Wishlist">
                                                                 <i class="far fa-heart"></i>
                                                                 <span>Add to Wishlist</span>
                                                             </a>
                                                         </li>
                                                         <li>
-                                                            <a href="#" class="" title="Compare" data-bs-toggle="modal" data-bs-target="#quick_view_modal">
+                                                            <a class="" data-bs-toggle="modal" data-bs-target="#quick_view_modal" href="#" title="Compare">
                                                                 <i class="fas fa-exchange-alt"></i>
                                                                 <span>Compare</span>
                                                             </a>
@@ -732,7 +749,6 @@
                                                         <li><a href="#" title="Twitter"><i class="fab fa-twitter"></i></a></li>
                                                         <li><a href="#" title="Linkedin"><i class="fab fa-linkedin"></i></a></li>
                                                         <li><a href="#" title="Instagram"><i class="fab fa-instagram"></i></a></li>
-
                                                     </ul>
                                                 </div>
                                             </div>
@@ -753,7 +769,7 @@
                 <div class="modal-dialog modal-md" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <button class="close" data-bs-dismiss="modal" type="button" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
@@ -766,13 +782,13 @@
                                                 <img src="{{ asset('img/product/product-demo-1.jpg') }}" alt="#">
                                             </div>
                                             <div class="modal-product-info">
-                                                <h5><a href="{{ route('home.product') }}">Digital Stethoscope</a></h5>
+                                                <h5><a href="{{ route('shop.index', ['product' => 'slug']) }}">Digital Stethoscope</a></h5>
                                                 <p class="added-cart"><i class="fa fa-check-circle"></i> Successfully
                                                     added to your Cart</p>
                                                 <div class="btn-wrapper">
-                                                    <a href="{{ route('home.cart') }}" class="theme-btn-1 btn btn-effect-1">View
+                                                    <a class="theme-btn-1 btn btn-effect-1" href="{{ route('cart.index') }}">View
                                                         Cart</a>
-                                                    <a href="#" class="theme-btn-2 btn btn-effect-2">Checkout</a>
+                                                    <a class="theme-btn-2 btn btn-effect-2" href="{{ route('cart.checkout') }}">Checkout</a>
                                                 </div>
                                             </div>
                                             <!-- additional-info -->
@@ -800,7 +816,7 @@
                 <div class="modal-dialog modal-md" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                            <button class="close" data-bs-dismiss="modal" type="button" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
@@ -813,12 +829,10 @@
                                                 <img src="{{ asset('img/product/product-demo-1.jpg') }}" alt="#">
                                             </div>
                                             <div class="modal-product-info">
-                                                <h5><a href="{{ route('home.product') }}">Digital Stethoscope</a></h5>
-                                                <p class="added-cart"><i class="fa fa-check-circle"></i> Successfully
-                                                    added to your Wishlist</p>
+                                                <h5><a href="{{ route('shop.index', ['product' => 'slug']) }}">Digital Stethoscope</a></h5>
+                                                <p class="added-cart"><i class="fa fa-check-circle"></i> Successfully added to your Wishlist</p>
                                                 <div class="btn-wrapper">
-                                                    <a href="#" class="theme-btn-1 btn btn-effect-1">View
-                                                        Wishlist</a>
+                                                    <a class="theme-btn-1 btn btn-effect-1" href="#">View Wishlist</a>
                                                 </div>
                                             </div>
                                             <!-- additional-info -->

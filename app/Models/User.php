@@ -8,112 +8,116 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasRoles, HasFactory, Notifiable, SoftDeletes;
+    protected $appends = ['phoneStr', 'statusStr', 'genderStr', 'fullAddress', 'avatarUrl'];
     protected $table = 'users';
     const ACCESS_ADMIN = 'Truy cập trang Quản trị';
 
     const READ_ORDERS = 'Xem danh sách đơn hàng';
     const READ_ORDER = 'Xem chi tiết đơn hàng';
     const CREATE_ORDER = 'Thêm đơn hàng';
-    const EDIT_ORDER = 'Sửa đơn hàng';
-    const DEL_ORDER = 'Xoá đơn hàng';
-    const DEL_ORDERS = 'Xoá hàng loạt đơn hàng';
+    const UPDATE_ORDER = 'Sửa đơn hàng';
+    const DELETE_ORDER = 'Xoá đơn hàng';
+    const DELETE_ORDERS = 'Xoá hàng loạt đơn hàng';
 
     const READ_DETAIL = 'Xem danh sách chi tiết đơn hàng';
-    const EDIT_DETAIL = 'Sửa chi tiết đơn hàng';
-    const DEL_DETAIL = 'Xoá chi tiết đơn hàng';
-    const DEL_DETAILS = 'Xoá hàng loạt chi tiết đơn hàng';
+    const UPDATE_DETAIL = 'Sửa chi tiết đơn hàng';
+    const DELETE_DETAIL = 'Xoá chi tiết đơn hàng';
+    const DELETE_DETAILS = 'Xoá hàng loạt chi tiết đơn hàng';
 
+    const READ_DEBTS = 'Xem danh sách công nợ';
     const READ_TRANSACTIONS = 'Xem danh sách thanh toán';
     const READ_TRANSACTION = 'Xem chi tiết thanh toán';
     const CREATE_TRANSACTION = 'Thêm thanh toán';
-    const EDIT_TRANSACTION = 'Sửa thanh toán';
-    const DEL_TRANSACTION = 'Xoá thanh toán';
-    const DEL_TRANSACTIONS = 'Xoá hàng loạt thanh toán';
+    const UPDATE_TRANSACTION = 'Sửa thanh toán';
+    const DELETE_TRANSACTION = 'Xoá thanh toán';
+    const DELETE_TRANSACTIONS = 'Xoá hàng loạt thanh toán';
 
     const READ_PROMOTIONS = 'Xem danh sách khuyến mãi';
     const READ_PROMOTION = 'Xem chi tiết khuyến mãi';
     const CREATE_PROMOTION = 'Thêm khuyến mãi';
-    const EDIT_PROMOTION = 'Sửa khuyến mãi';
-    const DEL_PROMOTION = 'Xoá khuyến mãi';
-    const DEL_PROMOTIONS = 'Xoá hàng loạt khuyến mãi';
+    const UPDATE_PROMOTION = 'Sửa khuyến mãi';
+    const DELETE_PROMOTION = 'Xoá khuyến mãi';
+    const DELETE_PROMOTIONS = 'Xoá hàng loạt khuyến mãi';
 
     const READ_PRODUCTS = 'Xem danh sách sản phẩm';
     const READ_PRODUCT = 'Xem chi tiết sản phẩm';
     const CREATE_PRODUCT = 'Thêm sản phẩm';
-    const EDIT_PRODUCT = 'Sửa sản phẩm';
-    const DEL_PRODUCT = 'Xoá sản phẩm';
-    const DEL_PRODUCTS = 'Xoá hàng loạt sản phẩm';
+    const UPDATE_PRODUCT = 'Sửa sản phẩm';
+    const DELETE_PRODUCT = 'Xoá sản phẩm';
+    const DELETE_PRODUCTS = 'Xoá hàng loạt sản phẩm';
     
-    const READ_CATALOGS = 'Xem danh sách danh mục';
-    const READ_CATALOG = 'Xem chi tiết danh mục';
-    const CREATE_CATALOG = 'Thêm danh mục';
-    const EDIT_CATALOG = 'Sửa danh mục';
-    const DEL_CATALOG = 'Xoá danh mục';
-    const DEL_CATALOGS = 'Xoá hàng loạt danh mục';
+    const READ_CATALOGUES = 'Xem danh sách danh mục';
+    const READ_CATALOGUE = 'Xem chi tiết danh mục';
+    const CREATE_CATALOGUE = 'Thêm danh mục';
+    const UPDATE_CATALOGUE = 'Sửa danh mục';
+    const DELETE_CATALOGUE = 'Xoá danh mục';
+    const DELETE_CATALOGUES = 'Xoá hàng loạt danh mục';
 
     const READ_ATTRIBUTES = 'Xem danh sách thuộc tính';
     const READ_ATTRIBUTE = 'Xem chi tiết thuộc tính';
     const CREATE_ATTRIBUTE = 'Thêm thuộc tính';
-    const EDIT_ATTRIBUTE = 'Sửa thuộc tính';
-    const DEL_ATTRIBUTE = 'Xoá thuộc tính';
-    const DEL_ATTRIBUTES = 'Xoá hàng loạt thuộc tính';
+    const UPDATE_ATTRIBUTE = 'Sửa thuộc tính';
+    const DELETE_ATTRIBUTE = 'Xoá thuộc tính';
+    const DELETE_ATTRIBUTES = 'Xoá hàng loạt thuộc tính';
 
     const READ_REVIEWS = 'Xem danh sách đánh giá';
     const READ_REVIEW = 'Xem chi tiết đánh giá';
     const CREATE_REVIEW = 'Thêm đánh giá';
-    const EDIT_REVIEW = 'Sửa đánh giá';
-    const DEL_REVIEW = 'Xoá đánh giá';
-    const DEL_REVIEWS = 'Xoá hàng loạt đánh giá';
+    const UPDATE_REVIEW = 'Sửa đánh giá';
+    const DELETE_REVIEW = 'Xoá đánh giá';
+    const DELETE_REVIEWS = 'Xoá hàng loạt đánh giá';
 
     const READ_POSTS = 'Xem danh sách bài viết';
     const READ_POST = 'Xem chi tiết bài viết';
     const CREATE_POST = 'Thêm bài viết';
-    const EDIT_POST = 'Sửa chi tiết bài viết';
-    const DEL_POST = 'Xoá bài viết';
-    const DEL_POSTS = 'Xoá hàng loạt bài viết';
+    const UPDATE_POST = 'Sửa chi tiết bài viết';
+    const DELETE_POST = 'Xoá bài viết';
+    const DELETE_POSTS = 'Xoá hàng loạt bài viết';
 
     const READ_CATEGORIES = 'Xem danh sách chuyên mục';
     const READ_CATEGORY = 'Xem chi tiết chuyên mục';
     const CREATE_CATEGORY = 'Thêm chuyên mục';
-    const EDIT_CATEGORY = 'Sửa chi tiết chuyên mục';
-    const DEL_CATEGORY = 'Xoá chuyên mục';
-    const DEL_CATEGORIES = 'Xoá hàng loạt chuyên mục';
+    const UPDATE_CATEGORY = 'Sửa chi tiết chuyên mục';
+    const DELETE_CATEGORY = 'Xoá chuyên mục';
+    const DELETE_CATEGORIES = 'Xoá hàng loạt chuyên mục';
 
     const READ_IMAGES = 'Xem tất cả hình ảnh';
     const READ_IMAGE = 'Xem chi tiết hình ảnh';
     const CREATE_IMAGE = 'Thêm hình ảnh';
-    const EDIT_IMAGE = 'Sửa chi tiết hình ảnh';
-    const DEL_IMAGE = 'Xoá hình ảnh';
-    const DEL_IMAGES = 'Xoá hàng loạt hình ảnh';
+    const UPDATE_IMAGE = 'Sửa chi tiết hình ảnh';
+    const DELETE_IMAGE = 'Xoá hình ảnh';
+    const DELETE_IMAGES = 'Xoá hàng loạt hình ảnh';
 
     const READ_CONTENT = 'Xem chi tiết nội dung';
-    const EDIT_CONTENT = 'Sửa chi tiết nội dung';
+    const UPDATE_CONTENT = 'Sửa chi tiết nội dung';
 
     const READ_USERS = 'Xem danh sách tài khoản';
     const READ_USER = 'Xem chi tiết tài khoản';
     const CREATE_USER = 'Thêm tài khoản';
-    const EDIT_USER = 'Sửa chi tiết tài khoản';
+    const UPDATE_USER = 'Sửa chi tiết tài khoản';
     const BLOCK_USER = 'Khoá tài khoản';
-    const DEL_USER = 'Xoá tài khoản';
-    const DEL_USERS = 'Xoá hàng loạt tài khoản';
+    const DELETE_USER = 'Xoá tài khoản';
+    const DELETE_USERS = 'Xoá hàng loạt tài khoản';
 
     const READ_ROLES = 'Xem danh sách nhóm quyền';
     const READ_ROLE = 'Xem chi tiết nhóm quyền';
     const CREATE_ROLE = 'Thêm nhóm quyền';
-    const EDIT_ROLE = 'Sửa chi tiết nhóm quyền';
-    const DEL_ROLE = 'Xoá nhóm quyền';
+    const UPDATE_ROLE = 'Sửa chi tiết nhóm quyền';
+    const DELETE_ROLE = 'Xoá nhóm quyền';
 
     const READ_LOGS = 'Xem danh sách nhật ký hệ thống';
     const READ_LOG = 'Xem chi tiết nhật ký hệ thống';
-    const DEL_LOG = 'Xoá nhật ký hệ thống';
+    const DELETE_LOG = 'Xoá nhật ký hệ thống';
 
     const READ_SETTINGS = 'Xem chi tiết thiết lập hệ thống';
-    const EDIT_SETTINGS = 'Sửa chi tiết thiết lập hệ thống';
+    const UPDATE_SETTINGS = 'Sửa chi tiết thiết lập hệ thống';
 
     /**
      * The attributes that are mass assignable.
@@ -121,7 +125,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array<int, string>
      */
     protected $fillable = [
-        'name', 'email', 'address', 'local_id', 'phone', 'birthday', 'gender', 'tax_name', 'tax_add', 'tax_id', 'password', 'alert',
+        'name', 'email', 'address', 'local_id', 'phone', 'birthday', 'gender', 'tax_name', 'tax_add', 'tax_id', 'password', 'image',
         'revision', 'status', 'email_verified_at', 'last_login_at'
     ];
     /**
@@ -224,12 +228,49 @@ class User extends Authenticatable implements MustVerifyEmail
         return Carbon::parse($this->created_at)->format('d/m/Y');
     }
 
-    public function phoneFriendly() {
+    public function getGenderStrAttribute()
+    {
+        $result = '';
+        if ($this->gender == 2) {
+            $result = 'Khác';
+        } else if ($this->gender == 1) {
+            $result = 'Nữ';
+        } else {
+            $result = 'Nam';
+        }
+        return $result;
+    }
+
+    public function getPhoneStrAttribute() {
         if (preg_match('/^(\d{4})(\d{3})(\d{3})$/', $this->phone, $matches)) {
             $formattedPhone = $matches[1] . ' ' . $matches[2] . ' ' . $matches[3];
         } else {
             $formattedPhone = $this->phone; // Giữ nguyên số điện thoại nếu không khớp
         }
         return $formattedPhone;
+    }
+
+    public function getStatusStrAttribute()
+    {
+        return ($this->status) ? 'Kích hoạt' : 'Đã khóa';
+    }
+
+    public function getFullAddressAttribute()
+    {
+        $address = $this->address ? $this->address . ', ' : '';
+        $location = $this->local ? ($this->local->district . ', ' . $this->local->city) : '';
+        $fullAddress = $address . $location;
+        return $fullAddress ?: "Không có";
+    }
+
+    public function getAvatarUrlAttribute()
+    {
+        $path = 'public/user/' . $this->image;
+        if ($this->image && Storage::exists($path)) {
+            $image = asset(env('FILE_STORAGE') . '/user/' . $this->image);
+        } else {
+            $image = asset('admin/images/placeholder.webp');
+        }
+        return $image;
     }
 }

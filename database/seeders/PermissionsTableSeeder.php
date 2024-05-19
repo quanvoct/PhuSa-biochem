@@ -22,6 +22,7 @@ class PermissionsTableSeeder extends Seeder
             ['guard_name' => 'web', 'section' => 'Chi tiết đơn hàng', 'name' => 'Xoá chi tiết đơn hàng'],
             ['guard_name' => 'web', 'section' => 'Chi tiết đơn hàng', 'name' => 'Xoá hàng loạt chi tiết đơn hàng'],
 
+            ['guard_name' => 'web', 'section' => 'Thanh toán', 'name' => 'Xem danh sách công nợ'],
             ['guard_name' => 'web', 'section' => 'Thanh toán', 'name' => 'Xem danh sách thanh toán'],
             ['guard_name' => 'web', 'section' => 'Thanh toán', 'name' => 'Xem chi tiết thanh toán'],
             ['guard_name' => 'web', 'section' => 'Thanh toán', 'name' => 'Thêm thanh toán'],
