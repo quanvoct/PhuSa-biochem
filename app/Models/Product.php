@@ -129,10 +129,10 @@ class Product extends Model
 
     public function getImageUrlAttribute()
     {
-        $images = explode(',', $this->gallery);
-        $path = 'public/' . $images[0];
-        if (Image::where('name', $images[0])->count() && Storage::exists($path)) {
-            $image = asset(env('FILE_STORAGE', '/storage') . '/' . $images[0]);
+        $images = explode('|', $this->gallery);
+        $path = 'public/' . $images[1];
+        if (Image::where('name', $images[1])->count() && Storage::exists($path)) {
+            $image = asset(env('FILE_STORAGE', '/storage') . '/' . $images[1]);
         } else {
             $image = asset('admin/images/placeholder.webp');
         }

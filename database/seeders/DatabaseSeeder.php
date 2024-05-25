@@ -12,7 +12,9 @@ class DatabaseSeeder extends Seeder
             PermissionsTableSeeder::class,
             SuperAdminRoleSeeder::class,
             AdminUserSeeder::class,
-            SettingsSeeder::class
+            SettingsSeeder::class,
+            CataloguesSedder::class,
+            ProductsSedder::class
         ]);
     }
 }
