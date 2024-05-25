@@ -166,4 +166,4 @@ Route::get('/cart/checkout', [CartController::class, 'checkout'])->name('cart.ch
 Route::get('/cart/checkout/success', [CartController::class, 'checkout'])->name('cart.checkout.success');
 Route::get('/shop/{catalogue?}/{product?}', [ShopController::class, 'shop'])->name('shop.index');
 Route::get('/profile/{page?}/{id?}', [HomeController::class, 'index'])->name('profile.index');
-Route::get('/{page?}/{category?}/{title?}', [HomeController::class, 'index'])->name('home.index');
+Route::get('/{page?}/{category?}/{post?}', [HomeController::class, 'index'])->name('home.index');

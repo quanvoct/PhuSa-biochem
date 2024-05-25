@@ -9,11 +9,11 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="ltn__breadcrumb-inner">
-                        <h1 class="page-title">Cart</h1>
+                        <h1 class="page-title">{{ $pageName }}</h1>
                         <div class="ltn__breadcrumb-list">
                             <ul>
                                 <li><a href="{{ route('home.index') }}"><span class="ltn__secondary-color"><i class="fas fa-home"></i></span> Home</a></li>
-                                <li>Cart</li>
+                                <li>{{ $pageName }}</li>
                             </ul>
                         </div>
                     </div>
@@ -43,10 +43,10 @@
                                     <tr>
                                         <td class="cart-product-remove">x</td>
                                         <td class="cart-product-image">
-                                            <a href="{{ route('home.product') }}"><img src="{{ asset('img/product/product-demo-2.jpg') }}" alt="#"></a>
+                                            <a href="{{ route('shop.index') }}"><img src="{{ asset('img/product/product-demo-2.jpg') }}" alt="#"></a>
                                         </td>
                                         <td class="cart-product-info">
-                                            <h4><a href="{{ route('home.product') }}">Digital Stethoscope</a></h4>
+                                            <h4><a href="{{ route('shop.index') }}">Digital Stethoscope</a></h4>
                                         </td>
                                         <td class="cart-product-price">750,000<sup>đ</sup></td>
                                         <td class="cart-product-quantity">
@@ -59,10 +59,10 @@
                                     <tr>
                                         <td class="cart-product-remove">x</td>
                                         <td class="cart-product-image">
-                                            <a href="{{ route('home.product') }}"><img src="{{ asset('img/product/product-demo-6.jpg') }}" alt="#"></a>
+                                            <a href="{{ route('shop.index') }}"><img src="{{ asset('img/product/product-demo-6.jpg') }}" alt="#"></a>
                                         </td>
                                         <td class="cart-product-info">
-                                            <h4><a href="{{ route('home.product') }}">Cosmetic Containers</a></h4>
+                                            <h4><a href="{{ route('shop.index') }}">Cosmetic Containers</a></h4>
                                         </td>
                                         <td class="cart-product-price">950,000<sup>đ</sup></td>
                                         <td class="cart-product-quantity">
@@ -75,10 +75,10 @@
                                     <tr>
                                         <td class="cart-product-remove">x</td>
                                         <td class="cart-product-image">
-                                            <a href="{{ route('home.product') }}"><img src="{{ asset('img/product/product-demo-10.jpg') }}" alt="#"></a>
+                                            <a href="{{ route('shop.index') }}"><img src="{{ asset('img/product/product-demo-10.jpg') }}" alt="#"></a>
                                         </td>
                                         <td class="cart-product-info">
-                                            <h4><a href="{{ route('home.product') }}">Antiseptic Spray</a></h4>
+                                            <h4><a href="{{ route('shop.index') }}">Antiseptic Spray</a></h4>
                                         </td>
                                         <td class="cart-product-price">650,000<sup>đ</sup></td>
                                         <td class="cart-product-quantity">
@@ -125,7 +125,7 @@
                                 </tbody>
                             </table>
                             <div class="btn-wrapper text-right">
-                                <a href="{{ route('home.checkout') }}" class="theme-btn-1 btn btn-effect-1">Proceed to checkout</a>
+                                <a href="{{ route('cart.checkout') }}" class="theme-btn-1 btn btn-effect-1">Proceed to checkout</a>
                             </div>
                         </div>
                     </div>
@@ -145,7 +145,7 @@
                             <h1>Products, services and equipment <br>  applied in the field of Molecular Biology</h1>
                         </div>
                         <div class="btn-wrapper">
-                            <a class="btn btn-effect-3 btn-white" href="{{ route('home.shop') }}">Explore Products <i class="icon-next"></i></a>
+                            <a class="btn btn-effect-3 btn-white" href="{{ route('shop.index') }}">Explore Products <i class="icon-next"></i></a>
                         </div>
                     </div>
                 </div>

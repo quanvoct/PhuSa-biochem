@@ -9,11 +9,11 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="ltn__breadcrumb-inner">
-                        <h1 class="page-title">Checkout</h1>
+                        <h1 class="page-title">{{ $pageName }}</h1>
                         <div class="ltn__breadcrumb-list">
                             <ul>
                                 <li><a href="{{ route('home.index') }}"><span class="ltn__secondary-color"><i class="fas fa-home"></i></span> Home</a></li>
-                                <li>Checkout</li>
+                                <li>{{ $pageName }}</li>
                             </ul>
                         </div>
                     </div>

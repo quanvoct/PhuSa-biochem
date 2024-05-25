@@ -89,7 +89,7 @@
                     <div class="row">
                         <div class="col">
                             <div class="site-logo">
-                                <a href="{{ route('home.index') }}"><img src="{{ asset('img/logo.svg') }}" alt="Logo"></a>
+                                <a href="{{ route('home.index') }}"><img src="{{ asset('img/logo.jpg') }}" alt="Logo"></a>
                             </div>
                         </div>
                         <div class="col header-contact-serarch-column d-none d-xl-block">
@@ -101,7 +101,7 @@
                                     </div>
                                     <div class="header-feature-info">
                                         <h6>Phone</h6>
-                                        <p><a href="tel:+84931035935">+84 931035935</a></p>
+                                        <p><a href="tel:(+84)931035935">+84 931035935</a></p>
                                     </div>
                                 </div>
                                 <!-- header-search-2 -->
@@ -159,21 +159,21 @@
                                                     <a href="#"><i class="icon-user"></i></a>
                                                     <ul>
                                                         @guest
-                                                            @if (Route::has('login'))
-                                                                <li><a class="dropdown-item" href="{{ route('login') }}">{{ __('Sign in') }}</a></li>
-                                                            @endif
-                                                            @if (Route::has('register'))
-                                                                <li><a class="dropdown-item" href="{{ route('register') }}">{{ __('Register') }}</a></li>
-                                                            @endif
+                                                        @if (Route::has('login'))
+                                                        <li><a class="dropdown-item" href="{{ route('login') }}">{{ __('Sign in') }}</a></li>
+                                                        @endif
+                                                        @if (Route::has('register'))
+                                                        <li><a class="dropdown-item" href="{{ route('register') }}">{{ __('Register') }}</a></li>
+                                                        @endif
                                                         @else
-                                                            @if(Auth::user()->can(app\Models\User::ACCESS_ADMIN))
-                                                            <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}">{{ __('Admin Dashbard') }}</a></li>
-                                                            @endif
-                                                            <li><a class="dropdown-item" href="{{ route('profile.index') }}">{{ __('My Account') }}</a></li>
-                                                            <li><a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
-                                                                    {{ __('Logout') }}
-                                                                </a>
-                                                            </li>
+                                                        @if(Auth::user()->can(app\Models\User::ACCESS_ADMIN))
+                                                        <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}">{{ __('Admin Dashbard') }}</a></li>
+                                                        @endif
+                                                        <li><a class="dropdown-item" href="{{ route('profile.index') }}">{{ __('My Account') }}</a></li>
+                                                        <li><a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                                                                {{ __('Logout') }}
+                                                            </a>
+                                                        </li>
                                                         @endguest
                                                         <form class="d-none" id="logout-form" action="{{ route('logout') }}" method="POST">
                                                             @csrf
@@ -234,22 +234,22 @@
                             <!-- CATEGORY-MENU-LIST START -->
                             <div class="ltn__category-menu-wrap ltn__category-dropdown-hide ltn__category-menu-with-header-menu">
                                 <div class="ltn__category-menu-title">
-                                    <h2 class="section-bg-1--- ltn__secondary-bg text-color-white">categories</h2>
+                                    <h2 class="section-bg-1--- ltn__secondary-bg text-color-white">{{ __('categories') }}</h2>
                                 </div>
                                 <div class="ltn__category-menu-toggle ltn__one-line-active">
                                     <ul>
                                         <!-- Submenu Column - unlimited -->
                                         <li class="ltn__category-menu-item ltn__category-menu-drop">
-                                            <a href="{{ route('shop.index') }}">All products</a>
+                                            <a href="{{ route('shop.index') }}">{{ __('All products') }}</a>
                                         </li>
                                         <li class="ltn__category-menu-item ltn__category-menu-drop">
                                             <a href="#">Oligo/Primer </a>
                                             <ul class="ltn__category-submenu ">
                                                 <li class="ltn__category-submenu-title ltn__category-menu-drop"><a href="#">Oligo/Primer</a>
                                                     <ul class="ltn__category-submenu-children">
-                                                        <li><a href="{{ route('shop.index') }}">Oligo Tubes</a></li>
-                                                        <li><a href="{{ route('shop.index') }}">Oligo Plate</a></li>
-                                                        <li><a href="{{ route('shop.index') }}">Oligo Modification</a></li>
+                                                        <li><a href="{{ route('shop.index') }}">{{ __('Oligo Tubes') }}</a></li>
+                                                        <li><a href="{{ route('shop.index') }}">{{ __('Oligo Plate') }}</a></li>
+                                                        <li><a href="{{ route('shop.index') }}">{{ __('Oligo Modification') }}</a></li>
                                                     </ul>
                                                 </li>
                                             </ul>
@@ -258,12 +258,12 @@
                                         <li class="ltn__category-menu-item ltn__category-menu-drop">
                                             <a href="#">Biology Products</a>
                                             <ul class="ltn__category-submenu">
-                                                <li class="ltn__category-submenu-title ltn__category-menu-drop"><a href="#">Biology Products</a>
+                                                <li class="ltn__category-submenu-title ltn__category-menu-drop"><a href="#">{{ __('Biology Products') }}</a>
                                                     <ul class="ltn__category-submenu-children">
-                                                        <li><a href="{{ route('shop.index') }}">PCR chemicals</a></li>
-                                                        <li><a href="{{ route('shop.index') }}">Electrophoretic chemicals</a></li>
-                                                        <li><a href="{{ route('shop.index') }}">Diagnostic biological products</a></li>
-                                                        <li><a href="{{ route('shop.index') }}">Flow-forming chemicals</a></li>
+                                                        <li><a href="{{ route('shop.index') }}">{{ __('PCR chemicals') }}</a></li>
+                                                        <li><a href="{{ route('shop.index') }}">{{ __('Electrophoretic chemicals') }}</a></li>
+                                                        <li><a href="{{ route('shop.index') }}">{{ __('Diagnostic biological products') }}</a></li>
+                                                        <li><a href="{{ route('shop.index') }}">{{ __('Flow-forming chemicals') }}</a></li>
                                                     </ul>
                                                 </li>
                                             </ul>
@@ -271,23 +271,23 @@
                                         <li class="ltn__category-menu-item ltn__category-menu-drop">
                                             <a href="#">Device</a>
                                             <ul class="ltn__category-submenu">
-                                                <li class="ltn__category-submenu-title ltn__category-menu-drop"><a href="#">Device</a>
+                                                <li class="ltn__category-submenu-title ltn__category-menu-drop"><a href="#">{{ __('Device') }}</a>
                                                     <ul class="ltn__category-submenu-children">
-                                                        <li><a href="{{ route('shop.index') }}">PCR machine</a></li>
-                                                        <li><a href="{{ route('shop.index') }}">Mobile phones</a></li>
-                                                        <li><a href="{{ route('shop.index') }}">Extraction machine</a></li>
-                                                        <li><a href="{{ route('shop.index') }}">spot check machine</a></li>
-                                                        <li><a href="{{ route('shop.index') }}">Other equipment</a></li>
+                                                        <li><a href="{{ route('shop.index') }}">{{ __('PCR machine') }}</a></li>
+                                                        <li><a href="{{ route('shop.index') }}">{{ __('Mobile phones') }}</a></li>
+                                                        <li><a href="{{ route('shop.index') }}">{{ __('Extraction machine') }}</a></li>
+                                                        <li><a href="{{ route('shop.index') }}">{{ __('spot check machine') }}</a></li>
+                                                        <li><a href="{{ route('shop.index') }}">{{ __('Other equipment') }}</a></li>
                                                     </ul>
                                                 </li>
                                             </ul>
                                         </li>
                                         <li class="ltn__category-menu-item ltn__category-menu-drop">
-                                            <a href="#">Utility package</a>
+                                            <a href="#">{{ __('Utility package') }}</a>
                                             <ul class="ltn__category-submenu">
-                                                <li class="ltn__category-submenu-title ltn__category-menu-drop"><a href="#">Utility package</a>
+                                                <li class="ltn__category-submenu-title ltn__category-menu-drop"><a href="#">{{ __('Utility package') }}</a>
                                                     <ul class="ltn__category-submenu-children">
-                                                        <li><a href="{{ route('shop.index') }}">Practice combos</a></li>
+                                                        <li><a href="{{ route('shop.index') }}">{{ __('Practice combos') }}</a></li>
                                                     </ul>
                                                 </li>
                                             </ul>
@@ -295,10 +295,10 @@
                                         <li class="ltn__category-menu-item ltn__category-menu-drop">
                                             <a href="#">Services</a>
                                             <ul class="ltn__category-submenu">
-                                                <li class="ltn__category-submenu-title ltn__category-menu-drop"><a href="#">Services</a>
+                                                <li class="ltn__category-submenu-title ltn__category-menu-drop"><a href="#">{{ __('Services') }}</a>
                                                     <ul class="ltn__category-submenu-children">
-                                                        <li><a href="{{ route('shop.index') }}">Gene synthesis</a></li>
-                                                        <li><a href="{{ route('shop.index') }}">Other services</a></li>
+                                                        <li><a href="{{ route('shop.index') }}">{{ __('Gene synthesis') }}</a></li>
+                                                        <li><a href="{{ route('shop.index') }}">{{ __('Other services') }}</a></li>
                                                     </ul>
                                                 </li>
                                             </ul>
@@ -306,13 +306,13 @@
                                         <li class="ltn__category-menu-item ltn__category-menu-drop">
                                             <a href="#">Diagnostic kit</a>
                                             <ul class="ltn__category-submenu">
-                                                <li class="ltn__category-submenu-title ltn__category-menu-drop"><a href="#">Diagnostic kit</a>
+                                                <li class="ltn__category-submenu-title ltn__category-menu-drop"><a href="#">{{ __('Diagnostic kit') }}</a>
                                                     <ul class="ltn__category-submenu-children">
-                                                        <li><a href="{{ route('shop.index') }}">Shrimp disease diagnosis kit</a></li>
-                                                        <li><a href="{{ route('shop.index') }}">Pangasius disease diagnosis kit</a></li>
-                                                        <li><a href="{{ route('shop.index') }}">Tilapia disease diagnosis kit</a></li>
-                                                        <li><a href="{{ route('shop.index') }}">GMO detection kit</a></li>
-                                                        <li><a href="{{ route('shop.index') }}">Kit detects animal DNA</a></li>
+                                                        <li><a href="{{ route('shop.index') }}">{{ __('Shrimp disease diagnosis kit') }}</a></li>
+                                                        <li><a href="{{ route('shop.index') }}">{{ __('Pangasius disease diagnosis kit') }}</a></li>
+                                                        <li><a href="{{ route('shop.index') }}">{{ __('Tilapia disease diagnosis kit') }}</a></li>
+                                                        <li><a href="{{ route('shop.index') }}">{{ __('GMO detection kit') }}</a></li>
+                                                        <li><a href="{{ route('shop.index') }}">{{ __('Kit detects animal DNA') }}</a></li>
                                                     </ul>
                                                 </li>
                                             </ul>
@@ -329,24 +329,25 @@
                                     <nav>
                                         <div class="ltn__main-menu">
                                             <ul>
-                                                <li class="{{ Request::path() == '/' ? 'active' : '' }}"><a href="{{ route('home.index') }}">Home</a></li>
-                                                <li class="{{ Request::path() == 'about' ? 'active' : '' }}"><a href="{{ route('home.index', ['page' => 'about']) }}">About</a></li>
+                                                <li class="{{ Request::path() == '/' ? 'active' : '' }}"><a href="{{ route('home.index') }}">{{ __('Home') }}</a></li>
+                                                <li class="{{ Request::path() == 'about' ? 'active' : '' }}"><a href="{{ route('home.index', ['page' => 'about']) }}">{{ __('About') }}</a></li>
                                                 <li class="{{ Request::path() == 'shop' ? 'active' : '' }}"><a href="{{ route('shop.index') }}">Shop</a></li>
-                                                <li class="menu-icon {{ Request::path() == 'posts' ? 'active' : '' }}"><a href="#">News</a>
+                                                <li class="menu-icon {{ Request::path() == 'posts' ? 'active' : '' }}"><a href="#">{{ __('News') }}</a>
                                                     <ul>
-                                                        <li><a href="{{ route('home.index', ['page' => 'code']) }}">News</a></li>
-                                                        <li><a href="{{ route('home.index', ['page' => 'code']) }}">Recruitment</a></li>
+                                                        <li><a href="{{ route('home.index', ['page' => 'posts', 'category' => 'news']) }}">{{ __('News') }}</a></li>
+                                                        <li><a href="{{ route('home.index', ['page' => 'posts', 'category' => 'promotion']) }}">{{ __('Promotion') }}</a></li>
+                                                        <li><a href="{{ route('home.index', ['page' => 'posts', 'category' => 'recruitment']) }}">{{ __('Recruitment') }}</a></li>
                                                     </ul>
                                                 </li>
-                                                <li class="menu-icon {{ Request::path() == 'post' ? 'active' : '' }}"><a href="#">Policies</a>
+                                                <li class="menu-icon {{ Request::path() == 'post' ? 'active' : '' }}"><a href="#">{{ __('Policies') }}</a>
                                                     <ul>
-                                                        <li><a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">Sales policy</a></li>
-                                                        <li><a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">Delivery & return policy</a>
+                                                        <li><a href="{{ route('home.index', ['page' => 'sales-policy']) }}">{{ __('Sales policy') }}</a></li>
+                                                        <li><a href="{{ route('home.index', ['page' => 'delivery-return-policy']) }}">{{ __('Delivery & return policy') }}</a>
                                                         </li>
-                                                        <li><a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">Payment Guide</a></li>
+                                                        <li><a href="{{ route('home.index', ['page' => 'payment-guide']) }}">{{ __('Payment Guide') }}</a></li>
                                                     </ul>
                                                 </li>
-                                                <li class="{{ Request::path() == 'contact' ? 'active' : '' }}"><a href="{{ route('home.contact') }}">Contact</a></li>
+                                                <li class="{{ Request::path() == 'contact' ? 'active' : '' }}"><a href="{{ route('home.contact') }}">{{ __('Contact') }}</a></li>
                                             </ul>
                                         </div>
                                     </nav>
@@ -356,7 +357,7 @@
                         </div>
                         <div class="col-lg-2 align-self-center d-none d-xl-block">
                             <div class="header-contact-info text-end">
-                                <a class="font-weight-6 ltn__primary-color" href="tel:+84931035935"><span class="ltn__secondary-color"><i class="icon-call font-weight-7"></i></span> +84
+                                <a class="font-weight-6 ltn__primary-color" href="tel:(+84)931035935"><span class="ltn__secondary-color"><i class="icon-call font-weight-7"></i></span> +84
                                     931035935</a>
                             </div>
                         </div>
@@ -371,7 +372,7 @@
         <div class="ltn__utilize ltn__utilize-cart-menu" id="ltn__utilize-cart-menu">
             <div class="ltn__utilize-menu-inner ltn__scrollbar">
                 <div class="ltn__utilize-menu-head">
-                    <span class="ltn__utilize-menu-title">Cart</span>
+                    <span class="ltn__utilize-menu-title">{{ __('Cart') }}</span>
                     <button class="ltn__utilize-close">×</button>
                 </div>
                 <div class="mini-cart-product-area ltn__scrollbar">
@@ -418,13 +419,13 @@
                 </div>
                 <div class="mini-cart-footer">
                     <div class="mini-cart-sub-total">
-                        <h5>Subtotal: <span>2.190.000<sup>đ</sup></span></h5>
+                        <h5>{{ __('Subtotal:') }} <span>2.190.000<sup>đ</sup></span></h5>
                     </div>
                     <div class="btn-wrapper">
-                        <a class="theme-btn-1 btn btn-effect-1" href="{{ route('cart.index') }}">View Cart</a>
-                        <a class="theme-btn-2 btn btn-effect-2" href="{{ route('cart.checkout') }}">Checkout</a>
+                        <a class="theme-btn-1 btn btn-effect-1" href="{{ route('cart.index') }}">{{ __('View Cart') }}</a>
+                        <a class="theme-btn-2 btn btn-effect-2" href="{{ route('cart.checkout') }}">{{ __('Checkout') }}</a>
                     </div>
-                    <p>Free Shipping on All Orders Over $100!</p>
+                    <p>{{ __('Free Shipping on All Orders Over ') }}1.000.000<sup>đ</sup>!</p>
                 </div>
 
             </div>
@@ -436,7 +437,7 @@
             <div class="ltn__utilize-menu-inner ltn__scrollbar">
                 <div class="ltn__utilize-menu-head">
                     <div class="site-logo">
-                        <a href="{{ route('home.index') }}"><img src="img/logo.svg" alt="Logo"></a>
+                        <a href="{{ route('home.index') }}"><img src="{{ asset('img/logo.jpg') }}" alt="Logo"></a>
                     </div>
                     <button class="ltn__utilize-close">×</button>
                 </div>
@@ -448,23 +449,23 @@
                 </div>
                 <div class="ltn__utilize-menu">
                     <ul>
-                        <li class="{{ Request::path() == '/' ? 'active' : '' }}"><a href="{{ route('home.index') }}">Home</a></li>
-                        <li class="{{ Request::path() == 'about' ? 'active' : '' }}"><a href="{{ route('home.index', ['page' => 'about']) }}">About</a></li>
+                        <li class="{{ Request::path() == '/' ? 'active' : '' }}"><a href="{{ route('home.index') }}">{{ __('Home') }}</a></li>
+                        <li class="{{ Request::path() == 'about' ? 'active' : '' }}"><a href="{{ route('home.index', ['page' => 'about']) }}">{{ __('About') }}</a></li>
                         <li class="{{ Request::path() == 'shop' ? 'active' : '' }}"><a href="{{ route('shop.index') }}">Shop</a> </li>
-                        <li class="{{ Request::path() == 'posts' ? 'active' : '' }}"><a href="#">News</a>
+                        <li class="{{ Request::path() == 'posts' ? 'active' : '' }}"><a href="#">{{ __('News') }}</a>
                             <ul class="sub-menu">
-                                <li><a href="{{ route('home.index', ['page' => 'code']) }}">News</a></li>
-                                <li><a href="{{ route('home.index', ['page' => 'code']) }}">Recruitment</a></li>
+                                <li><a href="{{ route('home.index', ['page' => 'code']) }}">{{ __('News') }}</a></li>
+                                <li><a href="{{ route('home.index', ['page' => 'code']) }}">{{ __('Recruitment') }}</a></li>
                             </ul>
                         </li>
-                        <li><a href="#">Policies</a>
+                        <li><a href="#">{{ __('Policies') }}</a>
                             <ul class="sub-menu">
-                                <li><a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">Sales policy</a></li>
-                                <li><a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">Delivery & return policy</a></li>
-                                <li><a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">Payment Guide</a></li>
+                                <li><a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">{{ __('Sales policy') }}</a></li>
+                                <li><a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">{{ __('Delivery & return policy') }}</a></li>
+                                <li><a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">{{ __('Payment Guide') }}</a></li>
                             </ul>
                         </li>
-                        <li class="{{ Request::path() == '/' ? 'contact' : '' }}"><a href="{{ route('home.contact') }}">Contact</a></li>
+                        <li class="{{ Request::path() == '/' ? 'contact' : '' }}"><a href="{{ route('home.contact') }}">{{ __('Contact') }}</a></li>
                     </ul>
                 </div>
                 <div class="ltn__utilize-buttons ltn__utilize-buttons-2">
@@ -474,7 +475,7 @@
                                 <span class="utilize-btn-icon">
                                     <i class="far fa-user"></i>
                                 </span>
-                                My Account
+                                {{ __('My Account') }}
                             </a>
                         </li>
                         <li>
@@ -483,7 +484,7 @@
                                     <i class="fas fa-shopping-cart"></i>
                                     <sup>5</sup>
                                 </span>
-                                Shoping Cart
+                                {{ __('Shoping Cart') }}
                             </a>
                         </li>
                     </ul>
@@ -513,7 +514,7 @@
                             <div class="footer-widget footer-about-widget">
                                 <div class="footer-logo">
                                     <div class="site-logo">
-                                        <img src="{{ asset('img/logo.svg') }}" alt="Logo">
+                                        <img src="{{ asset('img/logo.png') }}" alt="Logo">
                                     </div>
                                 </div>
                                 <div class="footer-address">
@@ -523,8 +524,7 @@
                                                 <i class="icon-placeholder"></i>
                                             </div>
                                             <div class="footer-address-info">
-                                                <p>Address: K1.15-16, Vo Nguyen Giap, Phu Thu ward, Cai Rang district,
-                                                    City. Can Tho. Viet Nam</p>
+                                                <p>{{ __('Address: K1.15-16, Vo Nguyen Giap st., Phu Thu w., Cai Rang dis., Cantho City, Vietnam') }}</p>
                                             </div>
                                         </li>
                                         <li>
@@ -532,7 +532,7 @@
                                                 <i class="bi bi-headset"></i>
                                             </div>
                                             <div class="footer-address-info">
-                                                <p><a href="tel:02926515678">Customer service: 02926515678</a></p>
+                                                <p><a href="tel:(+84)2926515678">{{ __('Customer service:') }} (+84)2926515678</a></p>
                                             </div>
                                         </li>
                                         <li>
@@ -540,7 +540,7 @@
                                                 <i class="icon-call"></i>
                                             </div>
                                             <div class="footer-address-info">
-                                                <p><a href="tel:+02926533888">Accounting: 02926533888</a></p>
+                                                <p><a href="tel:(+84)2926533888">{{ __('Accounting:') }} (+84)2926533888</a></p>
                                             </div>
                                         </li>
                                         <li>
@@ -548,8 +548,8 @@
                                                 <i class="icon-mail"></i>
                                             </div>
                                             <div class="footer-address-info">
-                                                <p><a href="mailto:cskh@phusagenomics.com">Email:
-                                                        cskh@phusagenomics.com</a></p>
+                                                <p><a href="mailto:cskh@phusagenomics.com">{{ __('Email:
+                                                        cskh@phusagenomics.com') }}</a></p>
                                             </div>
                                         </li>
                                         <li>
@@ -557,8 +557,7 @@
                                                 <i class="bi bi-credit-card-2-front"></i>
                                             </div>
                                             <div class="footer-address-info">
-                                                <p>Business code: 1801727039 Issued on July 8, 2022 at the City
-                                                    Department of Planning and Investment. Can Tho. Viet Nam</p>
+                                                <p>{{ __('Business code: 1801727039 Issued on July 8, 2022 at Department of Planning and Investment of Cantho city,  Vietnam') }}</p>
                                             </div>
                                         </li>
                                     </ul>
@@ -575,43 +574,43 @@
                         </div>
                         <div class="col-xl-2 col-md-6 col-sm-6 col-12">
                             <div class="footer-widget footer-menu-widget clearfix">
-                                <h4 class="footer-title">Main category</h4>
+                                <h4 class="footer-title">{{ __('Main category') }}</h4>
                                 <div class="footer-menu">
                                     <ul>
-                                        <li><a href="{{ route('home.index') }}">Home</a></li>
-                                        <li><a href="{{ route('home.index', ['page' => 'about']) }}">About</a></li>
-                                        <li><a href="{{ route('shop.index') }}">Shop</a></li>
-                                        <li><a href="{{ route('home.index', ['page' => 'code']) }}">News</a></li>
-                                        <li><a href="{{ route('home.contact') }}">Contact us</a></li>
+                                        <li><a href="{{ route('home.index') }}">{{ __('Home') }}</a></li>
+                                        <li><a href="{{ route('home.index', ['page' => 'about']) }}">{{ __('About') }}</a></li>
+                                        <li><a href="{{ route('shop.index') }}">{{ __('Shop') }}</a></li>
+                                        <li><a href="{{ route('home.index', ['page' => 'code']) }}">{{ __('News') }}</a></li>
+                                        <li><a href="{{ route('home.contact') }}">{{ __('Contact us') }}</a></li>
                                     </ul>
                                 </div>
                             </div>
                         </div>
                         <div class="col-xl-2 col-md-6 col-sm-6 col-12">
                             <div class="footer-widget footer-menu-widget clearfix">
-                                <h4 class="footer-title">Policies</h4>
+                                <h4 class="footer-title">{{ __('Policies') }}</h4>
                                 <div class="footer-menu">
                                     <ul>
-                                        <li><a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">Shopping guide</a></li>
-                                        <li><a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">Sales policy</a></li>
-                                        <li><a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">Delivery &amp; return policy</a></li>
-                                        <li><a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">Payment Guide</a></li>
-                                        <li><a href="{{ route('home.index', ['page' => 'code']) }}">Privacy Policy</a></li>
+                                        <li><a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">{{ __('Shopping guide') }}</a></li>
+                                        <li><a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">{{ __('Sales policy') }}</a></li>
+                                        <li><a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">{{ __('Delivery &amp; return policy') }}</a></li>
+                                        <li><a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">{{ __('Payment Guide') }}</a></li>
+                                        <li><a href="{{ route('home.index', ['page' => 'code']) }}">{{ __('Privacy Policy') }}</a></li>
                                     </ul>
                                 </div>
                             </div>
                         </div>
                         <div class="col-xl-2 col-md-6 col-sm-6 col-12">
                             <div class="footer-widget footer-menu-widget clearfix">
-                                <h4 class="footer-title">Product Categories</h4>
+                                <h4 class="footer-title">{{ __('Product Categories') }}</h4>
                                 <div class="footer-menu">
                                     <ul>
-                                        <li><a href="{{ route('shop.index') }}">Oligo/Primer </a></li>
-                                        <li><a href="{{ route('shop.index') }}">Biology Products</a></li>
-                                        <li><a href="{{ route('shop.index') }}">Device</a></li>
-                                        <li><a href="{{ route('shop.index') }}">Utility package</a></li>
-                                        <li><a href="{{ route('shop.index') }}">Services</a></li>
-                                        <li><a href="{{ route('shop.index') }}">Diagnostic kit</a></li>
+                                        <li><a href="{{ route('shop.index') }}">{{ __('Oligo/Primer ') }}</a></li>
+                                        <li><a href="{{ route('shop.index') }}">{{ __('Biology Products') }}</a></li>
+                                        <li><a href="{{ route('shop.index') }}">{{ __('Device') }}</a></li>
+                                        <li><a href="{{ route('shop.index') }}">{{ __('Utility package') }}</a></li>
+                                        <li><a href="{{ route('shop.index') }}">{{ __('Services') }}</a></li>
+                                        <li><a href="{{ route('shop.index') }}">{{ __('Diagnostic kit') }}</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -619,8 +618,8 @@
 
                         <div class="col-xl-3 col-md-6 col-sm-12 col-12">
                             <div class="footer-widget footer-newsletter-widget">
-                                <h4 class="footer-title">Newsletter</h4>
-                                <p>Subscribe to our weekly Newsletter and receive updates via email.</p>
+                                <h4 class="footer-title">{{ __('Newsletter') }}</h4>
+                                <p>{{ __('Subscribe to our weekly Newsletter and receive updates via email.') }}</p>
                                 <div class="footer-newsletter">
                                     <form action="#">
                                         <input name="email" type="email" placeholder="Email*">
@@ -629,8 +628,8 @@
                                         </div>
                                     </form>
                                 </div>
-                                <h5 class="mt-30">We Accept</h5>
-                                <img src="img/icons/payment-4.png" alt="Payment Image">
+                                <h5 class="mt-30">{{ __('We Accept') }}</h5>
+                                <img src="{{ asset('img/icons/payment-4.png') }}" alt="Payment Image">
                             </div>
                         </div>
                     </div>
@@ -641,16 +640,38 @@
                     <div class="row">
                         <div class="col-md-6 col-12">
                             <div class="ltn__copyright-design clearfix">
-                                <p>All Rights Reserved @ PHUSA Genomics <span class="current-year"></span></p>
+                                <p>{{ __('All Rights Reserved @ PHUSA Genomics') }} <span class="current-year"></span></p>
                             </div>
                         </div>
                         <div class="col-md-6 col-12 align-self-center">
                             <div class="ltn__copyright-menu text-end">
-                                <ul>
+                                <!-- <ul>
                                     <li><a href="#">Login</a></li>
                                     <li><a href="#">My account</a></li>
                                     <li><a href="#">Order tracking</a></li>
                                     <li><a href="#">FAQ</a></li>
+                                </ul> -->
+                                <ul>
+                                    @guest
+                                    @if (Route::has('login'))
+                                    <li><a href="{{ route('login') }}">{{ __('Sign in') }}</a></li>
+                                    @endif
+                                    @if (Route::has('register'))
+                                    <li><a href="{{ route('register') }}">{{ __('Register') }}</a></li>
+                                    @endif
+                                    @else
+                                    @if(Auth::user()->can(app\Models\User::ACCESS_ADMIN))
+                                    <li><a href="{{ route('admin.dashboard') }}">{{ __('Admin Dashbard') }}</a></li>
+                                    @endif
+                                    <li><a href="{{ route('profile.index') }}">{{ __('My Account') }}</a></li>
+                                    <li><a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                                            {{ __('Logout') }}
+                                        </a>
+                                    </li>
+                                    @endguest
+                                    <form class="d-none" id="logout-form" action="{{ route('logout') }}" method="POST">
+                                        @csrf
+                                    </form>
                                 </ul>
                             </div>
                         </div>
@@ -720,7 +741,7 @@
                                                         <li>
                                                             <a class="theme-btn-1 btn btn-effect-1" data-bs-toggle="modal" data-bs-target="#add_to_cart_modal" href="#" title="Add to Cart">
                                                                 <i class="fas fa-shopping-cart"></i>
-                                                                <span>ADD TO CART</span>
+                                                                <span>{{ __('ADD TO CART') }}</span>
                                                             </a>
                                                         </li>
                                                     </ul>
@@ -730,13 +751,13 @@
                                                         <li>
                                                             <a class="" data-bs-toggle="modal" data-bs-target="#liton_wishlist_modal" href="#" title="Wishlist">
                                                                 <i class="far fa-heart"></i>
-                                                                <span>Add to Wishlist</span>
+                                                                <span>{{ __('Add to Wishlist') }}</span>
                                                             </a>
                                                         </li>
                                                         <li>
                                                             <a class="" data-bs-toggle="modal" data-bs-target="#quick_view_modal" href="#" title="Compare">
                                                                 <i class="fas fa-exchange-alt"></i>
-                                                                <span>Compare</span>
+                                                                <span>{{ __('Compare') }}</span>
                                                             </a>
                                                         </li>
                                                     </ul>
@@ -783,20 +804,12 @@
                                             </div>
                                             <div class="modal-product-info">
                                                 <h5><a href="{{ route('shop.index', ['product' => 'slug']) }}">Digital Stethoscope</a></h5>
-                                                <p class="added-cart"><i class="fa fa-check-circle"></i> Successfully
-                                                    added to your Cart</p>
+                                                <p class="added-cart"><i class="fa fa-check-circle"></i> {{ __('Successfully
+                                                    added to your Cart') }}</p>
                                                 <div class="btn-wrapper">
-                                                    <a class="theme-btn-1 btn btn-effect-1" href="{{ route('cart.index') }}">View
-                                                        Cart</a>
-                                                    <a class="theme-btn-2 btn btn-effect-2" href="{{ route('cart.checkout') }}">Checkout</a>
-                                                </div>
-                                            </div>
-                                            <!-- additional-info -->
-                                            <div class="additional-info d-none">
-                                                <p>We want to give you <b>10% discount</b> for your first order, <br>
-                                                    Use discount code at checkout</p>
-                                                <div class="payment-method">
-                                                    <img src="{{ asset('img/icons/payment.png') }}" alt="#">
+                                                    <a class="theme-btn-1 btn btn-effect-1" href="{{ route('cart.index') }}">{{ __('View
+                                                        Cart') }}</a>
+                                                    <a class="theme-btn-2 btn btn-effect-2" href="{{ route('cart.checkout') }}">{{ __('Checkout') }}</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -830,19 +843,12 @@
                                             </div>
                                             <div class="modal-product-info">
                                                 <h5><a href="{{ route('shop.index', ['product' => 'slug']) }}">Digital Stethoscope</a></h5>
-                                                <p class="added-cart"><i class="fa fa-check-circle"></i> Successfully added to your Wishlist</p>
+                                                <p class="added-cart"><i class="fa fa-check-circle"></i> {{ __('Successfully added to your Wishlist') }}</p>
                                                 <div class="btn-wrapper">
-                                                    <a class="theme-btn-1 btn btn-effect-1" href="#">View Wishlist</a>
+                                                    <a class="theme-btn-1 btn btn-effect-1" href="#">{{ __('View Wishlist') }}</a>
                                                 </div>
                                             </div>
                                             <!-- additional-info -->
-                                            <div class="additional-info d-none">
-                                                <p>We want to give you <b>10% discount</b> for your first order, <br>
-                                                    Use discount code at checkout</p>
-                                                <div class="payment-method">
-                                                    <img src="{{ asset('img/icons/payment.png') }}" alt="#">
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
