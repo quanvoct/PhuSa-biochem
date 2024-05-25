@@ -18,7 +18,10 @@ class CreateDeliveriesTable extends Migration
             $table->unsignedBigInteger('order_id');
             $table->text('name');
             $table->text('address');
-            $table->unsignedBigInteger('local_id')->nullable();
+            $table->string('country', 191)->nullable();
+            $table->string('city', 191)->nullable();
+            $table->string('district', 191)->nullable();
+            $table->string('zip', 191)->nullable();
             $table->string('phone');
             $table->string('email');
             $table->string('bol_no')->nullable();
@@ -31,9 +34,6 @@ class CreateDeliveriesTable extends Migration
 
             // Tạo khóa ngoại tới bảng 'orders'
             $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
-
-            // Tạo khóa ngoại tới bảng 'locals'
-            $table->foreign('local_id')->references('id')->on('locals')->onDelete('set null');
 
             // Tạo khóa ngoại tới bảng 'deliveries'
             $table->foreign('revision')->references('id')->on('deliveries')->onDelete('cascade');

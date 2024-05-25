@@ -20,7 +20,7 @@ class CreateCataloguesTable extends Migration
             $table->text('slug');
             $table->longText('description')->nullable();
             $table->string('image')->nullable();
-            $table->unsignedInteger('order');
+            $table->unsignedInteger('sort');
             $table->tinyInteger('status')->default(1)->comment('0: block, 1: active');
             $table->unsignedBigInteger('parent_id')->nullable();
             $table->unsignedBigInteger('revision')->nullable();

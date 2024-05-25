@@ -17,13 +17,12 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->index();
             $table->string('phone')->nullable();
-            $table->string('address')->nullable();
-            $table->unsignedBigInteger('local_id')->nullable();
             $table->date('birthday')->nullable();
-            $table->unsignedTinyInteger('gender')->nullable();
-            $table->string('tax_name', 191)->nullable();
-            $table->string('tax_add', 191)->nullable();
-            $table->string('tax_id', 191)->nullable();
+            $table->unsignedTinyInteger('gender')->default(0);
+            $table->string('address')->nullable();
+            $table->string('country', 191)->nullable();
+            $table->string('city', 191)->nullable();
+            $table->string('zip', 191)->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('image', 191)->nullable();
@@ -33,9 +32,6 @@ return new class extends Migration
             $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();
-
-            // Tạo khóa ngoại tới bảng 'locals'
-            $table->foreign('local_id')->references('id')->on('locals')->onDelete('set null');
         });
     }
 

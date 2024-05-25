@@ -37,7 +37,7 @@
                             </div>
                             <div class="user-img d-flex align-items-center">
                                 <div class="avatar avatar-md">
-                                    <img src="{{ Auth::user()->avatarUrl }}">
+                                    <img src="{{ Auth::user()->imageUrl }}">
                                 </div>
                             </div>
                         </div>

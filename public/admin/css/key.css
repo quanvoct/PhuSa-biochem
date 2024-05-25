@@ -21,13 +21,22 @@ a .h1,
     color: #000000;
 }
 
+.object-fit-cover {
+    object-fit: cover !important;
+}
+
+.object-fit-contain {
+    object-fit: contain !important;
+}
+
 .loading {
     position: fixed;
-    top: 0; left: 0;
-    z-index: 1;
+    top: 0;
+    left: 0;
+    z-index: 2;
     width: 100vw;
     height: 100vh;
-    background: hsla(24, 29%, 50%, .25);
+    background: hsl(196.62deg 29% 50% / 25%);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -122,18 +131,195 @@ a .h1,
     opacity: 1 !important;
 }
 
+/* select-image: chọn hình ảnh avatar */
+label {
+    position: relative;
+    cursor: pointer;
+}
+
+label.select-avatar:hover {
+    opacity: 0.5;
+    transition: all .2s;
+}
+
+label.select-image::before {
+    content: 'Chọn ảnh chính';
+    position: absolute;
+    width: 90%;
+    height: 90%;
+    display: flex;
+    z-index: 1;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.5);
+    margin: 5%;
+    opacity: 0;
+    border-radius: 1rem;
+    transition: all .2s;
+}
+
+label.select-image:hover::before {
+    color: #fff;
+    opacity: 1;
+}
+
+/* Gallery */
+.row.gallery {
+    width: 100%;
+    min-height: 12rem;
+    margin: 0;
+    border: 1px solid #dce7f1;
+    border-radius: .25rem;
+}
+
+.card.add-gallery {
+    border-radius: 1.25rem;
+    border: 2px dashed var(--primary);
+    opacity: .5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.card.add-gallery:hover {
+    border-radius: 1.25rem;
+    border: 2px dashed var(--primary);
+    opacity: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.card.add-gallery .bi {
+    top: 50%;
+    left: 50%;
+    transform: translate(calc(-2em), calc(-2em));
+}
+
+.card.add-gallery .bi::before {
+    font-size: 4em;
+}
+/* End gallery */
+
+.btn .bi::before {
+    line-height: 1.5rem;
+}
+
 .dataTables_filter {
     text-align: right;
 }
 
-#data-table_filter {
-    display: inline-block;
-}
-
 .dataTables_wrapper {
     position: relative;
-    /* display: flex;
-    justify-content: center; */
+}
+
+tr:not([class]):hover>td {
+    background: var(--white);
+}
+
+.table tr:not([class])>td {
+    padding: 0;
+}
+
+.table .dt-hasChild .dt-control.sorting_1 i::before {
+    transform: rotate(90deg);
+}
+
+.table-responsive .table {
+    min-width: 75rem !important;
+}
+
+/* Upload multi images */
+#quick_images-modal .dataTable-table {
+    width: 100% !important;
+}
+
+#quick_images-table_wrapper .row:first-child {
+    margin-bottom: 1.5rem;
+}
+
+#quick_images-dropzone {
+    position: absolute;
+    z-index: 1;
+    background-color: hsla(0, 0%, 100%, 0.5);
+    width: 96%;
+    height: 15rem;
+    border-radius: 10px;
+    border: 1px dashed hsl(0, 0%, 0%);
+    margin: 55px auto;
+    padding: 4rem;
+    text-align: center;
+    cursor: pointer;
+    display: none;
+}
+
+#quick_images-dropzone i {
+    display: inline-block;
+    margin-left: -70px;
+    font-size: 70px;
+    color: var(--bs-secondary);
+    opacity: 0.2;
+}
+
+#quick_images-dropzone span {
+    font-weight: 600;
+    display: block;
+}
+
+#quick_images-dropzone input[type="file"] {
+    display: none;
+}
+
+#image-form .card .card-img {
+    object-position: center;
+}
+
+.quick_images-choice:checked~.choice-label,
+.choice:checked~.choice-label {
+    box-shadow: 0 0 0 0.25rem var(--bs-primary);
+    border-radius: .5rem;
+}
+
+.card-image .card-title {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.card-image .btn-close {
+    position: absolute;
+    z-index: 1;
+    top: .45rem;
+    right: .45rem;
+    padding: .5rem;
+    display: none;
+    border-radius: 50%;
+    background-color: hsl(0, 0%, 100%);
+}
+
+.card-image .btn-edit-image {
+    visibility: hidden;
+}
+
+.card-image:hover .btn-close,
+.card-image:hover .btn-edit-image {
+    display: block;
+    visibility: visible;
+}
+
+/* END upload multi images */
+
+.paging_simple_numbers {
+    display: flex;
+    justify-content: end;
+}
+
+#data-table_filter {
+    display: inline-block;
 }
 
 .dataTables_wrapper .dataTables_filter {

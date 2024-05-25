@@ -14,10 +14,11 @@ class Product extends Model
 {
     use HasFactory, SoftDeletes;
     protected $table = 'products';
+    protected $appends = array('imageUrl', 'imagesUrl', 'statusStr');
     protected $fillable = [
         'name', 'sku', 'slug', 'author_id', 'excerpt', 'description',
-        'image', 'images', 'order', 'stock', 'unit', 'specs',
-        'keyword', 'status', 'allow_review', 'upsales', 'revision'
+        'gallery', 'sort', 'unit', 'specs',
+        'keyword', 'status', 'allow_review', 'revision'
     ];
 
     public function catalogues()
@@ -79,7 +80,7 @@ class Product extends Model
         return ($this->created_at) ? Carbon::parse($this->created_at)->format('H:i:s') : '';
     }
 
-    public function statusName()
+    public function getStatusStrAttribute()
     {
         switch ($this->status) {
             case '2':
@@ -111,46 +112,47 @@ class Product extends Model
         return $upsales;
     }
 
-    public function imagesUrl()
+    public function getImagesUrlAttribute()
     {
-        $images = explode('|', $this->images);
-        foreach ($images as $key => $image) {
+        $gallery = explode('|', $this->gallery);
+        foreach ($gallery as $key => $image) {
             $path = 'public/' . $image;
             if (Image::where('name', $image)->first() && Storage::exists($path)) {
-                $images[$key] = asset(env('FILE_STORAGE', '/storage') . '/' . $image);
+                $gallery[$key] = asset(env('FILE_STORAGE', '/storage') . '/' . $image);
             } else {
-                $images[$key] = asset('/images/placeholder.jpg');
+                $gallery[$key] = asset('/images/placeholder.webp');
             }
         }
-        array_shift($images);
-        return $images;
+        array_shift($gallery);
+        return $gallery;
     }
 
-    public function imageUrl()
+    public function getImageUrlAttribute()
     {
-        $path = 'public/' . $this->image;
-        if (Image::where('name', $this->image)->count() && Storage::exists($path)) {
-            $image = asset(env('FILE_STORAGE', '/storage') . '/' . $this->image);
+        $images = explode(',', $this->gallery);
+        $path = 'public/' . $images[0];
+        if (Image::where('name', $images[0])->count() && Storage::exists($path)) {
+            $image = asset(env('FILE_STORAGE', '/storage') . '/' . $images[0]);
         } else {
-            $image = asset('/images/placeholder.jpg');
+            $image = asset('admin/images/placeholder.webp');
         }
         return $image;
     }
 
-    public function assignCatalog($catalog)
+    public function assignCatalogue($catalogue)
     {
-        $result = DB::table('catalog_product')->insert([
+        $result = DB::table('catalogue_product')->insert([
             'product_id' => $this->id,
-            'catalog_id' => $catalog
+            'catalogue_id' => $catalogue
         ]);
         return $result;
     }
 
-    public function syncCatalogs($catalogs) {
-        $delete = DB::table('catalog_product')->where('product_id', $this->id)->delete();
-        if($delete) {
-            foreach ($catalogs as $key => $catalog) {
-                $this->assignCatalog($catalog);
+    public function syncCatalogues($catalogues) {
+        $delete = DB::table('catalogue_product')->where('product_id', $this->id)->delete();
+        if($delete || !$this->catalogues->count()) {
+            foreach ($catalogues as $key => $catalogue) {
+                $this->assignCatalogue($catalogue);
             }
             return true;
         } else {
@@ -158,19 +160,19 @@ class Product extends Model
         }
     }
     
-    public function catalogsName() {
-        $catalogs = [];
-        foreach ($this->catalogs->pluck('name', 'slug') as $slug => $name) {
-            $text = '<a href="' . route('catalog.index', ['cata' => $slug]) . '">' . $name . '</a>';
-            array_push($catalogs, $text);
+    public function cataloguesName() {
+        $catalogues = [];
+        foreach ($this->catalogues->pluck('name', 'slug') as $slug => $name) {
+            $text = '<a href="' . route('admin.catalogue', ['cata' => $slug]) . '">' . $name . '</a>';
+            array_push($catalogues, $text);
         }
-        return implode(', ', $catalogs);
+        return implode(', ', $catalogues);
     }
     
     public function relatedProducts() {
         $relatedProducts = [];
-        foreach ($this->catalogs as $key => $catalog) {
-            foreach ($catalog->products as $key => $product) {
+        foreach ($this->catalogues as $key => $catalogue) {
+            foreach ($catalogue->products as $key => $product) {
                 if($product->id != $this->id && !in_array($product->id, array_column($relatedProducts, 'id'))) {
                     array_push($relatedProducts, $product);
                 }
@@ -198,5 +200,13 @@ class Product extends Model
 
     public function salePrice() {
         return number_format($this->variables->min('price')) . '₫';
+    }
+
+    public function canRemove()
+    {
+        if (!$this->variables->count()) {
+            return true;
+        }
+        return false;
     }
 }

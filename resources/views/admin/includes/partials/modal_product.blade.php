@@ -22,7 +22,7 @@
                                     </div>
                                     <div class="mb-3">
                                         <label for="product-name">Danh mục</label>
-                                        <select class="form-select" id="product-catalogue_id" name="catalogue_id[]" data-placeholder="Chọn một danh mục" size="1" required autocomplete="off" multiple>
+                                        <select class="form-select select2" id="product-catalogue_id" name="catalogue_id[]" data-placeholder="Chọn một danh mục" size="1" required autocomplete="off" multiple>
                                         </select>
                                     </div>
                                     <div class="mb-3">

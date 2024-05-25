@@ -21,15 +21,13 @@ class CreateProductsTable extends Migration
             $table->unsignedBigInteger('author_id')->nullable()->default(1);
             $table->text('excerpt')->nullable();
             $table->longText('description')->nullable();
-            $table->string('image', 191)->nullable();
-            $table->text('images')->nullable();
-            $table->unsignedInteger('order');
+            $table->text('gallery')->nullable();
+            $table->unsignedInteger('sort');
             $table->string('unit', 191)->nullable();
             $table->text('specs')->nullable();
             $table->string('keyword', 191)->nullable();
-            $table->tinyInteger('status')->default(2)->comment('0: block, 1: active');
+            $table->tinyInteger('status')->default(2)->comment('0: block, 1: active, 2: featured');
             $table->tinyInteger('allow_review')->nullable();
-            $table->string('upsales', 191)->nullable();
             $table->unsignedBigInteger('revision')->nullable();
             $table->softDeletes(); 
             $table->timestamps();

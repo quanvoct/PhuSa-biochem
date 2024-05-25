@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Catalogue;
 use App\Models\Customer;
+use App\Models\Detail;
 use App\Models\Export;
 use App\Models\ExportDetail;
 use App\Models\Import;
@@ -49,7 +50,6 @@ class LogController extends Controller
     public function index()
     {
         $pageName = 'Nhật ký hệ thống';
-        $options = Controller::options();
         return view('log', compact('pageName', 'options'));
     }
     public function load(Request $request)
@@ -59,160 +59,94 @@ class LogController extends Controller
             ->editColumn('user_id', function ($obj) {
                 return $obj->user->name;
             })
-            ->editColumn('object', function ($obj) {
+            ->editColumn('type', function ($obj) {
                 $name = '';
-                switch ($obj->object) {
+                switch ($obj->type) {
                     case 'đơn hàng':
-                        $object = Order::withTrashed()->find($obj->object_id);
+                        $type = Order::withTrashed()->find($obj->object);
                         if (!empty(Auth::user()->can(User::READ_ORDER))) {
-                            $name = '<a class="cursor-pointer btn-update-order" data-id="' . $object->id . '">' . $object->id . '</a>';
+                            $name = '<a class="cursor-pointer btn-update-order" data-id="' . $type->id . '">' . $type->id . '</a>';
                         } else {
-                            $name = $object->id;
+                            $name = $type->id;
                         }
                         break;
                     case 'giao dịch':
-                        $object = Transaction::withTrashed()->find($obj->object_id);
+                        $type = Transaction::withTrashed()->find($obj->object);
                         if (!empty(Auth::user()->can(User::READ_TRANSACTION))) {
-                            $name = '<a class="cursor-pointer btn-update-transaction" data-id="' . $object->id . '">' . $object->id . '</a>';
+                            $name = '<a class="cursor-pointer btn-update-transaction" data-id="' . $type->id . '">' . $type->id . '</a>';
                         } else {
-                            $name = $object->id;
-                        }
-                        break;
-                    case 'khách hàng':
-                        $object = Customer::withTrashed()->find($obj->object_id);
-                        if (!empty(Auth::user()->can(User::READ_CUSTOMER))) {
-                            $name = '<a class="cursor-pointer btn-update-order" data-id="' . $object->id . '">' . $object->name . '</a>';
-                        } else {
-                            $name = $object->name;
+                            $name = $type->id;
                         }
                         break;
                     case 'sản phẩm':
-                        $object = Product::withTrashed()->find($obj->object_id);
+                        $type = Product::withTrashed()->find($obj->object);
                         if (!empty(Auth::user()->can(User::READ_PRODUCT))) {
-                            $name = '<a class="cursor-pointer btn-update-product" data-id="' . $object->id . '">' . $object->name . '</a>';
+                            $name = '<a class="cursor-pointer btn-update-product" data-id="' . $type->id . '">' . $type->name . '</a>';
                         } else {
-                            $name = $object->name;
+                            $name = $type->name;
                         }
                         break;
                     case 'biến thể':
-                        $object = Variable::withTrashed()->find($obj->object_id);
+                        $type = Variable::withTrashed()->find($obj->object);
                         if (!empty(Auth::user()->can(User::READ_PRODUCT))) {
-                            $name = '<a class="cursor-pointer btn-update-product" data-id="' . $object->_product->id . '">' . $object->name . '</a>';
+                            $name = '<a class="cursor-pointer btn-update-product" data-id="' . $type->_product->id . '">' . $type->name . '</a>';
                         } else {
-                            $name = $object->name;
+                            $name = $type->name;
                         }
                         break;
                     case 'danh mục':
-                        $object = Catalogue::withTrashed()->find($obj->object_id);
+                        $type = Catalogue::withTrashed()->find($obj->object);
                         if (!empty(Auth::user()->can(User::READ_CATALOGUE))) {
-                            $name = '<a class="cursor-pointer btn-update-catalogue" data-id="' . $object->id . '">' . $object->name . '</a>';
+                            $name = '<a class="cursor-pointer btn-update-catalogue" data-id="' . $type->id . '">' . $type->name . '</a>';
                         } else {
-                            $name = $object->name;
-                        }
-                        break;
-                    case 'nhà cung cấp':
-                        $object = Supplier::withTrashed()->find($obj->object_id);
-                        if (!empty(Auth::user()->can(User::READ_SUPPLIER))) {
-                            $name = '<a class="cursor-pointer btn-update-supplier" data-id="' . $object->id . '">' . $object->name . '</a>';
-                        } else {
-                            $name = $object->name;
-                        }
-                        break;
-                    case 'tồn kho':
-                        $stock = Stock::withTrashed()->find($obj->object_id);
-                        $object = $stock->quantity . ' ' . $stock->_variable->unit . ' ' . $stock->_variable->_product->name . ' - ' . $stock->_variable->name;
-                        if (!empty(Auth::user()->can(User::READ_STOCK))) {
-                            $name = '<a class="cursor-pointer btn-update-stock" data-id="' . $stock->id . '">' . $object . '</a>';
-                        } else {
-                            $name = $stock->id;
-                        }
-                        break;
-                    case 'chi tiết xuất hàng':
-                        $detail = ExportDetail::withTrashed()->find($obj->object_id);
-                        $object = $detail->quantity . ' ' . $detail->_stock->_variable->unit . ' ' . $detail->_stock->_variable->_product->name . ' - ' . $detail->_stock->_variable->name;
-                        if (!empty(Auth::user()->can(User::READ_EXPORT))) {
-                            $name = '<a class="cursor-pointer btn-update-export" data-id="' . $detail->_export->id . '">' . $object . '</a>';
-                        } else {
-                            $name = $detail->id;
+                            $name = $type->name;
                         }
                         break;
                     case 'chi tiết đơn hàng':
-                        $detail = OrderDetail::withTrashed()->find($obj->object_id);
-                        $object = $detail->quantity . ' ' . $detail->_stock->_variable->unit . ' ' . $detail->_stock->_variable->_product->name . ' - ' . $detail->_stock->_variable->name;
+                        $detail = Detail::withTrashed()->find($obj->object);
+                        $type = $detail->quantity . ' ' . $detail->_stock->_variable->unit . ' ' . $detail->_stock->_variable->_product->name . ' - ' . $detail->_stock->_variable->name;
                         if (!empty(Auth::user()->can(User::READ_ORDER))) {
-                            $name = '<a class="cursor-pointer btn-update-order" data-id="' . $detail->_order->id . '">' . $object . '</a>';
+                            $name = '<a class="cursor-pointer btn-update-order" data-id="' . $detail->_order->id . '">' . $type . '</a>';
                         } else {
                             $name = $detail->id;
                         }
                         break;
-                    case 'nhập hàng':
-                        $object = Import::withTrashed()->find($obj->object_id);
-                        if (!empty(Auth::user()->can(User::READ_IMPORT))) {
-                            $name = '<a class="cursor-pointer btn-update-import" data-id="' . $object->id . '">' . $object->id . '</a>';
-                        } else {
-                            $name = $object->id;
-                        }
-                        break;
-                    case 'xuất hàng':
-                        $object = Export::withTrashed()->find($obj->object_id);
-                        if (!empty(Auth::user()->can(User::READ_EXPORT))) {
-                            $name = '<a class="cursor-pointer btn-update-export" data-id="' . $object->id . '">' . $object->id . '</a>';
-                        } else {
-                            $name = $object->id;
-                        }
-                        break;
-                    case 'kho hàng':
-                        $object = Warehouse::withTrashed()->find($obj->object_id);
-                        if (!empty(Auth::user()->can(User::READ_WAREHOUSE))) {
-                            $name = '<a class="cursor-pointer btn-update-warehouse" data-id="' . $object->id . '">' . $object->name . '</a>';
-                        } else {
-                            $name = $object->name;
-                        }
-                        break;
-                    case 'xuất xứ':
-                        $object = Origin::withTrashed()->find($obj->object_id);
-                        if (!empty(Auth::user()->can(User::READ_ORDER))) {
-                            $name = '<a class="cursor-pointer btn-update-origin" data-id="' . $object->id . '">' . $object->name . '</a>';
-                        } else {
-                            $name = $object->name;
-                        }
-                        break;
                     case 'tài khoản':
-                        $object = User::withTrashed()->find($obj->object_id);
+                        $type = User::withTrashed()->find($obj->object);
                         if (!empty(Auth::user()->can(User::READ_ORDER))) {
-                            $name = '<a class="cursor-pointer btn-update-user" data-id="' . $object->id . '">' . $object->name . '</a>';
+                            $name = '<a class="cursor-pointer btn-update-user" data-id="' . $type->id . '">' . $type->name . '</a>';
                         } else {
-                            $name = $object->name;
+                            $name = $type->name;
                         }
                         break;
                     case 'nhóm quyền':
-                        if (Role::find($obj->object_id)) {
-                            $object = Role::find($obj->object_id)->name;
+                        if (Role::find($obj->object)) {
+                            $type = Role::find($obj->object)->name;
                         } else {
-                            $object = $obj->object_id;
+                            $type = $obj->object;
                         }
                         break;
                     case 'cài đặt':
-                        $object = Setting::withTrashed()->find($obj->object_id)->key;
+                        $type = Setting::withTrashed()->find($obj->object)->key;
                         break;
                     case 'nhật ký':
-                        $object = Log::withTrashed()->find($obj->object_id)->id;
+                        $type = Log::withTrashed()->find($obj->object)->id;
                         break;
 
                     default:
                         $name = 'Không xác định';
                         break;
                 }
-                return $obj->object . ' ' . $name;
+                return $obj->type . ' ' . $name;
             })
             ->editColumn('location', function ($obj) {
                 return $obj->location . ', ' . $obj->country;
             })
-            ->rawColumns(['action', 'object'])
+            ->rawColumns(['action', 'type'])
             ->make(true);
     }
 
-    public static function create(string $action, string $object, int $object_id)
+    public static function create(string $action, string $type, int $object)
     {
         $agent = new Agent();
         $ip = Session::get('ip');
@@ -220,8 +154,8 @@ class LogController extends Controller
         $product = new log([
             "user_id" => Auth::User()->id,
             'action' => $action,
+            'type' => $type,
             'object' => $object,
-            'object_id' => $object_id,
             'browser' => $agent->browser() . ' ' . $agent->version($agent->browser()),
             'platform' => $agent->platform() . ' ' . $agent->version($agent->platform()),
             'device' => $agent->device(),

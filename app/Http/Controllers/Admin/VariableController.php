@@ -19,21 +19,21 @@ class VariableController extends Controller
         'sub_sku' => ['required', 'min: 3', 'max:125'],
         'name' => ['required', 'min: 3', 'max:125'],
         'product_id' => ['required'],
-        'unit' => ['required', 'string'],
-        'origin_id' => ['required', 'numeric'],
+        'description' => ['required', 'string'],
+        'price' => ['required', 'numeric'],
     ];
     const MESSAGES = [
-        'sub_sku.required' => 'Thông tin này không thể trống.',
-        'sub_sku.min' => 'Tối thiểu 3 kí tự trở lên.',
-        'sub_sku.max' => 'Tối đa 125 kí tự.',
-        'name.required' => 'Thông tin này không thể trống.',
-        'name.min' => 'Tối thiểu 3 kí tự trở lên.',
-        'name.max' => 'Tối đa 125 kí tự.',
-        'product_id.required' => 'Thông tin này không thể trống.',
-        'unit.required' => 'Thông tin này không thể trống.',
-        'unit.string' => 'Dữ liệu không hợp lệ',
-        'origin_id.required' => 'Thông tin này không thể trống.',
-        'origin_id.numeric' => 'Dữ liệu không hợp lệ',
+        'sub_sku.required' => Controller::VALIDATE['required'],
+        'sub_sku.min' => Controller::VALIDATE['min2'],
+        'sub_sku.max' => Controller::VALIDATE['max191'],
+        'name.required' => Controller::VALIDATE['required'],
+        'name.min' => Controller::VALIDATE['min2'],
+        'name.max' => Controller::VALIDATE['max191'],
+        'product_id.required' => Controller::VALIDATE['required'],
+        'description.required' => Controller::VALIDATE['required'],
+        'description.string' => Controller::VALIDATE['invalid'],
+        'price.required' => Controller::VALIDATE['required'],
+        'price.numeric' => Controller::VALIDATE['invalid'],
     ];
     /**
      * Create a new controller instance.
@@ -51,90 +51,84 @@ class VariableController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
-        $pageName = 'Quản lý biến thể';
-        $options =  Controller::options();
-        return view('variable', compact('pageName', 'options'));
-    }
-
-    public function load(Request $request)
-    {
-        $variables = Variable::all();
-        return DataTables::of($variables)
-            ->addColumn('checkbox', function ($obj) {
-                return '<input class="form-check-input choice" type="checkbox" name="choices[]" value="' . $obj->id . '">';
-            })
-            ->editColumn('name', function ($obj) {
-                return '<a class="btn btn-link text-decoration-none text-start btn-update-variable" data-id="' . $obj->id . '">' . $obj->name . '</a>';
-            })
-            ->addColumn('action', function ($obj) {
-                return '
-                    <form method="post" action="' . route('variable.remove') . '" class="save-form">
-                        <input type="hidden" name="choices[]" value="' . $obj->id . '"/>
-                        <button type="submit" class="btn btn-link text-decoration-none btn-remove cursor-pointer">
-                            <i class="bi bi-trash"></i>
-                        </button>
-                    </form>';
-            })
-            ->editColumn('product_id', function ($obj) {
-                return '<span>' . Product::find($obj->product_id)->name . '</span>';
-            })
-            ->rawColumns(['checkbox', 'name', 'action', 'product_id'])
-            ->make(true);
-    }
-
-    public function get(Request $request)
-    {
-        $objs = Variable::query();
-        switch ($request->id) {
-            case 'list':
-                $result = $objs->orderBy('sort', 'ASC')->get();
-                break;
-            case 'find':
-                $result = $objs
-                    ->where('name', 'LIKE', '%' . $request->q . '%')
-                    ->orWhere('sub_sku', 'LIKE', '%' . $request->q . '%')
-                    ->orWhereHas('_product', function ($query) use ($request) {
-                        $query
-                            ->where('name', 'LIKE', '%' . $request->q . '%')
-                            ->orWhere('sku', 'LIKE', '%' . $request->q . '%');
-                    })
-                    ->orderByDesc('id')
-                    ->get()
-                    ->map(function ($obj) {
-                        return [
-                            'id' => $obj->id,
-                            'text' => $obj->_product->sku . $obj->sub_sku . ' - ' . $obj->_product->name . ' - ' . $obj->name
-                        ];
-                    })->push([
-                        'id' => 0,
-                        'text' => 'Thêm sản phẩm mới'
-                    ]);
-                break;
-            default:
-                $obj = $objs->with('_product')->find($request->id);
-                if ($obj) {
-                    if(isset($request->supplier_id) && is_numeric($request->supplier_id)) {
-                        $lastestStockOfVariable = Stock::where('variable_id', $obj->id)
-                        ->whereHas('import', function($query) use ($request) {
-                            $query->where('supplier_id', $request->supplier_id);
-                        })->orderBy('created_at', 'DESC')->first();
-                        if($lastestStockOfVariable) {
-                            $obj->price = $lastestStockOfVariable->price;
-                        } else {
-                            $obj->price = 0;
-                        }
+        if ($request->key) {
+            $objs = Variable::query();
+            switch ($request->key) {
+                case 'list':
+                    $result = $objs->orderBy('sort', 'ASC')->get();
+                    break;
+                case 'find':
+                    $result = $objs
+                        ->where('name', 'LIKE', '%' . $request->q . '%')
+                        ->orWhere('sub_sku', 'LIKE', '%' . $request->q . '%')
+                        ->orWhereHas('_product', function ($query) use ($request) {
+                            $query
+                                ->where('name', 'LIKE', '%' . $request->q . '%')
+                                ->orWhere('sku', 'LIKE', '%' . $request->q . '%');
+                        })
+                        ->orderByDesc('id')
+                        ->get()
+                        ->map(function ($obj) {
+                            return [
+                                'id' => $obj->id,
+                                'text' => $obj->_product->sku . $obj->sub_sku . ' - ' . $obj->_product->name . ' - ' . $obj->name
+                            ];
+                        })->push([
+                            'id' => 0,
+                            'text' => 'Thêm sản phẩm mới'
+                        ]);
+                    break;
+                default:
+                    $obj = $objs->with('product')->find($request->key);
+                    if ($obj) {
+                        $result = $obj;
                     } else {
-                        $obj->price = 0;
+                        abort(404);
                     }
-                    $result = $obj;
-                } else {
-                    abort(404);
+                    break;
+            }
+            return response()->json($result, 200);
+        } else {
+            if ($request->ajax()) {
+                $objs = Variable::when(isset($request->product_id), function ($query) use ($request) {
+                    $query->where('product_id', $request->product_id);
+                })->get();
+                if ($objs) {
+                    return DataTables::of($objs)
+                        ->editColumn('sub_sku', function ($obj) {
+                            if (Auth::user()->can(User::UPDATE_VARIABLE)) {
+                                return '<a class="btn btn-update-variable text-info fw-bold" data-id="' . $obj->id . '">' . $obj->sub_sku . '</a>';
+                            }
+                            return '<span class="fw-bold">' . $obj->code . '</span>';
+                        })
+                        ->editColumn('price', function ($obj) {
+                            return '<span>' . number_format($obj->price) . '</span>';
+                        })
+                        ->editColumn('status', function ($obj) {
+                            return '<span class="badge bg-' . ($obj->status ? 'success' : 'danger') . '">' . $obj->statusStr . '</span>';
+                        })
+                        ->addColumn('action', function ($obj) {
+                            if (!empty(Auth::user()->can(User::DELETE_VARIABLE))) {
+                                return '
+                                    <form action="' . route('admin.variable.remove') . '" method="post" class="save-form">
+                                        <input type="hidden" name="_token" value="' . csrf_token() . '"/>
+                                        <input type="hidden" name="choice" value="' . $obj->id . '" data-id="'  . $obj->id . '"/>
+                                        <button class="btn btn-link text-decoration-none btn-remove">
+                                            <i class="bi bi-trash3"></i>
+                                        </button>
+                                    </form>';
+                            }
+                        })
+                        ->rawColumns(['checkboxes', 'sub_sku', 'price', 'status', 'action'])
+                        ->make(true);
                 }
-                break;
+            } else {
+                $pageName = 'Quản lý biến thể';
+                return view('variable', compact('pageName', 'options'));
+            }
         }
-        return response()->json($result, 200);
     }
 
     public function create(Request $request)
@@ -144,15 +138,21 @@ class VariableController extends Controller
         $variable = $this->sync([
             'sub_sku' => $request->sub_sku,
             'name' => $request->name,
-            'unit' => $request->unit,
+            'image' => $request->image,
+            'length' => $request->length,
+            'width' => $request->width,
+            'height' => $request->height,
+            'weight' => $request->weight,
+            'price' => $request->price,
+            'description' => $request->description,
             'product_id' => $request->product_id,
-            'origin_id' => $request->origin_id,
+            'status' => $request->has('status'),
         ]);
-
-        return response()->json([
+        $response = [
             'status' => 'success',
-            'msg' => 'Đã tạo biến thể ' . $variable->name
-        ], 200);
+            'msg' => 'Đã cập nhật biến thể ' . $variable->name
+        ];
+        return response()->json($response, 200);
     }
 
 
@@ -160,24 +160,31 @@ class VariableController extends Controller
     {
         $request->validate(self::RULES, self::MESSAGES);
 
-        if ($request->has('id')) {
+        if ($request->id) {
             $variable = $this->sync([
                 'sub_sku' => $request->sub_sku,
                 'name' => $request->name,
-                'unit' => $request->unit,
+                'image' => $request->image,
+                'length' => $request->length,
+                'width' => $request->width,
+                'height' => $request->height,
+                'weight' => $request->weight,
+                'price' => $request->price,
+                'description' => $request->description,
                 'product_id' => $request->product_id,
-                'origin_id' => $request->origin_id,
+                'status' => $request->has('status'),
             ], $request->id);
-            return response()->json([
+            $response = [
                 'status' => 'success',
                 'msg' => 'Đã cập nhật biến thể ' . $variable->name
-            ], 200);
+            ];
         } else {
-            $response = array(
+            $response = [
                 'status' => 'error',
                 'msg' => 'Đã có lỗi xảy ra, vui lòng tải lại trang và thử lại!'
-            );
+            ];
         }
+        return response()->json($response, 200);
     }
 
     public function remove(Request $request)

@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Place favicon.png in the root directory -->
-    <link type="image/x-icon" href="{{ asset('img/favicon.svg') }}" rel="shortcut icon" />
+    <link type="image/x-icon" href="{{ asset('img/favicon.png') }}" rel="shortcut icon" />
     <!-- Font Icons css -->
     <link href="{{ asset('css/font-icons.css') }}" rel="stylesheet">
     <link href="{{ asset('css/bootstrap-icons-1.11.1/bootstrap-icons.css') }}" rel="stylesheet">

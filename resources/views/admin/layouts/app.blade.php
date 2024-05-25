@@ -40,6 +40,8 @@
     <link href="{{ asset('admin/vendors/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet">
     {{-- Print JS --}}
     <link href="{{ asset('admin/vendors/print/print.min.css') }}" rel="stylesheet">
+    <!-- Include Summernote Editor -->
+    <link href="{{ asset('admin/vendors/summernote/summernote-lite.min.css') }}" rel="stylesheet">
 </head>
 
 <body>
@@ -56,8 +58,21 @@
             @include('admin.includes.partials.modal_order')
 
             @include('admin.includes.partials.modal_product')
+            @include('admin.includes.partials.modal_variable')
+            @include('admin.includes.partials.modal_catalogue')
+            @include('admin.includes.partials.modal_sort')
             @include('admin.includes.partials.modal_user')
-            @include('admin.includes.partials.modal_role', ['permissions' => Spatie\Permission\Models\Permission::get()])
+            @include('admin.includes.partials.modal_role')
+            @if (Request::path() != 'admin/image')
+                <div class="modal fade" id="quick_images-modal" aria-labelledby="quick_images-label" aria-hidden="true" tabindex="-1">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+                            @include('admin.includes.quick_images')
+                        </div>
+                    </div>
+                </div>
+            @endif
+            @include('admin.includes.partials.modal_image')
         </div>
     </div>
     <div class="loading d-none">
@@ -99,6 +114,8 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.min.js"></script>
     {{-- Include Toastify --}}
     <script src="{{ asset('admin/vendors/toastify/toastify.js') }}"></script>
+    <!-- Include Summernote Editor -->
+    <script src="{{ asset('admin/vendors/summernote/summernote-lite.min.js') }}"></script>
     <script type="text/javascript">
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {
@@ -113,7 +130,13 @@
     <script type="text/javascript">
         const config = {
             routes: {
-                login: `{{ route('login') }}`
+                login: `{{ route('login') }}`,
+                storage: "{{ asset(env('FILE_STORAGE', '/storage')) }}",
+                placeholder: "{{ asset('admin/images/placeholder.webp') }}",
+                getImage: "{{ route('admin.image') }}",
+                uploadImage: "{{ route('admin.image.upload') }}",
+                updateImage: "{{ route('admin.image.update') }}",
+                deleteImage: "{{ route('admin.image.delete') }}",
             },
             dataTable: {
                 lang: {
@@ -134,10 +157,11 @@
                         sLast: "&raquo;",
                     },
                 },
-                length: [
+                lengths: [
                     [5, 10, 20, 50, 100, 150, 500],
                     [5, 10, 20, 50, 100, 150, 500],
                 ],
+                pageLength: 20,
                 columnDefines: [{
                         target: 0,
                         sortable: false,
@@ -158,6 +182,14 @@
                         data: "id",
                         name: "id",
                     },
+                    image: {
+                        data: "image",
+                        name: "image",
+                    },
+                    sort: {
+                        data: "sort",
+                        name: "sort",
+                    },
                     customer: {
                         data: "customer",
                         name: "customer",
@@ -174,37 +206,9 @@
                         data: "receiver",
                         name: "receiver",
                     },
-                    order: {
-                        data: "order",
-                        name: "order",
-                    },
-                    cashier: {
-                        data: "cashier",
-                        name: "cashier",
-                    },
-                    payment: {
-                        data: "payment",
-                        name: "payment",
-                    },
-                    unit: {
-                        data: "unit",
-                        name: "unit",
-                    },
-                    sku: {
-                        data: "sku",
-                        name: "sku",
-                    },
-                    organ: {
-                        data: "organ",
-                        name: "organ",
-                    },
-                    tax_id: {
-                        data: "tax_id",
-                        name: "tax_id",
-                    },
-                    lot: {
-                        data: "lot",
-                        name: "lot",
+                    author: {
+                        data: "author",
+                        name: "author",
                     },
                     quantity: {
                         data: "quantity",
@@ -254,9 +258,9 @@
                         data: "phone",
                         name: "phone",
                     },
-                    address: {
-                        data: "address",
-                        name: "address",
+                    image: {
+                        data: "image",
+                        name: "image",
                     },
                     last_login_at: {
                         data: "last_login_at",
@@ -280,6 +284,7 @@
                     status: {
                         data: "status",
                         name: "status",
+                        className: 'text-center'
                     },
                     note: {
                         data: "note",
@@ -308,28 +313,99 @@
                 language: "vi",
                 theme: "bootstrap-5",
                 width: '100%',
-                allowClear: false,
+                allowClear: true,
                 closeOnSelect: false,
                 scrollOnSelect: true,
             }
         }
 
         /**
-         * Hàm xử lý lỗi ajax DataTables
+         * Xử lý hình ảnh
          */
-        function dataTableErrorProcess(err) {
-            if (err.status == 401 || err.status == 419) {
-                console.warn(err.responseJSON.errors);
-                window.location.href = config.routes.login;
-            } else {
-                console.log("Error:", err);
-                Swal.fire(
-                    "{{ __('\u0110\xC3 C\xD3 L\u1ED6I X\u1EA2Y RA!') }}",
-                    err.responseJSON.$message,
-                    "error"
-                );
-            }
-        }
+        const table = $('#quick_images-table').DataTable({
+            bStateSave: true,
+            stateSave: true,
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: `{{ route('admin.image') }}`,
+                error: function(err) {
+                    if (err.status == 401) {
+                        window.location.href = config.routes.login;
+                    } else {
+                        Swal.fire(`ĐÃ CÓ LỖI XẢY RA!`, err.responseJSON.message, 'error');
+                    }
+                },
+            },
+            columns: [
+                config.dataTable.columns.id,
+                config.dataTable.columns.name, {
+                    data: "caption",
+                    name: 'caption'
+                }, {
+                    data: "alt",
+                    name: 'alt'
+                },
+                config.dataTable.columns.author, {
+                    data: "link",
+                    name: 'link'
+                },
+                config.dataTable.columns.created_at
+            ],
+            initComplete: function(settings, json) {
+                // show new container for data
+                $('#quick_images-grid-view').insertBefore('#quick_images-table');
+                $('#quick_images-grid-view').show();
+            },
+            rowCallback: function(row, data) {
+                let text = `<div class="col-6 col-md-3 col-lg-2 my-2">
+                        <input class="d-none quick_images-choice" type="checkbox" value="${data.id}" data-name="${data.name}" id="image-${data.id}" name="choices[]" />
+                        <label for="image-${data.id}" class="d-block choice-label">
+                        <div class="card card-image mb-0">
+                        @if (!empty(Auth::user()->can(App\Models\User::DELETE_IMAGE)))
+                        <form action="{{ route('admin.image.delete') }}" method="post" class="save-form">
+                            @csrf
+                            <input type="hidden" name="choices[]" value="${data.id}">
+                            <button type="submit" class="btn-close btn-delete-image" aria-label="Close">
+                            </button>
+                        </form>
+                        @endif
+                                <div class="ratio ratio-1x1">
+                                    <img src="${data.link}" class="card-img-top object-fit-cover p-1" alt="${(data.alt) ? data.alt : ''}">
+                                </div>
+                                <div class="p-3">
+                                    <h6 class="card-title fs-6" data-bs-toggle="tooltip" data-bs-title="${data.name}">${data.name}</h6>
+                                    <!-- <p class="card-text">${(data.caption) ? data.caption : ''}</p> -->
+                                    <!-- <p class="card-text"><small class="text-body-secondary">${(data.alt) ? data.alt : ''}</small></p> -->
+                                    <div class="row justify-content-between">
+                                        <div class="col-auto card-text mb-0 me-3"><small class="text-body-secondary">${(data.author) ? data.author.name : ''}</small></div>
+                                        <div class="col-auto card-text mb-0"><small class="text-body-secondary">${(data.created_at) ? moment(data.created_at).format('DD/MM/YY HH:mm') : ''}</small></div>
+                                    </div>
+                                    <div class="row justify-content-between">
+                                        <div class="col-auto card-text mb-0 me-3"><small class="text-body-secondary">${(data.size) ? data.size : ''}</small></div>
+                                        <div class="col-auto card-text mb-0"><small class="text-body-secondary">${(data.dimension) ? data.dimension : ''}</small></div>
+                                    </div>
+                                </div>
+                            @if (!empty(Auth::user()->can(App\Models\User::READ_IMAGE)))
+                            <div class="d-grid">
+                                <a class="btn btn-link text-decoration-none btn-sm btn-update-image" data-id="${data.id}">Xem chi tiết</a>
+                            </div>
+                            @endif
+                            </div>
+                        </label>
+                    </div>`
+                $('#quick_images-grid-view').append(text)
+            },
+            preDrawCallback: function(settings) {
+                $('#quick_images-grid-view').empty();
+            },
+            language: config.dataTable.lang,
+            pageLength: 24,
+            aLengthMenu: [
+                [6, 12, 24, 480],
+                [6, 12, 24, 480]
+            ],
+        });
 
         $(document).ready(function() {
             $.ajaxSetup({
@@ -424,12 +500,12 @@
                                     <p class="text-left mb-0">${order._customer.phone}</p>
                                 </div>
                                 ${(order._customer.tax_id != null) ? `
-                                    <div class="col-3 mb-0">
-                                        <p class="text-left">MST:</p>
-                                    </div>
-                                    <div class="col-8 mb-0">
-                                        <p class="text-left">${order._customer.tax_id}</p>
-                                    </div>` : ``}
+                                                <div class="col-3 mb-0">
+                                                    <p class="text-left">MST:</p>
+                                                </div>
+                                                <div class="col-8 mb-0">
+                                                    <p class="text-left">${order._customer.tax_id}</p>
+                                                </div>` : ``}
                             </div>
                             <div class="text-dark">
                                 <table class="table">
@@ -452,24 +528,24 @@
                                             <th class="text-end">${number_format(total)}đ</th>
                                         </tr>
                                         ${ order.discount > 0 ? `
-                                            <tr>
-                                                <th colspan="5">Giảm giá</th>
-                                                <th class="text-end">${number_format(order.discount)}đ</th>
-                                            </tr>
-                                            <tr>
-                                                <th colspan="5">Còn lại</th>
-                                                <th class="text-end">${number_format(total - order.discount)}đ</th>
-                                            </tr>` : ''
+                                                        <tr>
+                                                            <th colspan="5">Giảm giá</th>
+                                                            <th class="text-end">${number_format(order.discount)}đ</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th colspan="5">Còn lại</th>
+                                                            <th class="text-end">${number_format(total - order.discount)}đ</th>
+                                                        </tr>` : ''
                                         }
                                         ${ order.paid > 0 ? `
-                                            <tr>
-                                                <th colspan="5">Trả trước</th>
-                                                <th class="text-end">${number_format(order.paid)}đ</th>
-                                            </tr>
-                                            <tr>
-                                                <th colspan="5">Phải thanh toán</th>
-                                                <th class="text-end">${number_format(total - order.discount - order.paid)}đ</th>
-                                            </tr>` : ''
+                                                        <tr>
+                                                            <th colspan="5">Trả trước</th>
+                                                            <th class="text-end">${number_format(order.paid)}đ</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th colspan="5">Phải thanh toán</th>
+                                                            <th class="text-end">${number_format(total - order.discount - order.paid)}đ</th>
+                                                        </tr>` : ''
                                         }
                                     </tfoot>
                                 </table>
@@ -494,6 +570,7 @@
         })
     </script>
     <script src="{{ asset('admin/js/main.js') }}"></script>
+    <script src="{{ asset('admin/js/quick_images.js') }}"></script>
     @stack('scripts')
     <script type="text/javascript">
         /**
@@ -540,7 +617,7 @@
 
         $(document).on('click', '.btn-update-product', function() {
             const id = $(this).attr('data-id')
-            $.get(` {{ url('product') }}/${id}`, function(obj) {
+            $.get(` {{ url('admin/product') }}/${id}`, function(obj) {
                 const form = $('#product-form');
                 resetForm(form)
                 form.find(`[name='id']`).val(obj.id)
@@ -593,26 +670,48 @@
             resetForm($('#user-form'))
         })
 
+        $('body').on('shown.bs.modal', '#user-modal', function() {
+            $(this).find(`#user-country`).attr('data-ajax--url', `{{ route('geolocation.country') }}`).select2(config.select2);
+            $('input.select2-search__field').removeAttr('style')
+        })
+
+        $('body').on('change', `#user-country`, function name(params) {
+            $('#user-form').find(`#user-city`).attr('data-ajax--url', `{{ route('geolocation.city') }}?country=${$(`#user-country`).val()}`).select2(config.select2);
+            $('input.select2-search__field').removeAttr('style')
+        })
+
         $(document).on('click', '.btn-update-user', function() {
-            const id = $(this).attr('data-id')
-            $('#user-form').attr('action', `{{ route('admin.user.update') }}`)
-            $.get(` {{ url('user') }}/${id}`, function(user) {
-                const form = $('#user-form');
+            const id = $(this).attr('data-id'),
+                form = $('#user-form');
+            $.get(` {{ url('admin/user') }}/${id}`, function(user) {
                 resetForm(form)
+                form.attr('action', `{{ route('admin.user.update') }}`)
                 form.find(`[name='id']`).val(user.id)
                 form.find(`[name='name']`).val(user.name)
                 form.find(`[name='email']`).val(user.email)
                 form.find(`[name='phone']`).val(user.phone)
                 form.find(`[name='address']`).val(user.address)
-                if (user.roles.length) {
-                    form.find(`[name='role_id']`).val(user.roles[0].id)
-                }
-                if (user.stores.length) {
-                    form.find(`[name='store_id']`).val(user.stores[0].id)
-                }
                 form.find(`[name='status']`).prop('checked', user.status)
                 form.find('.modal').modal('show')
             })
+        })
+
+        $(document).on('click', '.btn-update-user_role', function() {
+            const id = $(this).attr('data-id'),
+                form = $('#user_role-form');
+            resetForm(form)
+            form.attr('action', `{{ route('admin.user.update.role') }}`)
+            form.find(`[name='id']`).val(id)
+            form.find('.modal').modal('show')
+        })
+
+        $(document).on('click', '.btn-update-user_password', function() {
+            const id = $(this).attr('data-id'),
+                form = $('#user_password-form');
+            resetForm(form)
+            form.attr('action', `{{ route('admin.user.update.password') }}`)
+            form.find(`[name='id']`).val(id)
+            form.find('.modal').modal('show')
         })
 
         /**
@@ -628,8 +727,8 @@
         $(document).on('click', '.btn-update-role', function() {
             const id = $(this).attr('data-id'),
                 form = $('#role-form');
-            resetForm($('#role-form'))
-            $.get(`{{ url('role/get/') }}/${id}`, function(role) {
+            resetForm(form)
+            $.get(`{{ url('admin/role') }}/${id}`, function(role) {
                 form.find('[name=name]').val(role.name)
                 form.find('[name=id]').val(role.id)
                 $.each(role.permissions, function(index, permission) {
@@ -650,17 +749,35 @@
             $('#catalogue-modal').modal('show')
         })
 
+        $('body').on('shown.bs.modal', '#catalogue-modal', function() {
+            $(this).find(`[name=parent_id]`).attr('data-ajax--url', `{{ route('admin.catalogue', ['key' => 'find']) }}`).select2(config.select2);
+            $('input.select2-search__field').removeAttr('style')
+        })
+
+        $('.btn-refresh-catalogue').click(function() {
+            const btn = $(this)
+            $.get(`{{ route('admin.catalogue') }}/tree`, function(html) {
+                btn.parents('form').find('.catalogue-select .list-group').html(html);
+            })
+        })
 
         $(document).on('click', '.btn-update-catalogue', function() {
             const id = $(this).attr('data-id')
-            $('#catalogue-form').attr('action', `{{ route('admin.catalogue.update') }}`)
-            $.get(` {{ url('catalogue') }}/${id}`, function(catalogue) {
+            $.get(` {{ url('admin/catalogue') }}/${id}`, function(catalogue) {
                 const form = $('#catalogue-form');
                 resetForm(form)
+                $(form).attr('action', `{{ route('admin.catalogue.update') }}`)
                 form.find(`[name='id']`).val(catalogue.id)
                 form.find(`[name='name']`).val(catalogue.name)
-                form.find(`[name='note']`).val(catalogue.note)
+                form.find(`[name='image']`).val(catalogue.image).change()
+                form.find(`[name='description']`).val(catalogue.description)
                 form.find(`[name='status']`).prop('checked', catalogue.status)
+                if(catalogue.parent_id) {
+                    let option = new Option(catalogue.parent.name, catalogue.parent_id, true, true)
+                    form.find(`[name=parent_id]`).html(option).trigger({
+                        type: 'select2:select'
+                    });
+                }
                 form.find('.modal').modal('show')
             })
         })
@@ -694,7 +811,7 @@
             if (!existStock) {
                 if (id && !isNaN(id)) {
                     btn.prop("disabled", true).html('<span class="spinner-border spinner-border-sm" id="spinner-form" role="status"></span>');
-                    $.get(`{{ url('stock') }}/${id}?customer_id=${form.find('[name=customer_id]').val()}`, function(stock) {
+                    $.get(`{{ url('admin/stock') }}/${id}?customer_id=${form.find('[name=customer_id]').val()}`, function(stock) {
                         const str = `
                             <tr class="order-detail">
                                 <td>
@@ -819,7 +936,7 @@
                 form = $('#order-form')
             resetForm(form)
             $('#order-form').attr('action', `{{ route('admin.order.update') }}`)
-            $.get(`{{ url('order') }}/${id}`, function(order) {
+            $.get(`{{ url('admin/order') }}/${id}`, function(order) {
                 if (order.total - order.paid > 0) {
                     $('.btn-create-transaction').removeClass('d-none').attr('data-order', order.id).attr('data-customer', order.customer_id).attr('data-amount', order.total - order.paid)
                 } else {
@@ -917,7 +1034,7 @@
             const form = $('#transaction-form');
             form.find(`[name='id']`).val(id);
             form.attr('action', `{{ route('admin.transaction.update') }}`)
-            $.get(` {{ url('transaction') }}/${id}`, function(transaction) {
+            $.get(` {{ url('admin/transaction') }}/${id}`, function(transaction) {
                 var option = new Option(transaction._customer.name, transaction._customer.id, true, true);
                 form.find('[name=customer_id]').html(option).trigger({
                     type: 'select2:select'

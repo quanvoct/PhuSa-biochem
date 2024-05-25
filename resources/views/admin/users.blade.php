@@ -37,7 +37,7 @@
                     <div class="card-body">
                         <form method="post" id="batch-form">
                             <div class="table-resposive">
-                                <table class="table table-hover table-borderless" id="data-table">
+                                <table class="table table-hover" id="data-table">
                                     <thead>
                                         <tr>
                                             <th>
@@ -98,7 +98,7 @@
                 ],
                 language: config.dataTable.lang,
                 pageLength: 150,
-                aLengthMenu: config.dataTable.length,
+                aLengthMenu: config.dataTable.lengths,
                 columnDefs: config.dataTable.columnDefines,
                 order: [
                     [1, 'DESC']

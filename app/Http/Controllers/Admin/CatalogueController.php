@@ -4,19 +4,33 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Catalogue;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class CatalogueController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
+    const NAME = 'danh mục',
+        RULES = [
+            'name' => ['required', 'string', 'min:2', 'max:191'],
+            'description' => ['nullable', 'string', 'min:2', 'max:191'],
+            'parent_id' => ['nullable', 'numeric'],
+            'avatar' => ['nullable', 'string'],
+        ],
+        MESSAGES = [
+            'name.required' => Controller::VALIDATE['required'],
+            'name.string' => Controller::VALIDATE['invalid'],
+            'name.min' => Controller::VALIDATE['min2'],
+            'name.max' => Controller::VALIDATE['max191'],
+            'description.string' => Controller::VALIDATE['invalid'],
+            'description.min' => Controller::VALIDATE['min2'],
+            'description.max' => Controller::VALIDATE['max191'],
+            'parent_id.numeric' => Controller::VALIDATE['invalid'],
+            'avatar.string' => Controller::VALIDATE['invalid'],
+        ];
     public function __construct()
     {
         $this->middleware('auth');
@@ -28,134 +42,146 @@ class CatalogueController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
-        $pageName = 'Quản lý danh mục';
-        $options = Controller::options();
-        return view('catalogue', compact('pageName', 'options'));
-    }
-    public function load(Request $request)
-    {
-        $attributes = Catalogue::all();
-        return DataTables::of($attributes)
-            ->addColumn('checkbox', function ($obj) {
-                if (!empty(Auth::user()->hasAnyPermission(User::DELETE_CATALOGUES))) {
-                    return '<input class="form-check-input choice" type="checkbox" name="choices[]" value="' . $obj->id . '">';
-                }
-            })
-            ->editColumn('name', function ($obj) {
-                if (!empty(Auth::user()->hasAnyPermission(User::READ_CATALOGUE))) {
-                    return '<a class="btn btn-link text-decoration-none text-start btn-update-catalogue" data-id="' . $obj->id . '">' . $obj->name . '</a>';
-                } else {
-                    return $obj->name;
-                }
-            })
-            ->editColumn('status', function ($obj) {
-                return $obj->statusName();
-            })
-            ->addColumn('action', function ($obj) {
-                if (!empty(Auth::user()->hasAnyPermission(User::DELETE_CATALOGUE))) {
-                    return '
-                        <form action="' . route('catalogue.remove') . '" method="post" class="save-form">
+        if (isset($request->key)) {
+            switch ($request->key) {
+                case 'list':
+                    $ids = json_decode($request->ids);
+                    $obj = Catalogue::orderBy('sort', 'ASC')->when(count($ids), function ($query) use ($ids) {
+                        $query->whereIn('id', $ids);
+                    })->get();
+                    return response()->json($obj, 200);
+                    break;
+                case 'tree':
+                    $catalogues = Catalogue::whereNull('parent_id')->where('status', 1)->with('children')->get();
+                    return view('admin.includes.catalogue_recursion', ['catalogues' => $catalogues]);
+                    break;
+                case 'find':
+                    return Catalogue::whereStatus(1)
+                        ->where('name', 'LIKE', '%' . $request->q . '%')
+                        ->orWhere('description', 'LIKE', '%' . $request->q . '%')
+                        ->orderByDesc('id')
+                        ->distinct()
+                        ->get()
+                        ->map(function ($obj) {
+                            return [
+                                'id' => $obj->id,
+                                'text' => $obj->name
+                            ];
+                        })
+                        ->push(['id' => " ", 'text' => 'Không có']);
+                    break;
+                default:
+                    $obj = Catalogue::with('parent')->find($request->key);
+                    if ($obj) {
+                        return response()->json($obj, 200);
+                    } else {
+                        abort(404);
+                    }
+                    break;
+            }
+        } else {
+            if ($request->ajax()) {
+                $catalogues = Catalogue::query();
+                return DataTables::of($catalogues)
+                    ->addColumn('checkboxes', function ($obj) {
+                        if (!empty(Auth::user()->can(User::DELETE_CATALOGUES))) {
+                            return '<input class="form-check-input choice" type="checkbox" name="choices[]" value="' . $obj->id . '">';
+                        }
+                    })
+                    ->editColumn('name', function ($obj) {
+                        if (!empty(Auth::user()->can(User::UPDATE_CATALOGUE))) {
+                            return '<a class="btn btn-link text-decoration-none text-start btn-update-catalogue" data-id="' . $obj->id . '">' . $obj->name . '</a>';
+                        } else {
+                            return $obj->name;
+                        }
+                    })
+                    ->editColumn('image', function ($obj) {
+                        return '<img src="' . $obj->imageUrl . '" class="thumb cursor-pointer object-fit-cover" style="width: 60px; height: 60px">';
+                    })
+                    ->editColumn('status', function ($obj) {
+                        return '<span class="badge bg-' . ($obj->status ? 'success' : 'danger') . '">' . $obj->statusStr . '</span>';
+                    })
+                    ->addColumn('parent', function ($obj) {
+                        return $obj->parent ? $obj->parent->name : 'Không có';
+                    })
+                    ->addColumn('action', function ($obj) {
+                        if (!empty(Auth::user()->can(User::DELETE_CATALOGUE))) {
+                            return '
+                        <form action="' . route('admin.catalogue.remove') . '" method="post" class="save-form">
                             <input type="hidden" name="_token" value="' . csrf_token() . '"/>
                             <input type="hidden" name="choices[]" value="' . $obj->id . '" data-id="'  . $obj->id . '"/>
                             <button type="submit" class="btn btn-link text-decoration-none btn-remove">
                                 <i class="bi bi-trash3"></i>
                             </button>
                         </form>';
-                }
-            })
-            ->rawColumns(['checkbox', 'slug', 'name', 'note', 'action'])
-            ->make(true);
+                        }
+                    })
+                    ->rawColumns(['checkboxes', 'name', 'image', 'status', 'action'])
+                    ->make(true);
+            } else {
+                $pageName = 'Quản lý ' . self::NAME;
+                return view('admin.catalogues', compact('pageName'));
+            }
+        }
     }
 
-    public function get(Request $request)
+    public function sort(Request $request)
     {
-        $objs = Catalogue::query();
-        switch ($request->id) {
-            case 'list':
-                $result = $objs->orderBy('sort', 'ASC')->get();
-                break;
-            case 'find':
-                $result = $objs->whereStatus(1)
-                    ->where('name', 'LIKE', '%' . $request->q . '%')
-                    ->orWhere('note', 'LIKE', '%' . $request->q . '%')
-                    ->orderByDesc('id')
-                    ->distinct()
-                    ->get()
-                    ->map(function ($obj) {
-                        return [
-                            'id' => $obj->id,
-                            'text' => $obj->name
-                        ];
-                    });
-                break;
-            default:
-                $obj = $objs->find($request->id);
-                if ($obj) {
-                    $result = $obj;
-                } else {
-                    abort(404);
-                }
-                break;
+        $ids = $request->input('sort');
+        if (count($ids) == Catalogue::all()->count()) {
+            foreach ($ids as $index => $id) {
+                Catalogue::where('id', $id)->update(['sort' => $index + 1]);
+            }
+        } else {
+            $sorts = Catalogue::whereIn('id', $ids)->orderBy('sort', 'ASC')->pluck('sort');
+            foreach ($sorts as $index => $sort) {
+                Catalogue::find($ids[$index])->update(['sort' => $sort]);
+            }
         }
-        return response()->json($result, 200);
+        return response()->json(['msg' => 'Thứ tự đã được cập nhật thành công']);
     }
 
     public function create(Request $request)
     {
-
-        $rules = [
-            'name' => ['required', 'string', 'min: 3', 'max:125'],
-
-        ];
-        $messages = [
-            'name.required' => 'Thông tin này không thể trống.',
-            'name.string' => 'Dữ liệu không hợp lệ!',
-            'name.min' => 'Tối thiểu từ 3 ký tự!',
-            'name.max' => 'Tối đa được 125 ký tự!',
-        ];
-
-        $request->validate($rules, $messages);
+        $request->validate(self::RULES, self::MESSAGES);
         if (!empty(Auth::user()->can(User::CREATE_CATALOGUE))) {
             $catalogue = $this->sync([
                 'name' => $request->name,
-                'note' => $request->note,
+                'sort' => Catalogue::max('sort') + 1,
+                'slug' => Str::slug($request->name),
+                'parent_id' => $request->parent_id,
+                'description' => $request->description,
+                'image' => $request->image,
                 'status' => $request->has('status'),
-            ]);
+            ], $request->ip());
             $response = array(
                 'status' => 'success',
-                'msg' => 'Đã tạo danh mục ' . $catalogue->name
+                'msg' => 'Đã tạo ' . self::NAME . ' ' . $catalogue->name
             );
         } else {
             $response = array(
-                'status' => 'error',
+                'status' => 'danger',
                 'msg' => 'Thao tác chưa được cấp quyền!'
             );
         }
         return response()->json($response, 200);
     }
+
     public function update(Request $request)
     {
-
-        $rules = [
-            'name' => ['required', 'string', 'min: 3', 'max:125'],
-
-        ];
-        $messages = [
-            'name.required' => 'Thông tin này không thể trống.',
-            'name.string' => 'Dữ liệu không hợp lệ',
-            'name.required' => 'Tối thiểu từ 3 ký tự',
-            'name.required' => 'Tối đa 125 ký tự',
-        ];
-        $request->validate($rules, $messages);
+        $request->validate(self::RULES, self::MESSAGES);
         if (!empty(Auth::user()->can(User::UPDATE_CATALOGUE))) {
             if ($request->has('id')) {
                 $catalogue = $this->sync([
                     'name' => $request->name,
-                    'note' => $request->note,
+                    'slug' => Str::slug($request->name),
+                    'parent_id' => $request->parent_id,
+                    'description' => $request->description,
+                    'image' => $request->image,
                     'status' => $request->has('status'),
-                ], $request->id);
+                ], $request->ip(), $request->id);
 
                 $response = array(
                     'status' => 'success',
@@ -163,13 +189,13 @@ class CatalogueController extends Controller
                 );
             } else {
                 $response = array(
-                    'status' => 'error',
+                    'status' => 'danger',
                     'msg' => 'Đã có lỗi xảy ra, vui lòng tải lại trang và thử lại!'
                 );
             }
         } else {
             $response = array(
-                'status' => 'error',
+                'status' => 'danger',
                 'msg' => 'Thao tác chưa được cấp quyền!'
             );
         }
@@ -178,25 +204,25 @@ class CatalogueController extends Controller
 
     public function remove(Request $request)
     {
-        $catalogues = [];
+        $msg = [];
         foreach ($request->choices as $key => $id) {
-            $catalogue = Catalogue::find($id);
-            $catalogue->delete();
-            array_push($catalogues, $catalogue->id);
+            $obj = Catalogue::find($id);
+            $obj->delete();
+            array_push($msg, $obj->name);
+            LogController::create("xóa", self::NAME, $obj->id, $request->ip());
         }
-        LogController::create("xóa", "danh mục", $catalogue->id);
         $response = array(
             'status' => 'success',
-            'msg' => 'Đã xóa danh mục ' . implode(', ', $catalogues)
+            'msg' => 'Đã xóa ' . self::NAME . ' ' . implode(', ', $msg)
         );
         return  response()->json($response, 200);
     }
 
 
-    public static function sync($array, $id = null)
+    public static function sync($array, $ip = null, $id = null)
     {
         $obj = Catalogue::updateOrCreate(['id' => $id], $array);
-        LogController::create($id ? 'sửa' : 'tạo', "danh mục", $obj->id);
+        LogController::create($id ? 'sửa' : 'tạo', self::NAME, $obj->id, $ip);
         return $obj;
     }
 }

@@ -17,6 +17,10 @@
                             </div>
                         </div>
                         <div class="row">
+                            @php
+                            use Spatie\Permission\Models\Permission;
+                            $permissions = Permission::get();
+                            @endphp
                             @foreach($permissions as $index => $permission)
                             @if($index == 0 || $permission->section != $permissions[$index-1]->section)
                             <div class="col-12 col-lg-4 col-md-6 mb-4">

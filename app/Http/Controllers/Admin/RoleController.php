@@ -29,52 +29,54 @@ class RoleController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
-        $pageName = 'Quản lý nhóm quyền';
-        $options = Controller::options();
-        return view('role', compact('pageName', 'options'));
-    }
-
-    public function get(Request $request)
-    {
-        return response()->json(Role::with('permissions')->find($request->id), 200);
-    }
-
-    public function load(Request $request)
-    {
-        $users = Role::all();
-        return DataTables::of($users)
-            ->addColumn('checkbox', function ($obj) {
-                if (!empty(Auth::user()->hasAnyPermission(User::DELETE_ROLES))) {
-                    return '<input class="form-check-input choice" type="checkbox" name="choices[]" value="' . $obj->id . '">';
-                }
-            })
-            ->editColumn('name', function ($obj) {
-                if (!empty(Auth::user()->hasAnyPermission(User::READ_ROLE))) {
-                    return '<a class="btn btn-link text-decoration-none text-start btn-update-role" data-id="' . $obj->id . '">' . $obj->name . '</a>';
-                } else {
-                    return $obj->name;
-                }
-            })
-            ->addColumn('action', function ($obj) {
-                if (!empty(Auth::user()->hasAnyPermission(User::DELETE_ROLE))) {
-                    return '
-                        <form method="post" action="' . route('role.remove') . '" class="save-form">
+        if ($request->key) {
+            $result = Role::with('permissions')->find($request->key);
+            if($result) {
+                return response()->json($result, 200);
+            } else {
+                abort(404);
+            }
+        } else {
+            if ($request->ajax()) {
+                $users = Role::all();
+                return DataTables::of($users)
+                    ->addColumn('checkbox', function ($obj) {
+                        if (!empty(Auth::user()->can(User::DELETE_ROLES))) {
+                            return '<input class="form-check-input choice" type="checkbox" name="choices[]" value="' . $obj->id . '">';
+                        }
+                    })
+                    ->editColumn('name', function ($obj) {
+                        if (!empty(Auth::user()->can(User::READ_ROLE))) {
+                            return '<a class="btn btn-link text-decoration-none text-start btn-update-role" data-id="' . $obj->id . '">' . $obj->name . '</a>';
+                        } else {
+                            return $obj->name;
+                        }
+                    })
+                    ->addColumn('action', function ($obj) {
+                        if (!empty(Auth::user()->can(User::DELETE_ROLE))) {
+                            return '
+                        <form method="post" action="' . route('admin.role.remove') . '" class="save-form">
                             <input type="hidden" name="choices[]" value="' . $obj->id . '"/>
                             <button type="submit" class="btn btn-link text-decoration-none btn-remove cursor-pointer">
                                 <i class="bi bi-trash"></i>
                             </button>
                         </form>';
-                }
-            })
-            ->editColumn('permissions', function ($obj) {
-                return $obj->permissions->count() ? implode(' ', json_decode($obj->permissions->take(15)->map(function ($permission) {
-                        return '<span class="badge bg-primary">' . $permission->name . '</span>';
-                    }))) . ' và còn nhiều quyền khác' : 'Chưa được cấp quyền';
-            })
-            ->rawColumns(['checkbox', 'name', 'permissions', 'action'])
-            ->make(true);
+                        }
+                    })
+                    ->editColumn('permissions', function ($obj) {
+                        return $obj->permissions->count() ? implode(' ', json_decode($obj->permissions->take(15)->map(function ($permission) {
+                            return '<span class="badge bg-primary">' . $permission->name . '</span>';
+                        }))) . ' và còn nhiều quyền khác' : 'Chưa được cấp quyền';
+                    })
+                    ->rawColumns(['checkbox', 'name', 'permissions', 'action'])
+                    ->make(true);
+            } else {
+                $pageName = 'Quản lý nhóm quyền';
+                return view('admin.roles', compact('pageName'));
+            }
+        }
     }
 
     public function create(Request $request)

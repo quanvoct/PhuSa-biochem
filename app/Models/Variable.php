@@ -14,7 +14,7 @@ class Variable extends Model
     protected $table = 'variables';
     protected $fillable = [
         'name', 'product_id', 'sub_sku', 'description', 'price',
-        'stock', 'length', 'width', 'height', 'weight', 'image', 'revision'
+        'status', 'length', 'width', 'height', 'weight', 'image', 'revision'
     ];
     public function images()
     {
@@ -23,10 +23,6 @@ class Variable extends Model
     public function details()
     {
         return $this->hasMany(Detail::class)->whereNull('revision');
-    }
-    public function attribute()
-    {
-        return $this->hasMany(Attribute::class);
     }
     
     public function product()

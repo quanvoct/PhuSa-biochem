@@ -43,6 +43,10 @@ class PermissionsTableSeeder extends Seeder
             ['guard_name' => 'web', 'section' => 'Sản phẩm', 'name' => 'Sửa sản phẩm'],
             ['guard_name' => 'web', 'section' => 'Sản phẩm', 'name' => 'Xoá sản phẩm'],
             ['guard_name' => 'web', 'section' => 'Sản phẩm', 'name' => 'Xoá hàng loạt sản phẩm'],
+
+            ['guard_name' => 'web', 'section' => 'Biến thể', 'name' => 'Thêm biến thể'],
+            ['guard_name' => 'web', 'section' => 'Biến thể', 'name' => 'Sửa biến thể'],
+            ['guard_name' => 'web', 'section' => 'Biến thể', 'name' => 'Xoá biến thể'],
             
             ['guard_name' => 'web', 'section' => 'Danh mục', 'name' => 'Xem danh sách danh mục'],
             ['guard_name' => 'web', 'section' => 'Danh mục', 'name' => 'Xem chi tiết danh mục'],
@@ -99,6 +103,7 @@ class PermissionsTableSeeder extends Seeder
             ['guard_name' => 'web', 'section' => 'Cấp quyền', 'name' => 'Thêm nhóm quyền'],
             ['guard_name' => 'web', 'section' => 'Cấp quyền', 'name' => 'Sửa chi tiết nhóm quyền'],
             ['guard_name' => 'web', 'section' => 'Cấp quyền', 'name' => 'Xoá nhóm quyền'],
+            ['guard_name' => 'web', 'section' => 'Cấp quyền', 'name' => 'Xoá hàng loạt nhóm quyền'],
 
             ['guard_name' => 'web', 'section' => 'Nhật ký', 'name' => 'Xem danh sách nhật ký hệ thống'],
             ['guard_name' => 'web', 'section' => 'Nhật ký', 'name' => 'Xem chi tiết nhật ký hệ thống'],

@@ -20,12 +20,12 @@ class CreateVariablesTable extends Migration
             $table->string('sub_sku')->nullable();
             $table->text('description')->nullable();
             $table->string('image', 191)->nullable();
-            $table->unsignedDecimal('price', 10, 2)->nullable();
-            $table->unsignedInteger('stock')->nullable();
+            $table->unsignedDecimal('price', 10, 0)->nullable();
             $table->double('width', 6, 2)->nullable();
             $table->double('height', 6, 2)->nullable();
             $table->double('length', 6, 2)->nullable();
             $table->double('weight', 6, 2)->nullable();
+            $table->unsignedTinyInteger('status')->default(1)->comment('0: disabled, 1: enabled');
             $table->unsignedBigInteger('revision')->nullable();
             $table->softDeletes();
             $table->timestamps();

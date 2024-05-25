@@ -14,7 +14,7 @@
                             <div class="col-12 col-lg-6">
                                 <div class="form-group mb-3">
                                     <label for="order-customer_id">Khách hàng</label>
-                                    <select class="form-select" id="order-customer_id" name="customer_id" data-placeholder="Chọn một khách hàng">
+                                    <select class="form-select select2" id="order-customer_id" name="customer_id" data-placeholder="Chọn một khách hàng">
                                     </select>
                                 </div>
                                 <div class="form-group mb-3">

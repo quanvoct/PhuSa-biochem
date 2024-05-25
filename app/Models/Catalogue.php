@@ -10,9 +10,10 @@ use Illuminate\Support\Facades\Storage;
 class Catalogue extends Model
 {
     use HasFactory;
-    protected $table = 'catalogs';
+    protected $table = 'catalogues';
+    protected $appends = array('imageUrl', 'statusStr');
     protected $fillable = [
-        'name', 'slug', 'description', 'image', 'order',
+        'name', 'slug', 'description', 'image', 'sort',
         'status', 'parent_id', 'revision'
     ];
 
@@ -54,7 +55,7 @@ class Catalogue extends Model
         return ($this->created_at != null) ? Carbon::parse($this->created_at)->format('d/m/Y H:i:s') : '';
     }
 
-    public function statusName()
+    public function getStatusStrAttribute()
     {
         switch ($this->status) {
             case '1':
@@ -68,13 +69,13 @@ class Catalogue extends Model
         return $name;
     }
 
-    public function imageUrl()
+    public function getImageUrlAttribute()
     {
         $path = 'public/' . $this->image;
-        if (Image::where('name', $this->image)->first()) {
+        if (Image::where('name', $this->image)->first() && Storage::exists($path)) {
             $image = asset(env('FILE_STORAGE', '/storage') . '/' . $this->image);
         } else {
-            $image = asset('/images/placeholder.jpg');
+            $image = asset('admin/images/placeholder.webp');
         }
         return $image;
     }

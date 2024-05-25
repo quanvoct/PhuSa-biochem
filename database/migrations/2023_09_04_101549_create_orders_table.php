@@ -20,7 +20,6 @@ class CreateOrdersTable extends Migration
             $table->string('email')->nullable();
             $table->string('phone')->nullable()->index();
             $table->string('address')->nullable();
-            $table->unsignedBigInteger('local_id')->nullable();
             $table->unsignedBigInteger('dealer_id')->nullable();
             $table->unsignedBigInteger('method')->notNull();
             $table->unsignedBigInteger('discount')->default(0);
@@ -32,9 +31,6 @@ class CreateOrdersTable extends Migration
 
             // Tạo khóa ngoại tới bảng 'users'
             $table->foreign('customer_id')->references('id')->on('users')->onDelete('set null');
-            
-            // Tạo khóa ngoại tới bảng 'locals'
-            $table->foreign('local_id')->references('id')->on('locals')->onDelete('set null');
 
             // Tạo khóa ngoại tới bảng 'users'
             $table->foreign('dealer_id')->references('id')->on('users')->onDelete('set null');

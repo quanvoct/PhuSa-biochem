@@ -16,8 +16,6 @@
 
 <body>
     <div id="error">
-
-
         <div class="container">
             <div class="error-text">
                 <h1>503</h1>
@@ -128,10 +126,7 @@
                     </div>
                 </div>
             </div>
-
         </div>
-
-
     </div>
 </body>
 <script>

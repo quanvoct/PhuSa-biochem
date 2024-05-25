@@ -63,6 +63,30 @@
                     </ul>
                 </li>
 
+                <li class="sidebar-item  has-sub">
+                    <a class='sidebar-link cursor-pointer'>
+                        <i class="bi bi-postcard-heart-fill"></i>
+                        <span>Quản lý bài viết</span>
+                    </a>
+                    <ul class="submenu ">
+                        @if (!empty(Auth::user()->can(App\Models\User::READ_POSTS)))
+                            <li class="submenu-item">
+                                <a href="{{ route('admin.post') }}">Bài viết</a>
+                            </li>
+                        @endif
+                        @if (!empty(Auth::user()->can(App\Models\User::READ_CATEGORIES)))
+                            <li class="submenu-item">
+                                <a href="{{ route('admin.category') }}">Chuyên mục</a>
+                            </li>
+                        @endif
+                        @if (!empty(Auth::user()->can(App\Models\User::READ_IMAGES)))
+                            <li class="submenu-item">
+                                <a href="{{ route('admin.image') }}">Hình ảnh</a>
+                            </li>
+                        @endif
+                    </ul>
+                </li>
+
                 <li class="sidebar-item has-sub">
                     <a class='sidebar-link cursor-pointer'>
                         <i class="bi bi-gear"></i>

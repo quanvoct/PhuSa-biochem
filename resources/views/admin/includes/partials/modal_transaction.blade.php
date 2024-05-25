@@ -25,7 +25,7 @@
                                 <label for="transaction-customer_id">Khách hàng</label>
                             </div>
                             <div class="col-8">
-                                <select class="form-select combobox" id="transaction-customer_id" name="customer_id" data-placeholder="Chọn một khách hàng">
+                                <select class="form-select select2" id="transaction-customer_id" name="customer_id" data-placeholder="Chọn một khách hàng">
                                 </select>
                             </div>
                         </div>

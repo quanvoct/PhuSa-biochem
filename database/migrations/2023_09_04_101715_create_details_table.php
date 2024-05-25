@@ -18,7 +18,7 @@ class CreateDetailsTable extends Migration
             $table->unsignedBigInteger('order_id')->index();
             $table->unsignedBigInteger('variable_id')->index();
             $table->unsignedInteger('quantity');
-            $table->unsignedDecimal('unit_price', 10, 2);
+            $table->unsignedDecimal('price', 10, 0);
             $table->tinyInteger('status')->default(1)->comment('0: hidden; 1: show');
             $table->unsignedBigInteger('revision')->nullable();
             $table->timestamp('appointmented_at')->nullable();

@@ -15,10 +15,9 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasRoles, HasFactory, Notifiable, SoftDeletes;
-    protected $appends = ['phoneStr', 'statusStr', 'genderStr', 'fullAddress', 'avatarUrl'];
+    protected $appends = ['phoneStr', 'statusStr', 'genderStr', 'fullAddress', 'imageUrl'];
     protected $table = 'users';
-    const ACCESS_ADMIN = 'Truy cập trang Quản trị';
-
+    
     const READ_ORDERS = 'Xem danh sách đơn hàng';
     const READ_ORDER = 'Xem chi tiết đơn hàng';
     const CREATE_ORDER = 'Thêm đơn hàng';
@@ -52,6 +51,10 @@ class User extends Authenticatable implements MustVerifyEmail
     const UPDATE_PRODUCT = 'Sửa sản phẩm';
     const DELETE_PRODUCT = 'Xoá sản phẩm';
     const DELETE_PRODUCTS = 'Xoá hàng loạt sản phẩm';
+
+    const CREATE_VARIABLE = 'Thêm biến thể';
+    const UPDATE_VARIABLE = 'Sửa biến thể';
+    const DELETE_VARIABLE = 'Xoá biến thể';
     
     const READ_CATALOGUES = 'Xem danh sách danh mục';
     const READ_CATALOGUE = 'Xem chi tiết danh mục';
@@ -94,10 +97,7 @@ class User extends Authenticatable implements MustVerifyEmail
     const UPDATE_IMAGE = 'Sửa chi tiết hình ảnh';
     const DELETE_IMAGE = 'Xoá hình ảnh';
     const DELETE_IMAGES = 'Xoá hàng loạt hình ảnh';
-
-    const READ_CONTENT = 'Xem chi tiết nội dung';
-    const UPDATE_CONTENT = 'Sửa chi tiết nội dung';
-
+    
     const READ_USERS = 'Xem danh sách tài khoản';
     const READ_USER = 'Xem chi tiết tài khoản';
     const CREATE_USER = 'Thêm tài khoản';
@@ -111,13 +111,16 @@ class User extends Authenticatable implements MustVerifyEmail
     const CREATE_ROLE = 'Thêm nhóm quyền';
     const UPDATE_ROLE = 'Sửa chi tiết nhóm quyền';
     const DELETE_ROLE = 'Xoá nhóm quyền';
+    const DELETE_ROLES = 'Xoá hàng loạt nhóm quyền';
 
     const READ_LOGS = 'Xem danh sách nhật ký hệ thống';
     const READ_LOG = 'Xem chi tiết nhật ký hệ thống';
     const DELETE_LOG = 'Xoá nhật ký hệ thống';
 
+    const ACCESS_ADMIN = 'Truy cập trang Quản trị';
     const READ_SETTINGS = 'Xem chi tiết thiết lập hệ thống';
     const UPDATE_SETTINGS = 'Sửa chi tiết thiết lập hệ thống';
+    const UPDATE_CONFIG = 'Xem chi tiết cài đặt cửa hàng';
 
     /**
      * The attributes that are mass assignable.
@@ -125,7 +128,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array<int, string>
      */
     protected $fillable = [
-        'name', 'email', 'address', 'local_id', 'phone', 'birthday', 'gender', 'tax_name', 'tax_add', 'tax_id', 'password', 'image',
+        'name', 'email', 'address', 'country', 'city', 'zip', 'phone', 'birthday', 'gender', 'password', 'image',
         'revision', 'status', 'email_verified_at', 'last_login_at'
     ];
     /**
@@ -263,7 +266,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return $fullAddress ?: "Không có";
     }
 
-    public function getAvatarUrlAttribute()
+    public function getImageUrlAttribute()
     {
         $path = 'public/user/' . $this->image;
         if ($this->image && Storage::exists($path)) {
