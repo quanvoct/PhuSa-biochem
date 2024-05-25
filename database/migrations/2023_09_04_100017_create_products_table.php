@@ -27,7 +27,7 @@ class CreateProductsTable extends Migration
             $table->string('unit', 191)->nullable();
             $table->text('specs')->nullable();
             $table->string('keyword', 191)->nullable();
-            $table->tinyInteger('status')->default(2)->comment('0: block, 1: active');
+            $table->tinyInteger('status')->default(1)->comment('0: block, 1: active');
             $table->tinyInteger('allow_review')->nullable();
             $table->string('upsales', 191)->nullable();
             $table->unsignedBigInteger('revision')->nullable();

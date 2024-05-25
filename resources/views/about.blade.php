@@ -10,11 +10,11 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="ltn__breadcrumb-inner">
-                    <h1 class="page-title">About Us</h1>
+                    <h1 class="page-title">{{ $pageName }}</h1>
                     <div class="ltn__breadcrumb-list">
                         <ul>
                             <li><a href="{{ route('home.index') }}"><span class="ltn__secondary-color"><i class="fas fa-home"></i></span> Home</a></li>
-                            <li>About Us</li>
+                            <li>{{ $pageName }}</li>
                         </ul>
                     </div>
                 </div>
@@ -658,7 +658,7 @@
                         <h1>Products, services and equipment <br> applied in the field of Molecular Biology</h1>
                     </div>
                     <div class="btn-wrapper">
-                        <a class="btn btn-effect-3 btn-white" href="{{ route('home.shop') }}">Explore Products <i class="icon-next"></i></a>
+                        <a class="btn btn-effect-3 btn-white" href="{{ route('shop.index') }}">Explore Products <i class="icon-next"></i></a>
                     </div>
                 </div>
             </div>

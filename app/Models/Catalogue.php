@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
 class Catalogue extends Model
 {
     use HasFactory;
-    protected $table = 'catalogs';
+    protected $table = 'catalogues';
     protected $fillable = [
         'name', 'slug', 'description', 'image', 'order',
         'status', 'parent_id', 'revision'
@@ -74,7 +74,7 @@ class Catalogue extends Model
         if (Image::where('name', $this->image)->first()) {
             $image = asset(env('FILE_STORAGE', '/storage') . '/' . $this->image);
         } else {
-            $image = asset('/images/placeholder.jpg');
+            $image = asset('/img/placeholder.jpg');
         }
         return $image;
     }

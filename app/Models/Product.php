@@ -132,7 +132,7 @@ class Product extends Model
         if (Image::where('name', $this->image)->count() && Storage::exists($path)) {
             $image = asset(env('FILE_STORAGE', '/storage') . '/' . $this->image);
         } else {
-            $image = asset('/images/placeholder.jpg');
+            $image = asset('/img/placeholder.jpg');
         }
         return $image;
     }

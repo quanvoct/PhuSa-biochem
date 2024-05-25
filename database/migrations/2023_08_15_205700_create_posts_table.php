@@ -23,7 +23,7 @@ class CreatePostsTable extends Migration
             $table->string('image')->nullable();
             $table->string('type')->nullable();
             $table->unsignedBigInteger('revision')->nullable();
-            $table->tinyInteger('status')->default(2)->comment('0: hidden, 1: visible');
+            $table->tinyInteger('status')->default(1)->comment('0: hidden, 1: visible');
             $table->softDeletes(); 
             $table->timestamps();
 

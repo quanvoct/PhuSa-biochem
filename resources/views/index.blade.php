@@ -24,7 +24,7 @@
                                                     </div>
                                                     <h5 class="color-orange  animated">Starting at &16.99</h5> -->
                                                 <div class="btn-wrapper  animated">
-                                                    <a href="{{ route('shop.index') }}" class="theme-btn-1 btn btn-effect-1">Shop now</a>
+                                                    <a href="{{ route('shop.index') }}" class="theme-btn-1 btn btn-effect-1">{{ __('Shop now') }}</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -159,7 +159,7 @@
                         </a>
                     </div>
                     <div class="ltn__category-item-name">
-                        <h6><a href="{{ route('shop.index') }}">All Products</a></h6>
+                        <h6><a href="{{ route('shop.index') }}">{{ __('All Products') }}</a></h6>
                     </div>
                 </div>
             </div>
@@ -294,7 +294,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="section-title-area ltn__section-title-2 text-center">
-                    <h1 class="section-title">Featured Products</h1>
+                    <h1 class="section-title">{{ __('Featured Products') }}</h1>
                 </div>
             </div>
         </div>
@@ -613,15 +613,15 @@
             <div class="col-lg-7">
                 <div class="call-to-action-inner text-color-white--- text-center---">
                     <div class="section-title-area ltn__section-title-2--- text-center---">
-                        <h6 class="ltn__secondary-color">Todays Hot Offer</h6>
-                        <h1 class="section-title">Monthly promotional campaign</h1>
+                        <h6 class="ltn__secondary-color">{{ __('Todays Hot Offer') }}</h6>
+                        <h1 class="section-title">{{ __('Monthly promotional campaign') }}</h1>
                         <p>Don't miss out on the opportunity to receive promotions today from PhuSa Biochem.</p>
                     </div>
                     <div class="ltn__countdown ltn__countdown-3 bg-white--" data-countdown="2024/08/31"></div>
                     <div class="btn-wrapper animated">
-                        <a href="{{ route('home.contact') }}" class="theme-btn-1 btn btn-effect-1 text-uppercase">Book Now</a>
-                        <a href="{{ route('shop.index') }}" class="ltn__secondary-color text-decoration-underline">Deal of The
-                            Day</a>
+                        <a href="{{ route('home.contact') }}" class="theme-btn-1 btn btn-effect-1 text-uppercase">{{ __('Book Now') }}</a>
+                        <a href="{{ route('shop.index') }}" class="ltn__secondary-color text-decoration-underline">{{ __('Deal of The
+                            Day') }}</a>
                     </div>
                 </div>
             </div>
@@ -640,7 +640,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="section-title-area ltn__section-title-2 text-center">
-                    <h1 class="section-title">Best Selling Item</h1>
+                    <h1 class="section-title">{{ __('Best Selling Item') }}</h1>
                 </div>
             </div>
         </div>
@@ -1038,33 +1038,33 @@
                 <div class="about-us-info-wrap">
                     <div class="section-title-area ltn__section-title-2--- mb-20">
                         <h6 class="section-subtitle section-subtitle-2--- ltn__secondary-color">About Us</h6>
-                        <h1 class="section-title">Phu Sa Genomics Joint Stock Company</h1>
-                        <p>The predecessor of PHU SA Genomics comes from PHU SA Biochem. After more than 14
+                        <h1 class="section-title">{{ __('Phu Sa Genomics Joint Stock Company') }}</h1>
+                        <p>{{ __('The predecessor of PHU SA Genomics comes from PHU SA Biochem. After more than 14
                             years of establishment, with the enthusiasm of a team of professional and creative
                             leaders, along with accumulated experience, PHU SA is honored to be a trusted
                             partner of more than 300 agencies/units and experienced customers. long across the
-                            country.</p>
+                            country.') }}</p>
                     </div>
                     <ul class="ltn__list-item-half clearfix">
                         <li>
                             <i class="flaticon-home-2"></i>
-                            Genuine equipment
+                            {{ __('Genuine equipment') }}
                         </li>
                         <li>
                             <i class="flaticon-mountain"></i>
-                            Quality products
+                            {{ __('Quality products') }}
                         </li>
                         <li>
                             <i class="flaticon-heart"></i>
-                            Fast production
+                            {{ __('Fast production') }}
                         </li>
                         <li>
                             <i class="flaticon-secure"></i>
-                            Professional support
+                            {{ __('Professional support') }}
                         </li>
                     </ul>
                     <div class="btn-wrapper animated">
-                        <a href="{{ route('home.index', ['page' => 'about']) }}" class="ltn__secondary-color text-uppercase text-decoration-underline">Read more</a>
+                        <a href="{{ route('home.index', ['page' => 'about']) }}" class="ltn__secondary-color text-uppercase text-decoration-underline">{{ __('Read more') }}</a>
                     </div>
                 </div>
             </div>
@@ -1079,179 +1079,40 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="section-title-area ltn__section-title-2--- text-center">
-                    <h6 class="section-subtitle section-subtitle-2 ltn__secondary-color">News & Blogs
+                    <h6 class="section-subtitle section-subtitle-2 ltn__secondary-color">{{ __('News & Blogs') }}
                     </h6>
-                    <h1 class="section-title">Leatest Blogs</h1>
+                    <h1 class="section-title">{{ __('Leatest Blogs') }}</h1>
                 </div>
             </div>
         </div>
         <div class="row  ltn__blog-slider-one-active slick-arrow-1 ltn__blog-item-3-normal">
+            @foreach($categories as $category)
+            @foreach($category->posts as $post)
             <!-- Blog Item -->
             <div class="col-lg-12">
                 <div class="ltn__blog-item ltn__blog-item-3">
                     <div class="ltn__blog-img">
-                        <a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}"><img src="{{ asset('img/blog/1.jpg') }}" alt="#"></a>
+                        <a href="{{ route('home.index', ['page' => 'posts', 'category' => $post->category->code, 'post' => $post->code]) }}"><img src="{{ $post->imageUrl() }}" alt="#"></a>
                     </div>
                     <div class="ltn__blog-brief">
-                        <div class="ltn__blog-meta">
-                            <ul>
-                                <li class="ltn__blog-author">
-                                    <a href="#"><i class="far fa-user"></i>by: Admin</a>
-                                </li>
-                                <li class="ltn__blog-tags">
-                                    <a href="#"><i class="fas fa-tags"></i>Decorate</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <h3 class="ltn__blog-title"><a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">10 Brilliant Ways To Decorate
-                                Your Home</a></h3>
+                        <h3 class="ltn__blog-title"><a href="{{ route('home.index', ['page' => 'posts', 'category' => $post->category->code, 'post' => $post->code]) }}">{!! $post->title !!}</a></h3>
+                        <p>{!! ($post->excerpt) ? Illuminate\Support\Str::limit($post->excerpt, 60) : Illuminate\Support\Str::limit($post->content, 60) !!}</p>
                         <div class="ltn__blog-meta-btn">
                             <div class="ltn__blog-meta">
                                 <ul>
-                                    <li class="ltn__blog-date"><i class="far fa-calendar-alt"></i>June 24, 2024
+                                    <li class="ltn__blog-date"><i class="far fa-calendar-alt"></i>{{ \Carbon\Carbon::parse($post->created_at)->format('d/m/Y') }}
                                     </li>
                                 </ul>
                             </div>
                             <div class="ltn__blog-btn">
-                                <a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">Read more</a>
+                                <a href="{{ route('home.index', ['page' => 'posts', 'category' => $post->category->code, 'post' => $post->code]) }}">{{ __('Read more') }}</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- Blog Item -->
-            <div class="col-lg-12">
-                <div class="ltn__blog-item ltn__blog-item-3">
-                    <div class="ltn__blog-img">
-                        <a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}"><img src="{{ asset('img/blog/2.jpg') }}" alt="#"></a>
-                    </div>
-                    <div class="ltn__blog-brief">
-                        <div class="ltn__blog-meta">
-                            <ul>
-                                <li class="ltn__blog-author">
-                                    <a href="#"><i class="far fa-user"></i>by: Admin</a>
-                                </li>
-                                <li class="ltn__blog-tags">
-                                    <a href="#"><i class="fas fa-tags"></i>Interior</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <h3 class="ltn__blog-title"><a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">The Most Inspiring Interior
-                                Design Of 2024</a></h3>
-                        <div class="ltn__blog-meta-btn">
-                            <div class="ltn__blog-meta">
-                                <ul>
-                                    <li class="ltn__blog-date"><i class="far fa-calendar-alt"></i>July 23, 2024
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="ltn__blog-btn">
-                                <a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">Read more</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Blog Item -->
-            <div class="col-lg-12">
-                <div class="ltn__blog-item ltn__blog-item-3">
-                    <div class="ltn__blog-img">
-                        <a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}"><img src="{{ asset('img/blog/3.jpg') }}" alt="#"></a>
-                    </div>
-                    <div class="ltn__blog-brief">
-                        <div class="ltn__blog-meta">
-                            <ul>
-                                <li class="ltn__blog-author">
-                                    <a href="#"><i class="far fa-user"></i>by: Admin</a>
-                                </li>
-                                <li class="ltn__blog-tags">
-                                    <a href="#"><i class="fas fa-tags"></i>Estate</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <h3 class="ltn__blog-title"><a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">Recent Commercial Real Estate
-                                Transactions</a></h3>
-                        <div class="ltn__blog-meta-btn">
-                            <div class="ltn__blog-meta">
-                                <ul>
-                                    <li class="ltn__blog-date"><i class="far fa-calendar-alt"></i>May 22, 2024
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="ltn__blog-btn">
-                                <a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">Read more</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Blog Item -->
-            <div class="col-lg-12">
-                <div class="ltn__blog-item ltn__blog-item-3">
-                    <div class="ltn__blog-img">
-                        <a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}"><img src="{{ asset('img/blog/4.jpg') }}" alt="#"></a>
-                    </div>
-                    <div class="ltn__blog-brief">
-                        <div class="ltn__blog-meta">
-                            <ul>
-                                <li class="ltn__blog-author">
-                                    <a href="#"><i class="far fa-user"></i>by: Admin</a>
-                                </li>
-                                <li class="ltn__blog-tags">
-                                    <a href="#"><i class="fas fa-tags"></i>Room</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <h3 class="ltn__blog-title"><a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">Renovating a Living Room?
-                                Experts Share Their Secrets</a></h3>
-                        <div class="ltn__blog-meta-btn">
-                            <div class="ltn__blog-meta">
-                                <ul>
-                                    <li class="ltn__blog-date"><i class="far fa-calendar-alt"></i>June 24, 2024
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="ltn__blog-btn">
-                                <a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">Read more</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Blog Item -->
-            <div class="col-lg-12">
-                <div class="ltn__blog-item ltn__blog-item-3">
-                    <div class="ltn__blog-img">
-                        <a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}"><img src="{{ asset('img/blog/5.jpg') }}" alt="#"></a>
-                    </div>
-                    <div class="ltn__blog-brief">
-                        <div class="ltn__blog-meta">
-                            <ul>
-                                <li class="ltn__blog-author">
-                                    <a href="#"><i class="far fa-user"></i>by: Admin</a>
-                                </li>
-                                <li class="ltn__blog-tags">
-                                    <a href="#"><i class="fas fa-tags"></i>Trends</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <h3 class="ltn__blog-title"><a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">7 home trends that will shape
-                                your house in 2024</a></h3>
-                        <div class="ltn__blog-meta-btn">
-                            <div class="ltn__blog-meta">
-                                <ul>
-                                    <li class="ltn__blog-date"><i class="far fa-calendar-alt"></i>June 24, 2024
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="ltn__blog-btn">
-                                <a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">Read more</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!--  -->
+            @endforeach
+            @endforeach
         </div>
     </div>
 </div>

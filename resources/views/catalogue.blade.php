@@ -1341,13 +1341,13 @@
                         <div class="widget ltn__menu-widget">
                             <h4 class="ltn__widget-title ltn__widget-title-border">{{ __('Product categories') }}</h4>
                             <ul>
-                                <li><a href="{{ route('shop.index') }}">{{ __('All Product ') }}<span><i class="fas fa-long-arrow-alt-right"></i></span></a></li>
-                                <li><a href="{{ route('shop.index') }}">{{ __('Oligo/Primer  ') }}<span><i class="fas fa-long-arrow-alt-right"></i></span></a></li>
-                                <li><a href="{{ route('shop.index') }}">{{ __('Biology Products ') }}<span><i class="fas fa-long-arrow-alt-right"></i></span></a></li>
-                                <li><a href="{{ route('shop.index') }}">{{ __('Device ') }}<span><i class="fas fa-long-arrow-alt-right"></i></span></a></li>
-                                <li><a href="{{ route('shop.index') }}">{{ __('Utility package ') }}<span><i class="fas fa-long-arrow-alt-right"></i></span></a></li>
-                                <li><a href="{{ route('shop.index') }}">{{ __('Services ') }}<span><i class="fas fa-long-arrow-alt-right"></i></span></a></li>
-                                <li><a href="{{ route('shop.index') }}">{{ __('Diagnostic kit ') }}<span><i class="fas fa-long-arrow-alt-right"></i></span></a></li>
+                                <li><a href="{{ route('shop.index') }}">{{ __('All Product') }} <span><i class="fas fa-long-arrow-alt-right"></i></span></a></li>
+                                <li><a href="{{ route('shop.index') }}">{{ __('Oligo/Primer ') }} <span><i class="fas fa-long-arrow-alt-right"></i></span></a></li>
+                                <li><a href="{{ route('shop.index') }}">{{ __('Biology Products') }} <span><i class="fas fa-long-arrow-alt-right"></i></span></a></li>
+                                <li><a href="{{ route('shop.index') }}">{{ __('Device') }} <span><i class="fas fa-long-arrow-alt-right"></i></span></a></li>
+                                <li><a href="{{ route('shop.index') }}">{{ __('Utility package') }} <span><i class="fas fa-long-arrow-alt-right"></i></span></a></li>
+                                <li><a href="{{ route('shop.index') }}">{{ __('Services') }} <span><i class="fas fa-long-arrow-alt-right"></i></span></a></li>
+                                <li><a href="{{ route('shop.index') }}">{{ __('Diagnostic kit') }} <span><i class="fas fa-long-arrow-alt-right"></i></span></a></li>
                             </ul>
                         </div>
                         <!-- Price Filter Widget -->

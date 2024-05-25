@@ -129,10 +129,10 @@ Route::group(['middleware' => 'admin'], function () {
 Route::group(['middleware' => 'language'], function () {
     Route::get('language/{language}', [HomeController::class, 'languageChange'])->name('lang.change');
 });
-Route::get('/contact', [HomepageController::class, 'contact'])->name('home.contact');
+Route::get('/contact', [HomeController::class, 'contact'])->name('home.contact');
 Route::get('/cart', [CartController::class, 'cart'])->name('cart.index');
 Route::get('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 Route::get('/cart/checkout/success', [CartController::class, 'checkout'])->name('cart.checkout.success');
 Route::get('/shop/{catalogue?}/{product?}', [ShopController::class, 'shop'])->name('shop.index');
 Route::get('/profile/{page?}/{id?}', [HomeController::class, 'index'])->name('profile.index');
-Route::get('/{page?}/{category?}/{title?}', [HomeController::class, 'index'])->name('home.index');
+Route::get('/{page?}/{category?}/{post?}', [HomeController::class, 'index'])->name('home.index');

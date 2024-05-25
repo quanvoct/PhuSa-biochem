@@ -22,43 +22,48 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        if($request->page) {
-            if($request->category) {
-                if($request->post) {
-                    $post = Post::whereStatus(1)->whereCode($request->post)->first();
-                    if($post) {
+        if ($request->page) {
+            if ($request->category) {
+                $category = Category::with('posts')->whereStatus(1)->whereCode($request->category)->first();
+                if ($request->post) {
+                    $post = Post::whereStatus(1)->where('category_id', $category->id)->whereCode($request->post)->first();
+                    if ($post) {
                         $pageName = $post->title;
-                        return view('post', compact('pageName'));
+                        return view('post', compact('pageName', 'post'));
                     } else {
                         abort(404);
                     }
                 } else {
-                    $category = Category::with('posts')->whereStatus(1)->whereCode($request->category)->first();
-                    if($category) {
+                    if ($category) {
                         $pageName = $category->name;
-                        return view('category', compact('pageName'));
+                        return view('category', compact('pageName', 'category'));
                     } else {
                         abort(404);
                     }
                 }
             } else {
                 $page = Post::whereType('page')->whereStatus(1)->whereCode($request->page)->first();
-                if($page) {
+                if ($page) {
                     $pageName = $page->title;
-                    return view('page', compact('pageName'));
+                    return view('page', compact('pageName', 'page'));
                 } else {
                     abort(404);
                 }
             }
         } else {
+            $categories = Category::whereNull('revision')->with(['posts' => function ($query) {
+                $query->whereStatus(1)->orderBy('created_at', 'DESC');
+            }])->orderBy('id', 'DESC')->get();
             $pageName = __('Home');
-            return view('index', compact('pageName'));
+            return view('index', compact('pageName', 'categories'));
         }
     }
 
-    public function contact() {
+    public function contact()
+    {
+        $settings = Controller::getSettings();
         $pageName = __('Contact');
-        return view('contact', compact('pageName'));
+        return view('contact', compact('settings', 'pageName'));
     }
 
     public function changeLanguage(Request $request)
