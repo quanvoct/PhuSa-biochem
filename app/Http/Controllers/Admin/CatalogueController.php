@@ -207,6 +207,7 @@ class CatalogueController extends Controller
         $msg = [];
         foreach ($request->choices as $key => $id) {
             $obj = Catalogue::find($id);
+            $obj->revision();
             $obj->delete();
             array_push($msg, $obj->name);
             LogController::create("xóa", self::NAME, $obj->id, $request->ip());

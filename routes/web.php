@@ -1,24 +1,26 @@
 <?php
 
 use App\Http\Controllers\Admin\CatalogueController;
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DebtController;
 use App\Http\Controllers\Admin\ImageController;
 use App\Http\Controllers\Admin\LogController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\OrderDetailController;
+use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\TransactionController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\VariableController;
-use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\GeolocationController;
 use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\ShopController;
@@ -57,12 +59,12 @@ Route::group(['middleware' => 'admin'], function () {
         });
 
         Route::group(['prefix' => 'post'], function () {
-            Route::get('{key?}', [ProductController::class, 'index'])->name('admin.post');
-            Route::post('sort', [ProductController::class, 'sort'])->name('admin.post.sort');
-            Route::post('save', [ProductController::class, 'save'])->name('admin.post.save');
-            Route::post('create', [ProductController::class, 'create'])->name('admin.post.create');
-            Route::post('update', [ProductController::class, 'update'])->name('admin.post.update');
-            Route::post('remove', [ProductController::class, 'remove'])->name('admin.post.remove');
+            Route::get('{key?}', [PostController::class, 'index'])->name('admin.post');
+            Route::post('sort', [PostController::class, 'sort'])->name('admin.post.sort');
+            Route::post('save', [PostController::class, 'save'])->name('admin.post.save');
+            Route::post('create', [PostController::class, 'create'])->name('admin.post.create');
+            Route::post('update', [PostController::class, 'update'])->name('admin.post.update');
+            Route::post('remove', [PostController::class, 'remove'])->name('admin.post.remove');
         });
 
         Route::group(['prefix' => 'image'], function () {
@@ -81,10 +83,11 @@ Route::group(['middleware' => 'admin'], function () {
         });
 
         Route::group(['prefix' => 'category'], function () {
-            Route::get('{key?}', [CatalogueController::class, 'index'])->name('admin.category');
-            Route::post('create', [CatalogueController::class, 'create'])->name('admin.category.create');
-            Route::post('update', [CatalogueController::class, 'update'])->name('admin.category.update');
-            Route::post('remove', [CatalogueController::class, 'remove'])->name('admin.category.remove');
+            Route::get('{key?}', [CategoryController::class, 'index'])->name('admin.category');
+            Route::post('sort', [CategoryController::class, 'sort'])->name('admin.category.sort');
+            Route::post('create', [CategoryController::class, 'create'])->name('admin.category.create');
+            Route::post('update', [CategoryController::class, 'update'])->name('admin.category.update');
+            Route::post('remove', [CategoryController::class, 'remove'])->name('admin.category.remove');
         });
 
         Route::group(['prefix' => 'transaction'], function () {

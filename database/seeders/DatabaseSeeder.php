@@ -14,7 +14,8 @@ class DatabaseSeeder extends Seeder
             AdminUserSeeder::class,
             SettingsSeeder::class,
             CataloguesSedder::class,
-            ProductsSedder::class
+            ProductsSedder::class,
+            VariablesSedder::class
         ]);
     }
 }

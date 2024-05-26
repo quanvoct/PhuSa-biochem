@@ -123,12 +123,12 @@
                         <div class="form-group">
                             <label class="form-label mt-1" for="product-status">Trạng thái</label>
                             <select class="form-select @error('status') is-invalid @enderror" id="product-status" name="status">
-                                <option value="0" {{ (isset($product) && $product->status == 0) || old('status') == 0 ? 'selected' : '' }}>
-                                    Bị khóa</option>
                                 <option value="1" {{ (isset($product) && $product->status == 1) || old('status') == 1 ? 'selected' : '' }}>
-                                    Hiển thị</option>
-                                <option value="3" {{ (isset($product) && $product->status == 3) || old('status') == '3' ? 'selected' : '' }}>
+                                    Xuất bản</option>
+                                <option value="2" {{ (isset($product) && $product->status == 3) || old('status') == '3' ? 'selected' : '' }}>
                                     Nổi bật</option>
+                                <option value="0" {{ (isset($product) && $product->status == 0) || old('status') == 0 ? 'selected' : '' }}>
+                                    Không hiển thị</option>
                             </select>
                             @error('status')
                                 <span class="invalid-feedback d-block" role="alert">
@@ -248,11 +248,11 @@
                                 @foreach (old('specs_key') as $i => $key)
                                     <div class="row mb-3">
                                         <div class="col-sm-4 pe-0">
-                                            <input class="form-control" id="product-specs_key" name="specs_key[]" type="text" value="{{$key}}" placeholder="Mô tả" required>
+                                            <input class="form-control" id="product-specs_key" name="specs_key[]" type="text" value="{{ $key }}" placeholder="Mô tả" required>
                                         </div>
                                         <div class="col-sm-8">
                                             <div class="input-group">
-                                                <input class="form-control" id="product-specs_value[]" name="specs_value[]" value="{{old('specs_value')[$i]}}" type="text" placeholder="Thông số" autocomplete="off" required>
+                                                <input class="form-control" id="product-specs_value[]" name="specs_value[]" type="text" value="{{ old('specs_value')[$i] }}" placeholder="Thông số" autocomplete="off" required>
                                                 <div class="btn btn-outline-danger btn-product-specs_remove">&#10005;</div>
                                             </div>
                                         </div>
@@ -266,7 +266,7 @@
                                         </div>
                                         <div class="col-sm-8">
                                             <div class="input-group">
-                                                <input class="form-control" id="product-specs_value[]" name="specs_value[]" value="{{ $value }}" type="text" placeholder="Thông số" autocomplete="off" required>
+                                                <input class="form-control" id="product-specs_value[]" name="specs_value[]" type="text" value="{{ $value }}" placeholder="Thông số" autocomplete="off" required>
                                                 <div class="btn btn-outline-danger btn-product-specs_remove">&#10005;</div>
                                             </div>
                                         </div>

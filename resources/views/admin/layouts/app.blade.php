@@ -60,6 +60,7 @@
             @include('admin.includes.partials.modal_product')
             @include('admin.includes.partials.modal_variable')
             @include('admin.includes.partials.modal_catalogue')
+            @include('admin.includes.partials.modal_category')
             @include('admin.includes.partials.modal_sort')
             @include('admin.includes.partials.modal_user')
             @include('admin.includes.partials.modal_role')
@@ -500,12 +501,12 @@
                                     <p class="text-left mb-0">${order._customer.phone}</p>
                                 </div>
                                 ${(order._customer.tax_id != null) ? `
-                                                <div class="col-3 mb-0">
-                                                    <p class="text-left">MST:</p>
-                                                </div>
-                                                <div class="col-8 mb-0">
-                                                    <p class="text-left">${order._customer.tax_id}</p>
-                                                </div>` : ``}
+                                                    <div class="col-3 mb-0">
+                                                        <p class="text-left">MST:</p>
+                                                    </div>
+                                                    <div class="col-8 mb-0">
+                                                        <p class="text-left">${order._customer.tax_id}</p>
+                                                    </div>` : ``}
                             </div>
                             <div class="text-dark">
                                 <table class="table">
@@ -528,24 +529,24 @@
                                             <th class="text-end">${number_format(total)}đ</th>
                                         </tr>
                                         ${ order.discount > 0 ? `
-                                                        <tr>
-                                                            <th colspan="5">Giảm giá</th>
-                                                            <th class="text-end">${number_format(order.discount)}đ</th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th colspan="5">Còn lại</th>
-                                                            <th class="text-end">${number_format(total - order.discount)}đ</th>
-                                                        </tr>` : ''
+                                                            <tr>
+                                                                <th colspan="5">Giảm giá</th>
+                                                                <th class="text-end">${number_format(order.discount)}đ</th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th colspan="5">Còn lại</th>
+                                                                <th class="text-end">${number_format(total - order.discount)}đ</th>
+                                                            </tr>` : ''
                                         }
                                         ${ order.paid > 0 ? `
-                                                        <tr>
-                                                            <th colspan="5">Trả trước</th>
-                                                            <th class="text-end">${number_format(order.paid)}đ</th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th colspan="5">Phải thanh toán</th>
-                                                            <th class="text-end">${number_format(total - order.discount - order.paid)}đ</th>
-                                                        </tr>` : ''
+                                                            <tr>
+                                                                <th colspan="5">Trả trước</th>
+                                                                <th class="text-end">${number_format(order.paid)}đ</th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th colspan="5">Phải thanh toán</th>
+                                                                <th class="text-end">${number_format(total - order.discount - order.paid)}đ</th>
+                                                            </tr>` : ''
                                         }
                                     </tfoot>
                                 </table>
@@ -772,7 +773,7 @@
                 form.find(`[name='image']`).val(catalogue.image).change()
                 form.find(`[name='description']`).val(catalogue.description)
                 form.find(`[name='status']`).prop('checked', catalogue.status)
-                if(catalogue.parent_id) {
+                if (catalogue.parent_id) {
                     let option = new Option(catalogue.parent.name, catalogue.parent_id, true, true)
                     form.find(`[name=parent_id]`).html(option).trigger({
                         type: 'select2:select'
@@ -1045,6 +1046,33 @@
                 form.find(`[name='note']`).val(transaction.note)
                 form.find(`[name='payment'][value = '${transaction.payment}']`).prop('checked', true)
                 form.find(`[name='status'][value = '${transaction.status}']`).prop('checked', true)
+                form.find('.modal').modal('show')
+            })
+        })
+
+        /**
+         * Category process
+         */
+        $(document).on('click', '.btn-create-category', function(e) {
+            e.preventDefault();
+            const form = $('#category-form')
+            resetForm(form)
+            form.find('[name=status]').prop('checked', true);
+            form.attr('action', `{{ route('admin.category.create') }}`)
+            form.find('.modal').modal('show')
+        })
+
+        $(document).on('click', '.btn-update-category', function(e) {
+            e.preventDefault();
+            const id = $(this).attr('data-id'),
+                form = $('#category-form');
+            resetForm(form)
+            $.get(`{{ route('admin.category') }}/${id}`, function(category) {
+                form.find('[name=id]').val(category.id)
+                form.find('[name=name]').val(category.name)
+                form.find('[name=note]').val(category.note)
+                form.find('[name=status]').prop('checked', category.status)
+                form.attr('action', `{{ route('admin.category.update') }}`)
                 form.find('.modal').modal('show')
             })
         })

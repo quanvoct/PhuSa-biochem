@@ -3,11 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Attribute;
 use App\Models\Catalogue;
 use App\Models\Product;
 use App\Models\User;
-use App\Models\Variable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -15,46 +13,32 @@ use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
-use function PHPSTORM_META\type;
-
 class ProductController extends Controller
 {
-    const NAME = 'sản phẩm',
-        MESSAGES = [
-            'barcode.required' => Controller::VALIDATE['required'],
-            'barcode.string' => Controller::VALIDATE['invalid'],
-            'barcode.max' => Controller::VALIDATE['max191'],
-            'barcode.unique' => 'Mã vạch không khả dụng!',
-            'sku.required' => Controller::VALIDATE['required'],
-            'sku.string' => Controller::VALIDATE['invalid'],
-            'sku.max' => Controller::VALIDATE['max191'],
-            'sku.unique' => 'Mã vạch không khả dụng!',
-            'name.required' => Controller::VALIDATE['required'],
-            'name.string' => Controller::VALIDATE['invalid'],
-            'name.max' => Controller::VALIDATE['max191'],
-            'unit.required' => Controller::VALIDATE['required'],
-            'unit.string' => Controller::VALIDATE['invalid'],
-            'unit.max' => Controller::VALIDATE['max191'],
-            'status.numeric' => Controller::VALIDATE['invalid'],
-            'catalogues.required' => 'Danh mục không thể bỏ trống',
-            'catalogues.array' => 'Danh mục: ' . Controller::VALIDATE['invalid'],
-
-            'variable_names.required' => 'Tên biến thể: ' . Controller::VALIDATE['required'],
-            'variable_names.array' => 'Tên biến thể: ' . Controller::VALIDATE['invalid'],
-            'sub_skus.required' => 'Mã phụ: ' . Controller::VALIDATE['required'],
-            'sub_skus.array' => 'Mã phụ: ' . Controller::VALIDATE['invalid'],
-            'prices.required' => 'Giá biến thể: ' . Controller::VALIDATE['required'],
-            'prices.array' => 'Giá biến thể: ' . Controller::VALIDATE['invalid'],
-
-            'variable_names.*.required' => 'Tên biến thể: ' . Controller::VALIDATE['required'],
-            'variable_names.*.min' => 'Tên biến thể: ' . Controller::VALIDATE['min2'],
-            'variable_names.*.max' => 'Tên biến thể: ' . Controller::VALIDATE['max191'],
-            'sub_skus.*.required' => 'Mã biến thể: ' . Controller::VALIDATE['required'],
-            'sub_skus.*.min' => 'Mã biến thể: ' . Controller::VALIDATE['min2'],
-            'sub_skus.*.max' => 'Mã biến thể: ' . Controller::VALIDATE['max191'],
-            'prices.*.required' => 'Giá biến thể: ' . Controller::VALIDATE['required'],
-            'prices.*.numeric' => 'Giá biến thể: ' . Controller::VALIDATE['invalid'],
-        ];
+    const NAME = 'sản phẩm';
+    const MESSAGES = [
+        'sku.required' => 'Mã sản phẩm: ' . Controller::VALIDATE['required'],
+        'sku.string' => 'Mã sản phẩm: ' . Controller::VALIDATE['invalid'],
+        'sku.max' => 'Mã sản phẩm: ' . Controller::VALIDATE['max191'],
+        'sku.unique' => 'Mã sản phẩm:' . Controller::VALIDATE['unique'],
+        'specs_key.array' => 'Thông số kỹ thuật: ' . Controller::VALIDATE['invalid'],
+        'specs_value.array' => 'Thông số kỹ thuật: ' . Controller::VALIDATE['invalid'],
+        'specs_key.*.required' => 'Thông số kỹ thuật: ' . Controller::VALIDATE['required'],
+        'specs_key.*.min' => 'Thông số kỹ thuật: ' . Controller::VALIDATE['min2'],
+        'specs_key.*.max' => 'Thông số kỹ thuật: ' . Controller::VALIDATE['max191'],
+        'specs_value.*.required' => 'Thông số kỹ thuật: ' . Controller::VALIDATE['required'],
+        'specs_value.*.min' => 'Thông số kỹ thuật: ' . Controller::VALIDATE['min2'],
+        'specs_value.*.max' => 'Thông số kỹ thuật: ' . Controller::VALIDATE['max191'],
+        'name.required' => 'Tên sản phẩm: ' . Controller::VALIDATE['required'],
+        'name.string' => 'Tên sản phẩm: ' . Controller::VALIDATE['invalid'],
+        'name.max' => 'Tên sản phẩm: ' . Controller::VALIDATE['max191'],
+        'unit.required' => 'Đơn vị tính: ' .  Controller::VALIDATE['required'],
+        'unit.string' => 'Đơn vị tính: ' .  Controller::VALIDATE['invalid'],
+        'unit.max' => 'Đơn vị tính: ' .  Controller::VALIDATE['max191'],
+        'status.numeric' => 'Trạng thái: ' . Controller::VALIDATE['invalid'],
+        'catalogues.required' => 'Danh mục: ' . Controller::VALIDATE['required'],
+        'catalogues.array' => 'Danh mục: ' . Controller::VALIDATE['invalid'],
+    ];
 
     public function __construct()
     {
@@ -79,7 +63,7 @@ class ProductController extends Controller
                     break;
                 case 'list':
                     $ids = json_decode($request->ids);
-                    $obj = Product::orderBy('sort', 'ASC')->when(count($ids), function ($query) use ($ids) {
+                    $obj = Product::orderBy('sort', 'ASC')->whereNull('revision')->when(count($ids), function ($query) use ($ids) {
                         $query->whereIn('id', $ids);
                     })->get();
                     return response()->json($obj, 200);
@@ -193,35 +177,9 @@ class ProductController extends Controller
             'status' => ['nullable', 'numeric'],
             'catalogues' => ['required', 'array'],
         ];
-        $messages = [
-            'sku.required' => 'Mã sản phẩm: ' . Controller::VALIDATE['required'],
-            'sku.string' => 'Mã sản phẩm: ' . Controller::VALIDATE['invalid'],
-            'sku.max' => 'Mã sản phẩm: ' . Controller::VALIDATE['max191'],
-            'sku.unique' => 'Mã sản phẩm:' . Controller::VALIDATE['unique'],
-            'specs_key.array' => 'Thông số kỹ thuật: ' . Controller::VALIDATE['invalid'],
-            'specs_value.array' => 'Thông số kỹ thuật: ' . Controller::VALIDATE['invalid'],
-            'specs_key.*.required' => 'Thông số kỹ thuật: ' . Controller::VALIDATE['required'],
-            'specs_key.*.min' => 'Thông số kỹ thuật: ' . Controller::VALIDATE['min2'],
-            'specs_key.*.max' => 'Thông số kỹ thuật: ' . Controller::VALIDATE['max191'],
-            'specs_value.*.required' => 'Thông số kỹ thuật: ' . Controller::VALIDATE['required'],
-            'specs_value.*.min' => 'Thông số kỹ thuật: ' . Controller::VALIDATE['min2'],
-            'specs_value.*.max' => 'Thông số kỹ thuật: ' . Controller::VALIDATE['max191'],
-            'name.required' => 'Tên sản phẩm: ' . Controller::VALIDATE['required'],
-            'name.string' => 'Tên sản phẩm: ' . Controller::VALIDATE['invalid'],
-            'name.max' => 'Tên sản phẩm: ' . Controller::VALIDATE['max191'],
-            'unit.required' => 'Đơn vị tính: ' .  Controller::VALIDATE['required'],
-            'unit.string' => 'Đơn vị tính: ' .  Controller::VALIDATE['invalid'],
-            'unit.max' => 'Đơn vị tính: ' .  Controller::VALIDATE['max191'],
-            'status.numeric' => 'Trạng thái: ' . Controller::VALIDATE['invalid'],
-            'catalogues.required' => 'Danh mục: ' . Controller::VALIDATE['required'],
-            'catalogues.array' => 'Danh mục: ' . Controller::VALIDATE['invalid'],
-        ];
-        $request->validate($rules, $messages);
+        $request->validate($rules, self::MESSAGES);
 
-        if (!empty(Auth::user()->hasAnyPermission(User::CREATE_PRODUCT, User::UPDATE_PRODUCT))) {
-            if ($request->id) {
-                Product::find($request->id)->revision();
-            }
+        if (!empty(Auth::user()->can(User::CREATE_PRODUCT, User::UPDATE_PRODUCT))) {
             if($request->has('specs_key') && $request->has('specs_value')) {
                 $specs = collect($request->specs_key)->zip($request->specs_value)->map(function ($item) {
                     return [$item[0] => $item[1]];
@@ -264,21 +222,16 @@ class ProductController extends Controller
     public function create(Request $request)
     {
         $rules = [
-            'sku' => ['required', 'string', 'max:191', 'unique:products'],
+            'sku' => ['required', 'string', 'max:191', Rule::unique('products')->whereNull('revision')->ignore($request->id ?? 0)],
             'name' => ['required', 'string', 'max:191'],
             'unit' => ['required', 'string', 'max:191'],
+            'specs_key' => ['array'],
+            'specs_value' => ['array'],
+            'specs_key.*' => ['required', 'min: 2', 'max: 191'],
+            'specs_value.*' => ['required', 'min: 2', 'max: 191'],
             'status' => ['nullable', 'numeric'],
             'catalogues' => ['required', 'array'],
-
-            'variable_names' => ['required', 'array'],
-            'sub_skus' => ['required', 'array'],
-            'prices' => ['required', 'array'],
-
-            'variable_names.*' => ['required', 'min:2', 'max:191'],
-            'sub_skus.*' => ['required', 'min:2', 'max:191'],
-            'prices.*' => ['required', 'numeric'],
         ];
-
         $request->validate($rules, self::MESSAGES);
 
         if (!empty(Auth::user()->can(User::CREATE_PRODUCT))) {
@@ -323,21 +276,16 @@ class ProductController extends Controller
     public function update(Request $request)
     {
         $rules = [
-            'sku' => ['required', 'string', 'max:191', Rule::unique('products')->ignore($request->id)],
+            'sku' => ['required', 'string', 'max:191', Rule::unique('products')->whereNull('revision')->ignore($request->id ?? 0)],
             'name' => ['required', 'string', 'max:191'],
             'unit' => ['required', 'string', 'max:191'],
+            'specs_key' => ['array'],
+            'specs_value' => ['array'],
+            'specs_key.*' => ['required', 'min: 2', 'max: 191'],
+            'specs_value.*' => ['required', 'min: 2', 'max: 191'],
             'status' => ['nullable', 'numeric'],
             'catalogues' => ['required', 'array'],
-
-            'variable_names' => ['required', 'array'],
-            'sub_skus' => ['required', 'array'],
-            'prices' => ['required', 'array'],
-
-            'variable_names.*' => ['required', 'min:2', 'max:191'],
-            'sub_skus.*' => ['required', 'min:2', 'max:191'],
-            'prices.*' => ['required', 'numeric'],
         ];
-
         $request->validate($rules, self::MESSAGES);
 
         if (!empty(Auth::user()->can(User::UPDATE_PRODUCT))) {
@@ -388,6 +336,7 @@ class ProductController extends Controller
             foreach ($request->choices as $key => $id) {
                 $obj = Product::find($id);
                 if ($obj->canRemove()) {
+                    $obj->revision();
                     DB::table('catalogue_product')->where('product_id', $obj->id)->delete();
                     $obj->delete();
                     LogController::create("xóa", self::NAME, $obj->id);
@@ -418,6 +367,9 @@ class ProductController extends Controller
 
     public static function sync($array, $id = null)
     {
+        if ($id) {
+            Product::find($id)->revision();
+        }
         $obj = Product::updateOrCreate(['id' => $id], $array);
         LogController::create($id ? 'sửa' : 'tạo', self::NAME, $obj->id);
         return $obj;

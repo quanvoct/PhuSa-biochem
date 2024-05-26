@@ -15,12 +15,17 @@ use Illuminate\Support\Facades\Hash;
 
 class VariableController extends Controller
 {
+    const NAME = 'biến thể';
     const RULES = [
-        'sub_sku' => ['required', 'min: 3', 'max:125'],
-        'name' => ['required', 'min: 3', 'max:125'],
+        'sub_sku' => ['required', 'min:3', 'max:125'],
+        'name' => ['required', 'min:3', 'max:125'],
         'product_id' => ['required'],
         'description' => ['required', 'string'],
         'price' => ['required', 'numeric'],
+        'width' => ['nullable', 'numeric', 'min:0', 'max:999.99'],
+        'height' => ['nullable', 'numeric', 'min:0', 'max:999.99'],
+        'length' => ['nullable', 'numeric', 'min:0', 'max:999.99'],
+        'weight' => ['nullable', 'numeric', 'min:0', 'max:999.99'],
     ];
     const MESSAGES = [
         'sub_sku.required' => Controller::VALIDATE['required'],
@@ -34,7 +39,20 @@ class VariableController extends Controller
         'description.string' => Controller::VALIDATE['invalid'],
         'price.required' => Controller::VALIDATE['required'],
         'price.numeric' => Controller::VALIDATE['invalid'],
+        'width.numeric' => Controller::VALIDATE['invalid'],
+        'width.min' => Controller::VALIDATE['min2'],
+        'width.max' => Controller::VALIDATE['max191'],
+        'height.numeric' => Controller::VALIDATE['invalid'],
+        'height.min' => Controller::VALIDATE['min2'],
+        'height.max' => Controller::VALIDATE['max191'],
+        'length.numeric' => Controller::VALIDATE['invalid'],
+        'length.min' => Controller::VALIDATE['min2'],
+        'length.max' => Controller::VALIDATE['max191'],
+        'weight.numeric' => Controller::VALIDATE['invalid'],
+        'weight.min' => Controller::VALIDATE['min2'],
+        'weight.max' => Controller::VALIDATE['max191'],
     ];
+    
     /**
      * Create a new controller instance.
      *
@@ -125,7 +143,7 @@ class VariableController extends Controller
                         ->make(true);
                 }
             } else {
-                $pageName = 'Quản lý biến thể';
+                $pageName = 'Quản lý ' . self::NAME;
                 return view('variable', compact('pageName', 'options'));
             }
         }
@@ -150,7 +168,7 @@ class VariableController extends Controller
         ]);
         $response = [
             'status' => 'success',
-            'msg' => 'Đã cập nhật biến thể ' . $variable->name
+            'msg' => 'Đã cập nhật ' . self::NAME . ' ' . $variable->name
         ];
         return response()->json($response, 200);
     }
@@ -176,7 +194,7 @@ class VariableController extends Controller
             ], $request->id);
             $response = [
                 'status' => 'success',
-                'msg' => 'Đã cập nhật biến thể ' . $variable->name
+                'msg' => 'Đã cập nhật ' . self::NAME . ' ' . $variable->name
             ];
         } else {
             $response = [
@@ -196,22 +214,26 @@ class VariableController extends Controller
         }
         return response()->json([
             'status' => 'success',
-            'msg' => 'Đã xóa biến thể ' . implode(', ', $names),
+            'msg' => 'Đã xóa ' . self::NAME . ' ' . implode(', ', $names),
         ], 200);
     }
 
     public static function sync($array, $id = null)
     {
+        if ($id) {
+            Variable::find($id)->revision();
+        }
         $obj = Variable::updateOrCreate(['id' => $id], $array);
-        LogController::create($id ? 'sửa' : 'tạo', "biến thể", $obj->id);
+        LogController::create($id ? 'sửa' : 'tạo', self::NAME, $obj->id);
         return $obj;
     }
 
     static function remove_exec($id)
     {
         $obj = Variable::find($id);
+        $obj->revision();
         $obj->delete();
-        LogController::create("xóa", "biến thể", $obj->id);
+        LogController::create("xóa", self::NAME, $obj->id);
         return $obj;
     }
 }
