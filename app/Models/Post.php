@@ -14,6 +14,7 @@ class Post extends Model
     use HasFactory, SoftDeletes;
     protected $table = 'posts';
     protected $with = ['author', 'category'];
+    protected $appends = array('typeStr', 'imageUrl', 'statusStr');
     protected $fillable = [
         'code', 'title', 'author_id', 'category_id',
         'excerpt', 'content', 'image', 'type',
@@ -59,7 +60,7 @@ class Post extends Model
         return ($this->created_at) ? Carbon::parse($this->created_at)->format('H:i:s') : '';
     }
 
-    public function statusName()
+    public function getStatusStrAttribute()
     {
         switch ($this->status) {
             case '1':
@@ -72,7 +73,7 @@ class Post extends Model
         return $status;
     }
 
-    public function typeName()
+    public function getTypeStrAttribute()
     {
         switch ($this->type) {
             case 'page':
@@ -85,11 +86,11 @@ class Post extends Model
         return $type;
     }
 
-    public function imageUrl()
+    public function getImageUrlAttribute()
     {
-        $path = 'public/images/' . $this->image;
+        $path = 'public/' . $this->image;
         if (Image::where('name', $this->image)->count() && Storage::exists($path)) {
-            $image = asset(env('FILE_STORAGE', '/storage') . '/images/' . $this->image);
+            $image = asset(env('FILE_STORAGE', '/storage') . '/' . $this->image);
         } else {
             $image = asset('admin/images/placeholder.webp');
         }

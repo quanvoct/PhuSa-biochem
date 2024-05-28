@@ -17,7 +17,7 @@ class CreateCategoriesTable extends Migration
             $table->id();
             $table->string('code',128)->comment('slug');
             $table->string('name',128)->default('Vô danh');
-            $table->unsignedBigInteger('order')->default(1);
+            $table->unsignedBigInteger('sort')->default(1);
             $table->tinyInteger('status')->default(1)->comment('0: hidden, 1: visible');
             $table->text('note')->nullable();
             $table->unsignedBigInteger('revision')->nullable();

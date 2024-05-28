@@ -357,6 +357,9 @@ class UserController extends Controller
 
     public static function sync($array, $id = null)
     {
+        if ($id) {
+            User::find($id)->revision();
+        }
         $obj = User::updateOrCreate(['id' => $id], $array);
         LogController::create($id ? 'sửa' : 'tạo', "tài khoản", $obj->id);
         return $obj;
@@ -367,6 +370,7 @@ class UserController extends Controller
         $names = [];
         foreach ($request->choices as $key => $id) {
             $obj = User::find($id);
+            $obj->revision();
             $obj->delete();
             array_push($names, $obj->name);
             LogController::create("xóa", "tài khoản", $obj->id);

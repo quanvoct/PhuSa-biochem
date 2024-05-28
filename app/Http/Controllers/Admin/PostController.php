@@ -29,13 +29,12 @@ class PostController extends Controller
      */
     public function index(Request $request)
     {
-        $options = Controller::options();
         $categories = Category::where('status', 1)->get();
         if (isset($request->key)) {
             switch ($request->key) {
                 case 'new':
                     $pageName = 'Bài viết mới';
-                    return view('admin.post', compact('pageName', 'options', 'categories'));
+                    return view('admin.post', compact('pageName', 'categories'));
                     break;
                 case 'list':
                     $ids = json_decode($request->ids);
@@ -50,8 +49,8 @@ class PostController extends Controller
                         if ($request->ajax()) {
                             return response()->json($post, 200);
                         } else {
-                            $pageName = $post->name;
-                            return view('admin.post', compact('pageName', 'post', 'options', 'categories'));
+                            $pageName = $post->title;
+                            return view('admin.post', compact('pageName', 'post', 'categories'));
                         }
                     } else {
                         return redirect()->route('admin.post', ['key' => 'new'], );
@@ -59,7 +58,7 @@ class PostController extends Controller
                     break;
             }
         } else {
-            $posts = Post::all();
+            $posts = Post::get();
             if ($request->ajax()) {
                 return DataTables::of($posts)
                     ->addColumn('checkboxes', function ($obj) {
@@ -99,7 +98,7 @@ class PostController extends Controller
                     })
                     ->addColumn('action', function ($obj) {
                         $str = '';
-                        if (Auth::user()->can(User::DELETE_SERVICE)) {
+                        if (Auth::user()->can(User::DELETE_POST)) {
                             $str .= '<div class="d-flex justify-content-center">
                             <form method="post" action="' . route('admin.post.remove') . '" class="save-form">
                                     <input type="hidden" name="choices[]" value="' . $obj->id . '"/>
@@ -116,8 +115,7 @@ class PostController extends Controller
                     ->make(true);
             } else {
                 $pageName = 'Quản lý ' . self::NAME;
-                $options = Controller::options();
-                return view('admin.posts', compact('pageName', 'options'));
+                return view('admin.posts', compact('pageName'));
             }
         }
     }
@@ -125,34 +123,37 @@ class PostController extends Controller
     public function save(Request $request)
     {
         $rules = [
-            'title' => ['required', 'string', 'max:125'],
-            'excerpt' => ['nullable', 'string', 'max:125'],
+            'title' => ['required', 'string', 'max:191'],
+            'excerpt' => ['nullable', 'string', 'max:191'],
             'status' => ['required', 'numeric'],
             'image' => ['nullable', 'string'],
             'category_id' => ['required', 'numeric'],
             'description' => ['nullable'],
         ];
         $messages = [
-            'title.required' => 'Tên dịch vụ: ' . Controller::NOT_EMPTY,
-            'title.string' => 'Tên dịch vụ: ' . Controller::DATA_INVALID,
-            'title.max' => 'Tên dịch vụ: ' . Controller::MAX,
-            'excerpt.string' => 'Mô tả ngắn: ' . Controller::DATA_INVALID,
-            'excerpt.max' => 'Mô tả ngắn: ' . Controller::MAX,
-            'status.numeric' => 'Trạng thái: ' . Controller::NOT_EMPTY,
-            'status.required' => 'Trạng thái: ' . Controller::DATA_INVALID,
-            'category_id.numeric' => 'Chuyên mục: ' . Controller::DATA_INVALID,
-            'category_id.required' => 'Chuyên mục: ' . Controller::NOT_EMPTY,
-            'image.string' => 'Ảnh: ' . Controller::DATA_INVALID,
+            'title.required' => 'Tên dịch vụ: ' . Controller::VALIDATE['required'],
+            'title.string' => 'Tên dịch vụ: ' . Controller::VALIDATE['invalid'],
+            'title.max' => 'Tên dịch vụ: ' . Controller::VALIDATE['max191'],
+            'excerpt.string' => 'Mô tả ngắn: ' . Controller::VALIDATE['invalid'],
+            'excerpt.max' => 'Mô tả ngắn: ' . Controller::VALIDATE['max191'],
+            'status.numeric' => 'Trạng thái: ' . Controller::VALIDATE['required'],
+            'status.required' => 'Trạng thái: ' . Controller::VALIDATE['invalid'],
+            'category_id.numeric' => 'Chuyên mục: ' . Controller::VALIDATE['invalid'],
+            'category_id.required' => 'Chuyên mục: ' . Controller::VALIDATE['required'],
+            'image.string' => 'Ảnh: ' . Controller::VALIDATE['invalid'],
         ];
         $request->validate($rules, $messages);
-        if (!empty(Auth::user()->can(User::UPDATE_SERVICE)) || !empty(Auth::user()->can(User::CREATE_SERVICE))) {
+        if (!empty(Auth::user()->can(User::UPDATE_POST)) || !empty(Auth::user()->can(User::CREATE_POST))) {
             $post = $this->sync([
+                'code' => Str::slug($request->code),
                 'title' => $request->title,
+                'author_id' => Auth::user()->id,
+                'category_id' => $request->category_id,
                 'excerpt' => $request->excerpt,
                 'content' => strip_tags($request->input('content')),  //Loại bỏ các thẻ html
-                'category_id' => $request->category_id,
+                'type' => 'post',
+                'image' => $request->image,
                 'status' => $request->status,
-                'author_id' => Auth::user()->id
             ], $request->ip(), $request->id);
             if (isset($request->image)) {
                 $post->image = $request->image;
@@ -176,10 +177,11 @@ class PostController extends Controller
     {
         $success = [];
         $fail = [];
-        if (Auth::user()->can(User::DELETE_SERVICE)) {
+        if (Auth::user()->can(User::DELETE_POST)) {
             foreach ($request->choices as $key => $id) {
                 $obj = Post::find($id);
                 if ($obj->canRemove()) {
+                    $obj->revision();
                     $obj->delete();
                     LogController::create("xóa", self::NAME, $obj->id, $request->ip());
                     array_push($success, $obj->name);

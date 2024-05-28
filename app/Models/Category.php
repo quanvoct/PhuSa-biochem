@@ -10,6 +10,7 @@ class Category extends Model
 {
     use HasFactory;
     protected $table = 'categories';
+    protected $appends = array('statusStr');
     /**
      * The attributes that are mass assignable.
      *
@@ -18,19 +19,18 @@ class Category extends Model
     protected $fillable = [
         'code',
         'name',
-        'order',
+        'sort',
         'status',
         'note',
         'revision'
     ];
-
     
     public function posts()
     {
         return $this->hasMany(Post::class)->whereNull('revision');
     }
 
-    public function statusName()
+    public function getStatusStrAttribute()
     {
         switch ($this->status) {
             case '1':
@@ -56,5 +56,9 @@ class Category extends Model
         $revision->revision = $this->id;
         $revision->save();
         return true;
+    }
+
+    public function canRemove() {
+        return $this->posts->count() ? true : false;
     }
 }

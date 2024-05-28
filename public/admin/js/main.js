@@ -125,6 +125,115 @@ if ($('.sidebar-item.active').length) {
 }
 
 /**
+ * Xử lý hình ảnh
+ */
+
+//Tạo nút Thêm hình ảnh cho summernote
+var selectImage = function () {
+    var ui = $.summernote.ui;
+    var button = ui.button({
+        contents: '<i class="note-icon-picture"></i>',
+        // tooltip: 'Add Image',
+        click: function () {
+            $('#quick_images-modal').modal('show');
+            $('.btn-insert-images').removeClass('d-none')
+            $('.btn-select-images').addClass('d-none')
+        }
+    });
+    return button.render();
+}
+
+//Chèn hình ảnh đã chọn vào summernote
+$(document).on('click', '.btn-insert-images', function () {
+    $('.quick_images-choice:checked').each(function () {
+        $('.summernote').summernote('insertImage', config.routes.storage + '/' + $(this).attr('data-name'), function (image) {
+            image.addClass('img-article rounded-4')
+        });
+    })
+    $(this).addClass('d-none').parents('.modal').modal('hide')
+    $('.quick_images-choice').prop('checked', false)
+})
+//END xử lý hình ảnh đưa vào thẻ summernote
+
+//Chọn hình ảnh
+$(document).on("click", ".btn-select-images", function () {
+    let imagesName = [];
+    if ($(this).attr("data-select") == "single") {
+        imagesName.length = 0;
+    } else {
+        imagesName = $("#" + $(this).attr("data-target"))
+            .val()
+            .split("|");
+    }
+    $(".quick_images-choice:checked").each(function () {
+        imagesName.push($(this).attr("data-name"));
+    });
+    $("#" + $(this).attr("data-target"))
+        .val(imagesName.join("|"))
+        .change();
+    $(this)
+        .addClass("d-none")
+        .parents(".modal")
+        .modal("hide")
+        .find(".quick_images-choice")
+        .attr("type", "checkbox")
+        .prop("checked", false); //reset
+});
+
+//Xử lý hiển thị hình ảnh cho module gallery_images
+function viewImage(input) {
+    if (input.val() != "") {
+        $(`label[for='${input.attr("id")}']`)
+            .find("img")
+            .attr("src", config.routes.storage + "/" + input.val());
+        input.next().find('.btn-remove-image').removeClass("d-none");
+    } else {
+        $(`label[for='${input.attr("id")}']`)
+            .find("img")
+            .attr("src", config.routes.placeholder);
+        input.next().find('.btn-remove-image').addClass("d-none");
+    }
+}
+
+function openQuickImages(target, isSingle = true) {
+    $("#quick_images-modal").modal("show");
+    $(".quick_images-choice").attr("type", isSingle ? "radio" : "checkbox");
+    $(".btn-select-images")
+        .removeClass("d-none")
+        .attr("data-target", target)
+        .attr("data-select", isSingle ? "single" : "multiple");
+    $(".btn-insert-images").addClass("d-none");
+}
+//END xử lý hình ảnh đưa vào thẻ input
+
+
+// Xử lý hiển thị hình ảnh từ module feature_image
+$(".hidden-image").each(function () {
+    viewImage($(this));
+});
+
+$(document).on("change", ".hidden-image", function () {
+    viewImage($(this));
+});
+
+$(document).on("click", "label.select-image", function () {
+    openQuickImages($(this).attr("for"));
+});
+
+//Xoá ảnh nổi bật
+$(document).on('click', '.btn-remove-image', function () {
+    $(this).parent().prev().val('').change();
+})
+
+//Xoá gallery
+$(document).on('click', '.btn-remove-images', function () {
+    imagesName = $(this).parents('.gallery').prev().val().split('|')
+    imagesName.splice($(this).attr('data-index'), 1)
+    $(this).parents('.gallery').prev().val(imagesName.join('|')).change();
+})
+//END Xử lý hiển thị hình ảnh từ module feature_image
+
+/**
  * Xử lý summernote editor
  */
 $('.air').summernote({
@@ -148,7 +257,7 @@ $('.air').summernote({
 
 $('.summernote').summernote({
     tabsize: 2,
-    height: 500,
+    height: 1500,
     disableDragAndDrop: true,
     codemirror: {
         theme: 'monokai'
@@ -338,115 +447,6 @@ function saveOrder(sortedIDs, routeSort) {
     });
 }
 //END Sắp xếp dữ liệu
-
-/**
- * Xử lý hình ảnh
- */
-
-//Tạo nút Thêm hình ảnh cho summernote
-var selectImage = function () {
-    var ui = $.summernote.ui;
-    var button = ui.button({
-        contents: '<i class="note-icon-picture"></i>',
-        // tooltip: 'Add Image',
-        click: function () {
-            $('#quick_images-modal').modal('show');
-            $('.btn-insert-images').removeClass('d-none')
-            $('.btn-select-images').addClass('d-none')
-        }
-    });
-    return button.render();
-}
-
-//Chèn hình ảnh đã chọn vào summernote
-$(document).on('click', '.btn-insert-images', function () {
-    $('.quick_images-choice:checked').each(function () {
-        $('.summernote').summernote('insertImage', config.routes.storage + '/' + $(this).attr('data-name'), function (image) {
-            image.addClass('img-article rounded-4')
-        });
-    })
-    $(this).addClass('d-none').parents('.modal').modal('hide')
-    $('.quick_images-choice').prop('checked', false)
-})
-//END xử lý hình ảnh đưa vào thẻ summernote
-
-//Chọn hình ảnh
-$(document).on("click", ".btn-select-images", function () {
-    let imagesName = [];
-    if ($(this).attr("data-select") == "single") {
-        imagesName.length = 0;
-    } else {
-        imagesName = $("#" + $(this).attr("data-target"))
-            .val()
-            .split("|");
-    }
-    $(".quick_images-choice:checked").each(function () {
-        imagesName.push($(this).attr("data-name"));
-    });
-    $("#" + $(this).attr("data-target"))
-        .val(imagesName.join("|"))
-        .change();
-    $(this)
-        .addClass("d-none")
-        .parents(".modal")
-        .modal("hide")
-        .find(".quick_images-choice")
-        .attr("type", "checkbox")
-        .prop("checked", false); //reset
-});
-
-//Xử lý hiển thị hình ảnh cho module gallery_images
-function viewImage(input) {
-    if (input.val() != "") {
-        $(`label[for='${input.attr("id")}']`)
-            .find("img")
-            .attr("src", config.routes.storage + "/" + input.val());
-        input.next().find('.btn-remove-image').removeClass("d-none");
-    } else {
-        $(`label[for='${input.attr("id")}']`)
-            .find("img")
-            .attr("src", config.routes.placeholder);
-        input.next().find('.btn-remove-image').addClass("d-none");
-    }
-}
-
-function openQuickImages(target, isSingle = true) {
-    $("#quick_images-modal").modal("show");
-    $(".quick_images-choice").attr("type", isSingle ? "radio" : "checkbox");
-    $(".btn-select-images")
-        .removeClass("d-none")
-        .attr("data-target", target)
-        .attr("data-select", isSingle ? "single" : "multiple");
-    $(".btn-insert-images").addClass("d-none");
-}
-//END xử lý hình ảnh đưa vào thẻ input
-
-
-// Xử lý hiển thị hình ảnh từ module feature_image
-$(".hidden-image").each(function () {
-    viewImage($(this));
-});
-
-$(document).on("change", ".hidden-image", function () {
-    viewImage($(this));
-});
-
-$(document).on("click", "label.select-image", function () {
-    openQuickImages($(this).attr("for"));
-});
-
-//Xoá ảnh nổi bật
-$(document).on('click', '.btn-remove-image', function () {
-    $(this).parent().prev().val('').change();
-})
-
-//Xoá gallery
-$(document).on('click', '.btn-remove-images', function () {
-    imagesName = $(this).parents('.gallery').prev().val().split('|')
-    imagesName.splice($(this).attr('data-index'), 1)
-    $(this).parents('.gallery').prev().val(imagesName.join('|')).change();
-})
-//END Xử lý hiển thị hình ảnh từ module feature_image
 
 // Bật tắt nút XÓA khi thay đổi trạng thái checkbox
 $(document).on("change", ".quick_images-choice", function (e) {
