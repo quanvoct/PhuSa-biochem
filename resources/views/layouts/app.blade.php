@@ -532,7 +532,7 @@
                                                 <i class="bi bi-headset"></i>
                                             </div>
                                             <div class="footer-address-info">
-                                                <p><a href="tel:(+84)2926515678">{{ __('Customer service:') }} (+84)2926515678</a></p>
+                                                <p><a href="tel:{{ $settings['company_phone'] }}">{{ __('Customer service:') }} {{ $settings['company_phone'] }}</a></p>
                                             </div>
                                         </li>
                                         <li>
@@ -548,18 +548,17 @@
                                                 <i class="icon-mail"></i>
                                             </div>
                                             <div class="footer-address-info">
-                                                <p><a href="mailto:cskh@phusagenomics.com">{{ __('Email:
-                                                        cskh@phusagenomics.com') }}</a></p>
+                                                <p><a href="mailto: {{ $settings['company_email'] }}">Email: {{ $settings['company_email'] }}</a></p>
                                             </div>
                                         </li>
-                                        <li>
+                                        <!-- <li>
                                             <div class="footer-address-icon">
                                                 <i class="bi bi-credit-card-2-front"></i>
                                             </div>
                                             <div class="footer-address-info">
                                                 <p>{{ __('Business code: 1801727039 Issued on July 8, 2022 at Department of Planning and Investment of Cantho city,  Vietnam') }}</p>
                                             </div>
-                                        </li>
+                                        </li> -->
                                     </ul>
                                 </div>
                                 <div class="ltn__social-media mt-20">
@@ -580,7 +579,7 @@
                                         <li><a href="{{ route('home.index') }}">{{ __('Home') }}</a></li>
                                         <li><a href="{{ route('home.index', ['page' => 'about']) }}">{{ __('About') }}</a></li>
                                         <li><a href="{{ route('shop.index') }}">{{ __('Shop') }}</a></li>
-                                        <li><a href="{{ route('home.index', ['page' => 'code']) }}">{{ __('News') }}</a></li>
+                                        <li><a href="{{ route('home.index', ['page' => 'posts']) }}">{{ __('News') }}</a></li>
                                         <li><a href="{{ route('home.contact') }}">{{ __('Contact us') }}</a></li>
                                     </ul>
                                 </div>
@@ -590,12 +589,9 @@
                             <div class="footer-widget footer-menu-widget clearfix">
                                 <h4 class="footer-title">{{ __('Policies') }}</h4>
                                 <div class="footer-menu">
-                                    <ul>
-                                        <li><a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">{{ __('Shopping guide') }}</a></li>
-                                        <li><a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">{{ __('Sales policy') }}</a></li>
-                                        <li><a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">{{ __('Delivery &amp; return policy') }}</a></li>
-                                        <li><a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">{{ __('Payment Guide') }}</a></li>
-                                        <li><a href="{{ route('home.index', ['page' => 'code']) }}">{{ __('Privacy Policy') }}</a></li>
+                                    <ul> @foreach ($options['categories']->where('code', 'policies') as $post)
+                                        <li><a href="{{ route('home.index', ['page' => 'posts', 'category' => $post->category->code, 'post' => $post->code]) }}">{!! $post->title !!}</a></li>
+                                        @endforeach
                                     </ul>
                                 </div>
                             </div>
@@ -605,12 +601,9 @@
                                 <h4 class="footer-title">{{ __('Product Categories') }}</h4>
                                 <div class="footer-menu">
                                     <ul>
-                                        <li><a href="{{ route('shop.index') }}">{{ __('Oligo/Primer ') }}</a></li>
-                                        <li><a href="{{ route('shop.index') }}">{{ __('Biology Products') }}</a></li>
-                                        <li><a href="{{ route('shop.index') }}">{{ __('Device') }}</a></li>
-                                        <li><a href="{{ route('shop.index') }}">{{ __('Utility package') }}</a></li>
-                                        <li><a href="{{ route('shop.index') }}">{{ __('Services') }}</a></li>
-                                        <li><a href="{{ route('shop.index') }}">{{ __('Diagnostic kit') }}</a></li>
+                                        @foreach ($options['catalogue']->whereNull('parent_id') as $catalogue)
+                                        <li><a href="{{ route('shop.index', ['catalogue' => $catalogue->slug]) }}">{!! $catalogue->name !!}</a></li>
+                                        @endforeach
                                     </ul>
                                 </div>
                             </div>

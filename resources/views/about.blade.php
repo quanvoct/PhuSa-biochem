@@ -472,177 +472,40 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="section-title-area ltn__section-title-2--- text-center">
-                    <h1 class="section-title">Leatest News Feeds</h1>
+                    <h6 class="section-subtitle section-subtitle-2 ltn__secondary-color">{{ __('News & Blogs') }}
+                    </h6>
+                    <h1 class="section-title">{{ __('Leatest Blogs') }}</h1>
                 </div>
             </div>
         </div>
         <div class="row  ltn__blog-slider-one-active slick-arrow-1 ltn__blog-item-3-normal">
+            @foreach($categories as $category)
+            @foreach($category->posts as $post)
             <!-- Blog Item -->
             <div class="col-lg-12">
                 <div class="ltn__blog-item ltn__blog-item-3">
                     <div class="ltn__blog-img">
-                        <a href="{{ route('home.post') }}"><img src="{{ asset('img/blog/1.jpg') }}" alt="#"></a>
+                        <a href="{{ route('home.index', ['page' => 'posts', 'category' => $post->category->code, 'post' => $post->code]) }}"><img src="{{ $post->imageUrl() }}" alt="#"></a>
                     </div>
                     <div class="ltn__blog-brief">
-                        <div class="ltn__blog-meta">
-                            <ul>
-                                <li class="ltn__blog-author">
-                                    <a href="#"><i class="far fa-user"></i>by: Admin</a>
-                                </li>
-                                <li class="ltn__blog-tags">
-                                    <a href="#"><i class="fas fa-tags"></i>Decorate</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <h3 class="ltn__blog-title"><a href="{{ route('home.post') }}">10 Brilliant Ways To Decorate
-                                Your Home</a></h3>
+                        <h3 class="ltn__blog-title"><a href="{{ route('home.index', ['page' => 'posts', 'category' => $post->category->code, 'post' => $post->code]) }}">{!! $post->title !!}</a></h3>
+                        <p>{!! ($post->excerpt) ? Illuminate\Support\Str::limit($post->excerpt, 60) : Illuminate\Support\Str::limit($post->content, 60) !!}</p>
                         <div class="ltn__blog-meta-btn">
                             <div class="ltn__blog-meta">
                                 <ul>
-                                    <li class="ltn__blog-date"><i class="far fa-calendar-alt"></i>June 24, 2021
+                                    <li class="ltn__blog-date"><i class="far fa-calendar-alt"></i>{{ \Carbon\Carbon::parse($post->created_at)->format('d/m/Y') }}
                                     </li>
                                 </ul>
                             </div>
                             <div class="ltn__blog-btn">
-                                <a href="{{ route('home.post') }}">Read more</a>
+                                <a href="{{ route('home.index', ['page' => 'posts', 'category' => $post->category->code, 'post' => $post->code]) }}">{{ __('Read more') }}</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- Blog Item -->
-            <div class="col-lg-12">
-                <div class="ltn__blog-item ltn__blog-item-3">
-                    <div class="ltn__blog-img">
-                        <a href="{{ route('home.post') }}"><img src="{{ asset('img/blog/2.jpg') }}" alt="#"></a>
-                    </div>
-                    <div class="ltn__blog-brief">
-                        <div class="ltn__blog-meta">
-                            <ul>
-                                <li class="ltn__blog-author">
-                                    <a href="#"><i class="far fa-user"></i>by: Admin</a>
-                                </li>
-                                <li class="ltn__blog-tags">
-                                    <a href="#"><i class="fas fa-tags"></i>Interior</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <h3 class="ltn__blog-title"><a href="{{ route('home.post') }}">The Most Inspiring Interior
-                                Design Of 2021</a></h3>
-                        <div class="ltn__blog-meta-btn">
-                            <div class="ltn__blog-meta">
-                                <ul>
-                                    <li class="ltn__blog-date"><i class="far fa-calendar-alt"></i>July 23, 2021
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="ltn__blog-btn">
-                                <a href="{{ route('home.post') }}">Read more</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Blog Item -->
-            <div class="col-lg-12">
-                <div class="ltn__blog-item ltn__blog-item-3">
-                    <div class="ltn__blog-img">
-                        <a href="{{ route('home.post') }}"><img src="{{ asset('img/blog/3.jpg') }}" alt="#"></a>
-                    </div>
-                    <div class="ltn__blog-brief">
-                        <div class="ltn__blog-meta">
-                            <ul>
-                                <li class="ltn__blog-author">
-                                    <a href="#"><i class="far fa-user"></i>by: Admin</a>
-                                </li>
-                                <li class="ltn__blog-tags">
-                                    <a href="#"><i class="fas fa-tags"></i>Estate</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <h3 class="ltn__blog-title"><a href="{{ route('home.post') }}">Recent Commercial Real Estate
-                                Transactions</a></h3>
-                        <div class="ltn__blog-meta-btn">
-                            <div class="ltn__blog-meta">
-                                <ul>
-                                    <li class="ltn__blog-date"><i class="far fa-calendar-alt"></i>May 22, 2021
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="ltn__blog-btn">
-                                <a href="{{ route('home.post') }}">Read more</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Blog Item -->
-            <div class="col-lg-12">
-                <div class="ltn__blog-item ltn__blog-item-3">
-                    <div class="ltn__blog-img">
-                        <a href="{{ route('home.post') }}"><img src="{{ asset('img/blog/4.jpg') }}" alt="#"></a>
-                    </div>
-                    <div class="ltn__blog-brief">
-                        <div class="ltn__blog-meta">
-                            <ul>
-                                <li class="ltn__blog-author">
-                                    <a href="#"><i class="far fa-user"></i>by: Admin</a>
-                                </li>
-                                <li class="ltn__blog-tags">
-                                    <a href="#"><i class="fas fa-tags"></i>Room</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <h3 class="ltn__blog-title"><a href="{{ route('home.post') }}">Renovating a Living Room?
-                                Experts Share Their Secrets</a></h3>
-                        <div class="ltn__blog-meta-btn">
-                            <div class="ltn__blog-meta">
-                                <ul>
-                                    <li class="ltn__blog-date"><i class="far fa-calendar-alt"></i>June 24, 2021
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="ltn__blog-btn">
-                                <a href="{{ route('home.post') }}">Read more</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Blog Item -->
-            <div class="col-lg-12">
-                <div class="ltn__blog-item ltn__blog-item-3">
-                    <div class="ltn__blog-img">
-                        <a href="{{ route('home.post') }}"><img src="{{ asset('img/blog/5.jpg') }}" alt="#"></a>
-                    </div>
-                    <div class="ltn__blog-brief">
-                        <div class="ltn__blog-meta">
-                            <ul>
-                                <li class="ltn__blog-author">
-                                    <a href="#"><i class="far fa-user"></i>by: Admin</a>
-                                </li>
-                                <li class="ltn__blog-tags">
-                                    <a href="#"><i class="fas fa-tags"></i>Trends</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <h3 class="ltn__blog-title"><a href="{{ route('home.post') }}">7 home trends that will shape
-                                your house in 2021</a></h3>
-                        <div class="ltn__blog-meta-btn">
-                            <div class="ltn__blog-meta">
-                                <ul>
-                                    <li class="ltn__blog-date"><i class="far fa-calendar-alt"></i>June 24, 2021
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="ltn__blog-btn">
-                                <a href="{{ route('home.post') }}">Read more</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!--  -->
+            @endforeach
+            @endforeach
         </div>
     </div>
 </div>

@@ -319,12 +319,18 @@
             </div>
             <div class="col-lg-9">
                 <div class="row ltn__tab-product-slider-one-active--- slick-arrow-1">
+                    @if($uniqueProducts->isEmpty())
+                    <p>{{ __('Products are being updated') }}</p>
+                    @else
+                    @foreach($uniqueProducts->take(6) as $product)
                     <!-- ltn__product-item -->
-                    <div class="col-lg-3--- col-md-4 col-sm-6 col-6">
+                    <div class="col-md-4 col-sm-6 col-6">
                         <div class="ltn__product-item ltn__product-item-2 text-left">
                             <div class="product-img">
-                                <a href="{{ route('shop.index') }}"><img src="{{ asset('img/product/product-demo-1.jpg') }}" alt="#"></a>
-                                <div class="product-badge">
+                                <a href="{{ route('shop.index', ['catalogue' => $product->catalogues->first()->slug, 'product' => $product->slug]) }}">
+                                    <img src="{{ $product->getImageUrlAttribute() }}" alt="img">
+                                </a>
+                                <!-- <div class="product-badge">
                                     <ul>
                                         <li class="sale-badge">New</li>
                                     </ul>
@@ -343,10 +349,11 @@
                                         </li>
                                         <li>
                                             <a href="#" title="Wishlist" data-bs-toggle="modal" data-bs-target="#liton_wishlist_modal">
-                                                <i class="far fa-heart"></i></a>
+                                                <i class="far fa-heart"></i>
+                                            </a>
                                         </li>
                                     </ul>
-                                </div>
+                                </div> -->
                             </div>
                             <div class="product-info">
                                 <div class="product-ratting">
@@ -358,247 +365,21 @@
                                         <li><a href="#"><i class="far fa-star"></i></a></li>
                                     </ul>
                                 </div>
-                                <h2 class="product-title"><a href="{{ route('shop.index') }}">Master mix 2X SyBr
-                                        Green</a></h2>
+                                <h2 class="product-title">
+                                    <a href="{{ route('shop.index', ['catalogue' => $product->catalogues->first()->slug, 'product' => $product->slug]) }}">
+                                        {!! $product->name !!}
+                                    </a>
+                                </h2>
                                 <div class="product-price">
-                                    <span>350,000<sup>đ</sup> - 825,000<sup>đ</sup></span>
+                                    <span>{!! $product->displayPrice() !!}</span>
                                     <!-- <del>$46.00</del> -->
                                 </div>
                             </div>
                         </div>
                     </div>
                     <!-- ltn__product-item -->
-                    <div class="col-lg-3--- col-md-4 col-sm-6 col-6">
-                        <div class="ltn__product-item ltn__product-item-2 text-left">
-                            <div class="product-img">
-                                <a href="{{ route('shop.index') }}"><img src="{{ asset('img/product/product-demo-3.jpg') }}" alt="#"></a>
-                                <div class="product-hover-action">
-                                    <ul>
-                                        <li>
-                                            <a href="#" title="Quick View" data-bs-toggle="modal" data-bs-target="#quick_view_modal">
-                                                <i class="far fa-eye"></i>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" title="Add to Cart" data-bs-toggle="modal" data-bs-target="#add_to_cart_modal">
-                                                <i class="fas fa-shopping-cart"></i>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" title="Wishlist" data-bs-toggle="modal" data-bs-target="#liton_wishlist_modal">
-                                                <i class="far fa-heart"></i></a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="product-info">
-                                <div class="product-ratting">
-                                    <ul>
-                                        <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                        <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                        <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                        <li><a href="#"><i class="fas fa-star-half-alt"></i></a></li>
-                                        <li><a href="#"><i class="far fa-star"></i></a></li>
-                                    </ul>
-                                </div>
-                                <h2 class="product-title"><a href="{{ route('shop.index') }}">Safe DYE</a></h2>
-                                <div class="product-price">
-                                    <span>1,200,000<sup>đ</sup> - 2,000,000<sup>đ</sup></span>
-                                    <!-- <del>990,000<sup>đ</sup></del> -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- ltn__product-item -->
-                    <div class="col-lg-3--- col-md-4 col-sm-6 col-6">
-                        <div class="ltn__product-item ltn__product-item-2 text-left">
-                            <div class="product-img">
-                                <a href="{{ route('shop.index') }}"><img src="{{ asset('img/product/product-demo-4.jpg') }}" alt="#"></a>
-                                <div class="product-badge">
-                                    <ul>
-                                        <li class="sale-badge">New</li>
-                                    </ul>
-                                </div>
-                                <div class="product-hover-action">
-                                    <ul>
-                                        <li>
-                                            <a href="#" title="Quick View" data-bs-toggle="modal" data-bs-target="#quick_view_modal">
-                                                <i class="far fa-eye"></i>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" title="Add to Cart" data-bs-toggle="modal" data-bs-target="#add_to_cart_modal">
-                                                <i class="fas fa-shopping-cart"></i>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" title="Wishlist" data-bs-toggle="modal" data-bs-target="#liton_wishlist_modal">
-                                                <i class="far fa-heart"></i></a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="product-info">
-                                <div class="product-ratting">
-                                    <ul>
-                                        <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                        <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                        <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                        <li><a href="#"><i class="fas fa-star-half-alt"></i></a></li>
-                                        <li><a href="#"><i class="far fa-star"></i></a></li>
-                                    </ul>
-                                </div>
-                                <h2 class="product-title"><a href="{{ route('shop.index') }}">Loading Buffer 6X</a>
-                                </h2>
-                                <div class="product-price">
-                                    <span>200,000<sup>đ</sup> - 600,000<sup>đ</sup></span>
-                                    <!-- <del>$92.00</del> -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- ltn__product-item -->
-                    <div class="col-lg-3--- col-md-4 col-sm-6 col-6">
-                        <div class="ltn__product-item ltn__product-item-2 text-left">
-                            <div class="product-img">
-                                <a href="{{ route('shop.index') }}"><img src="{{ asset('img/product/product-demo-5.jpg') }}" alt="#"></a>
-                                <div class="product-badge">
-                                    <ul>
-                                        <li class="sale-badge">New</li>
-                                    </ul>
-                                </div>
-                                <div class="product-hover-action">
-                                    <ul>
-                                        <li>
-                                            <a href="#" title="Quick View" data-bs-toggle="modal" data-bs-target="#quick_view_modal">
-                                                <i class="far fa-eye"></i>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" title="Add to Cart" data-bs-toggle="modal" data-bs-target="#add_to_cart_modal">
-                                                <i class="fas fa-shopping-cart"></i>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" title="Wishlist" data-bs-toggle="modal" data-bs-target="#liton_wishlist_modal">
-                                                <i class="far fa-heart"></i></a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="product-info">
-                                <div class="product-ratting">
-                                    <ul>
-                                        <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                        <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                        <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                        <li><a href="#"><i class="fas fa-star-half-alt"></i></a></li>
-                                        <li><a href="#"><i class="far fa-star"></i></a></li>
-                                    </ul>
-                                </div>
-                                <h2 class="product-title"><a href="{{ route('shop.index') }}">Gene Cloned</a></h2>
-                                <div class="product-price">
-                                    <span>890,000<sup>đ</sup> - 3,890,000<sup>đ</sup></span>
-                                    <!-- <del>$85.00</del> -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- ltn__product-item -->
-                    <div class="col-lg-3--- col-md-4 col-sm-6 col-6">
-                        <div class="ltn__product-item ltn__product-item-2 text-left">
-                            <div class="product-img">
-                                <a href="{{ route('shop.index') }}"><img src="{{ asset('img/product/product-demo-6.jpg') }}" alt="#"></a>
-                                <div class="product-badge">
-                                    <ul>
-                                        <li class="sale-badge">New</li>
-                                    </ul>
-                                </div>
-                                <div class="product-hover-action">
-                                    <ul>
-                                        <li>
-                                            <a href="#" title="Quick View" data-bs-toggle="modal" data-bs-target="#quick_view_modal">
-                                                <i class="far fa-eye"></i>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" title="Add to Cart" data-bs-toggle="modal" data-bs-target="#add_to_cart_modal">
-                                                <i class="fas fa-shopping-cart"></i>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" title="Wishlist" data-bs-toggle="modal" data-bs-target="#liton_wishlist_modal">
-                                                <i class="far fa-heart"></i></a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="product-info">
-                                <div class="product-ratting">
-                                    <ul>
-                                        <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                        <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                        <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                        <li><a href="#"><i class="fas fa-star-half-alt"></i></a></li>
-                                        <li><a href="#"><i class="far fa-star"></i></a></li>
-                                    </ul>
-                                </div>
-                                <h2 class="product-title"><a href="{{ route('shop.index') }}">HPV PCR Kit</a></h2>
-                                <div class="product-price">
-                                    <span>3,000,000<sup>đ</sup> - 13,500,000<sup>đ</sup></span>
-                                    <!-- <del>$180.00</del> -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- ltn__product-item -->
-                    <div class="col-lg-3--- col-md-4 col-sm-6 col-6">
-                        <div class="ltn__product-item ltn__product-item-2 text-left">
-                            <div class="product-img">
-                                <a href="{{ route('shop.index') }}"><img src="{{ asset('img/product/product-demo-7.jpg') }}" alt="#"></a>
-                                <div class="product-badge">
-                                    <ul>
-                                        <li class="sale-badge">New</li>
-                                    </ul>
-                                </div>
-                                <div class="product-hover-action">
-                                    <ul>
-                                        <li>
-                                            <a href="#" title="Quick View" data-bs-toggle="modal" data-bs-target="#quick_view_modal">
-                                                <i class="far fa-eye"></i>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" title="Add to Cart" data-bs-toggle="modal" data-bs-target="#add_to_cart_modal">
-                                                <i class="fas fa-shopping-cart"></i>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#" title="Wishlist" data-bs-toggle="modal" data-bs-target="#liton_wishlist_modal">
-                                                <i class="far fa-heart"></i></a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="product-info">
-                                <div class="product-ratting">
-                                    <ul>
-                                        <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                        <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                        <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                        <li><a href="#"><i class="fas fa-star-half-alt"></i></a></li>
-                                        <li><a href="#"><i class="far fa-star"></i></a></li>
-                                    </ul>
-                                </div>
-                                <h2 class="product-title"><a href="{{ route('shop.index') }}">Master Mix 2X</a></h2>
-                                <div class="product-price">
-                                    <span>750,000<sup>đ</sup> - 2,700,000<sup>đ</sup></span>
-                                    <!-- <del>$180.00</del> -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--  -->
+                    @endforeach
+                    @endif
                 </div>
             </div>
         </div>
@@ -646,11 +427,18 @@
         </div>
         <div class="row ltn__tab-product-slider-one-active--- slick-arrow-1">
             <!-- ltn__product-item -->
+            @if($uniqueProducts->isEmpty())
+            <p>{{ __('Products are being updated') }}</p>
+            @else
+            @foreach($uniqueProducts->take(8) as $product)
+            <!-- ltn__product-item -->
             <div class="col-lg-3 col-md-4 col-sm-6 col-6">
                 <div class="ltn__product-item ltn__product-item-2 text-left">
                     <div class="product-img">
-                        <a href="{{ route('shop.index') }}"><img src="{{ asset('img/product/product-demo-1.jpg') }}" alt="#"></a>
-                        <div class="product-badge">
+                        <a href="{{ route('shop.index', ['catalogue' => $product->catalogues->first()->slug, 'product' => $product->slug]) }}">
+                            <img src="{{ $product->getImageUrlAttribute() }}" alt="img">
+                        </a>
+                        <!-- <div class="product-badge">
                             <ul>
                                 <li class="sale-badge">New</li>
                             </ul>
@@ -669,10 +457,11 @@
                                 </li>
                                 <li>
                                     <a href="#" title="Wishlist" data-bs-toggle="modal" data-bs-target="#liton_wishlist_modal">
-                                        <i class="far fa-heart"></i></a>
+                                        <i class="far fa-heart"></i>
+                                    </a>
                                 </li>
                             </ul>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="product-info">
                         <div class="product-ratting">
@@ -684,342 +473,21 @@
                                 <li><a href="#"><i class="far fa-star"></i></a></li>
                             </ul>
                         </div>
-                        <h2 class="product-title"><a href="{{ route('shop.index') }}">Master mix 2X SyBr Green</a>
+                        <h2 class="product-title">
+                            <a href="{{ route('shop.index', ['catalogue' => $product->catalogues->first()->slug, 'product' => $product->slug]) }}">
+                                {!! $product->name !!}
+                            </a>
                         </h2>
                         <div class="product-price">
-                            <span>350,000<sup>đ</sup> - 825,000<sup>đ</sup></span>
+                            <span>{!! $product->displayPrice() !!}</span>
                             <!-- <del>$46.00</del> -->
                         </div>
                     </div>
                 </div>
             </div>
             <!-- ltn__product-item -->
-            <div class="col-lg-3 col-md-4 col-sm-6 col-6">
-                <div class="ltn__product-item ltn__product-item-2 text-left">
-                    <div class="product-img">
-                        <a href="{{ route('shop.index') }}"><img src="{{ asset('img/product/product-demo-7.jpg') }}" alt="#"></a>
-                        <div class="product-badge">
-                            <ul>
-                                <li class="sale-badge">New</li>
-                            </ul>
-                        </div>
-                        <div class="product-hover-action">
-                            <ul>
-                                <li>
-                                    <a href="#" title="Quick View" data-bs-toggle="modal" data-bs-target="#quick_view_modal">
-                                        <i class="far fa-eye"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" title="Add to Cart" data-bs-toggle="modal" data-bs-target="#add_to_cart_modal">
-                                        <i class="fas fa-shopping-cart"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" title="Wishlist" data-bs-toggle="modal" data-bs-target="#liton_wishlist_modal">
-                                        <i class="far fa-heart"></i></a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="product-info">
-                        <div class="product-ratting">
-                            <ul>
-                                <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                <li><a href="#"><i class="fas fa-star-half-alt"></i></a></li>
-                                <li><a href="#"><i class="far fa-star"></i></a></li>
-                            </ul>
-                        </div>
-                        <h2 class="product-title"><a href="{{ route('shop.index') }}">Master Mix 2X</a></h2>
-                        <div class="product-price">
-                            <span>750,000<sup>đ</sup> - 2,700,000<sup>đ</sup></span>
-                            <!-- <del>$180.00</del> -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- ltn__product-item -->
-            <div class="col-lg-3 col-md-4 col-sm-6 col-6">
-                <div class="ltn__product-item ltn__product-item-2 text-left">
-                    <div class="product-img">
-                        <a href="{{ route('shop.index') }}"><img src="{{ asset('img/product/product-demo-6.jpg') }}" alt="#"></a>
-                        <div class="product-badge">
-                            <ul>
-                                <li class="sale-badge">New</li>
-                            </ul>
-                        </div>
-                        <div class="product-hover-action">
-                            <ul>
-                                <li>
-                                    <a href="#" title="Quick View" data-bs-toggle="modal" data-bs-target="#quick_view_modal">
-                                        <i class="far fa-eye"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" title="Add to Cart" data-bs-toggle="modal" data-bs-target="#add_to_cart_modal">
-                                        <i class="fas fa-shopping-cart"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" title="Wishlist" data-bs-toggle="modal" data-bs-target="#liton_wishlist_modal">
-                                        <i class="far fa-heart"></i></a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="product-info">
-                        <div class="product-ratting">
-                            <ul>
-                                <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                <li><a href="#"><i class="fas fa-star-half-alt"></i></a></li>
-                                <li><a href="#"><i class="far fa-star"></i></a></li>
-                            </ul>
-                        </div>
-                        <h2 class="product-title"><a href="{{ route('shop.index') }}">HPV PCR Kit</a></h2>
-                        <div class="product-price">
-                            <span>3,000,000<sup>đ</sup> - 13,500,000<sup>đ</sup></span>
-                            <!-- <del>$180.00</del> -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- ltn__product-item -->
-            <div class="col-lg-3 col-md-4 col-sm-6 col-6">
-                <div class="ltn__product-item ltn__product-item-2 text-left">
-                    <div class="product-img">
-                        <a href="{{ route('shop.index') }}"><img src="{{ asset('img/product/product-demo-5.jpg') }}" alt="#"></a>
-                        <div class="product-badge">
-                            <ul>
-                                <li class="sale-badge">New</li>
-                            </ul>
-                        </div>
-                        <div class="product-hover-action">
-                            <ul>
-                                <li>
-                                    <a href="#" title="Quick View" data-bs-toggle="modal" data-bs-target="#quick_view_modal">
-                                        <i class="far fa-eye"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" title="Add to Cart" data-bs-toggle="modal" data-bs-target="#add_to_cart_modal">
-                                        <i class="fas fa-shopping-cart"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" title="Wishlist" data-bs-toggle="modal" data-bs-target="#liton_wishlist_modal">
-                                        <i class="far fa-heart"></i></a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="product-info">
-                        <div class="product-ratting">
-                            <ul>
-                                <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                <li><a href="#"><i class="fas fa-star-half-alt"></i></a></li>
-                                <li><a href="#"><i class="far fa-star"></i></a></li>
-                            </ul>
-                        </div>
-                        <h2 class="product-title"><a href="{{ route('shop.index') }}">Gene Cloned</a></h2>
-                        <div class="product-price">
-                            <span>890,000<sup>đ</sup> - 3,890,000<sup>đ</sup></span>
-                            <!-- <del>$85.00</del> -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- ltn__product-item -->
-            <div class="col-lg-3 col-md-4 col-sm-6 col-6">
-                <div class="ltn__product-item ltn__product-item-2 text-left">
-                    <div class="product-img">
-                        <a href="{{ route('shop.index') }}"><img src="{{ asset('img/product/product-demo-4.jpg') }}" alt="#"></a>
-                        <div class="product-badge">
-                            <ul>
-                                <li class="sale-badge">New</li>
-                            </ul>
-                        </div>
-                        <div class="product-hover-action">
-                            <ul>
-                                <li>
-                                    <a href="#" title="Quick View" data-bs-toggle="modal" data-bs-target="#quick_view_modal">
-                                        <i class="far fa-eye"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" title="Add to Cart" data-bs-toggle="modal" data-bs-target="#add_to_cart_modal">
-                                        <i class="fas fa-shopping-cart"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" title="Wishlist" data-bs-toggle="modal" data-bs-target="#liton_wishlist_modal">
-                                        <i class="far fa-heart"></i></a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="product-info">
-                        <div class="product-ratting">
-                            <ul>
-                                <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                <li><a href="#"><i class="fas fa-star-half-alt"></i></a></li>
-                                <li><a href="#"><i class="far fa-star"></i></a></li>
-                            </ul>
-                        </div>
-                        <h2 class="product-title"><a href="{{ route('shop.index') }}">Loading Buffer 6X</a>
-                        </h2>
-                        <div class="product-price">
-                            <span>200,000<sup>đ</sup> - 600,000<sup>đ</sup></span>
-                            <!-- <del>$92.00</del> -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- ltn__product-item -->
-            <div class="col-lg-3 col-md-4 col-sm-6 col-6">
-                <div class="ltn__product-item ltn__product-item-2 text-left">
-                    <div class="product-img">
-                        <a href="{{ route('shop.index') }}"><img src="{{ asset('img/product/product-demo-3.jpg') }}" alt="#"></a>
-                        <div class="product-hover-action">
-                            <ul>
-                                <li>
-                                    <a href="#" title="Quick View" data-bs-toggle="modal" data-bs-target="#quick_view_modal">
-                                        <i class="far fa-eye"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" title="Add to Cart" data-bs-toggle="modal" data-bs-target="#add_to_cart_modal">
-                                        <i class="fas fa-shopping-cart"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" title="Wishlist" data-bs-toggle="modal" data-bs-target="#liton_wishlist_modal">
-                                        <i class="far fa-heart"></i></a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="product-info">
-                        <div class="product-ratting">
-                            <ul>
-                                <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                <li><a href="#"><i class="fas fa-star-half-alt"></i></a></li>
-                                <li><a href="#"><i class="far fa-star"></i></a></li>
-                            </ul>
-                        </div>
-                        <h2 class="product-title"><a href="{{ route('shop.index') }}">Safe DYE</a></h2>
-                        <div class="product-price">
-                            <span>1,200,000<sup>đ</sup> - 2,000,000<sup>đ</sup></span>
-                            <!-- <del>990,000<sup>đ</sup></del> -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- ltn__product-item -->
-            <div class="col-lg-3 col-md-4 col-sm-6 col-6">
-                <div class="ltn__product-item ltn__product-item-2 text-left">
-                    <div class="product-img">
-                        <a href="{{ route('shop.index') }}"><img src="{{ asset('img/product/product-demo-2.jpg') }}" alt="#"></a>
-                        <div class="product-badge">
-                            <ul>
-                                <li class="sale-badge">New</li>
-                            </ul>
-                        </div>
-                        <div class="product-hover-action">
-                            <ul>
-                                <li>
-                                    <a href="#" title="Quick View" data-bs-toggle="modal" data-bs-target="#quick_view_modal">
-                                        <i class="far fa-eye"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" title="Add to Cart" data-bs-toggle="modal" data-bs-target="#add_to_cart_modal">
-                                        <i class="fas fa-shopping-cart"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" title="Wishlist" data-bs-toggle="modal" data-bs-target="#liton_wishlist_modal">
-                                        <i class="far fa-heart"></i></a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="product-info">
-                        <div class="product-ratting">
-                            <ul>
-                                <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                <li><a href="#"><i class="fas fa-star-half-alt"></i></a></li>
-                                <li><a href="#"><i class="far fa-star"></i></a></li>
-                            </ul>
-                        </div>
-                        <h2 class="product-title"><a href="{{ route('shop.index') }}">Magnetic stirrer</a></h2>
-                        <div class="product-price">
-                            <span>2,920,000<sup>đ</sup></span>
-                            <!-- <del>$46.00</del> -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- ltn__product-item -->
-            <div class="col-lg-3 col-md-4 col-sm-6 col-6">
-                <div class="ltn__product-item ltn__product-item-2 text-left">
-                    <div class="product-img">
-                        <a href="{{ route('shop.index') }}"><img src="{{ asset('img/product/product-demo-12.jpg') }}" alt="#"></a>
-                        <div class="product-badge">
-                            <ul>
-                                <li class="sale-badge">New</li>
-                            </ul>
-                        </div>
-                        <div class="product-hover-action">
-                            <ul>
-                                <li>
-                                    <a href="#" title="Quick View" data-bs-toggle="modal" data-bs-target="#quick_view_modal">
-                                        <i class="far fa-eye"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" title="Add to Cart" data-bs-toggle="modal" data-bs-target="#add_to_cart_modal">
-                                        <i class="fas fa-shopping-cart"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" title="Wishlist" data-bs-toggle="modal" data-bs-target="#liton_wishlist_modal">
-                                        <i class="far fa-heart"></i></a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="product-info">
-                        <div class="product-ratting">
-                            <ul>
-                                <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                <li><a href="#"><i class="fas fa-star-half-alt"></i></a></li>
-                                <li><a href="#"><i class="far fa-star"></i></a></li>
-                            </ul>
-                        </div>
-                        <h2 class="product-title"><a href="{{ route('shop.index') }}">Vertical electrophoresis
-                                machine VE100</a></h2>
-                        <div class="product-price">
-                            <span>66,000,000<sup>đ</sup></span>
-                            <!-- <del>$46.00</del> -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!--  -->
+            @endforeach
+            @endif
         </div>
     </div>
 </div>

@@ -160,7 +160,8 @@ Route::get('/geolocation/country', [GeolocationController::class, 'getCountry'])
 Route::get('/geolocation/city', [GeolocationController::class, 'getCity'])->name('geolocation.city');
 Route::get('/geolocation/district', [GeolocationController::class, 'getDistrict'])->name('geolocation.district');
 
-Route::get('/contact', [HomepageController::class, 'contact'])->name('home.contact');
+Route::get('/contact', [HomeController::class, 'contact'])->name('home.contact');
+Route::get('/about', [HomeController::class, 'about'])->name('home.about');
 Route::get('/cart', [CartController::class, 'cart'])->name('cart.index');
 Route::get('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 Route::get('/cart/checkout/success', [CartController::class, 'checkout'])->name('cart.checkout.success');

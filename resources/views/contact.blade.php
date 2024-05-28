@@ -27,8 +27,8 @@
 <div class="ltn__contact-address-area mb-90">
     <div class="container">
         <div class="row align-items-stretch">
-            <div class="col-lg-4">
-                <div class="ltn__contact-address-item ltn__contact-address-item-3 box-shadow h-100">
+            <div class="col-lg-3">
+                <div class="ltn__contact-address-item ltn__contact-address-item-3 p-3 box-shadow h-100">
                     <div class="ltn__contact-address-icon">
                         <img src="{{ asset('img/icons/10.png') }}" alt="Icon Image">
                     </div>
@@ -36,8 +36,8 @@
                     <p> {{ $settings['company_email'] }}<br></p>
                 </div>
             </div>
-            <div class="col-lg-4">
-                <div class="ltn__contact-address-item ltn__contact-address-item-3 box-shadow h-100">
+            <div class="col-lg-3">
+                <div class="ltn__contact-address-item ltn__contact-address-item-3 p-3 box-shadow h-100">
                     <div class="ltn__contact-address-icon">
                         <img src="{{ asset('img/icons/11.png') }}" alt="Icon Image">
                     </div>
@@ -46,13 +46,22 @@
                     </p>
                 </div>
             </div>
-            <div class="col-lg-4">
-                <div class="ltn__contact-address-item ltn__contact-address-item-3 box-shadow h-100">
+            <div class="col-lg-3">
+                <div class="ltn__contact-address-item ltn__contact-address-item-3 p-3 box-shadow h-100">
                     <div class="ltn__contact-address-icon">
                         <img src="{{ asset('img/icons/12.png') }}" alt="Icon Image">
                     </div>
                     <h3>{{ __('Office Address') }}</h3>
                     <p>{{ $settings['company_address'] }}</p>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="ltn__contact-address-item ltn__contact-address-item-3 p-3 box-shadow h-100">
+                    <div class="ltn__contact-address-icon">
+                        <img src="{{ asset('img/icons/10.png') }}" alt="Icon Image">
+                    </div>
+                    <h3>{{ __('Business code:') }}</h3>
+                    <p>{{ __(' 1801727039 Issued on July 8, 2022 at Department of Planning and Investment of Cantho city,  Vietnam') }}</p>
                 </div>
             </div>
         </div>

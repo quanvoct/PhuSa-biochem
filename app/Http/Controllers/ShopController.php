@@ -22,30 +22,49 @@ class ShopController extends Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function shop(Request $request)
-    {
-        if ($request->catalogue) {
-            if ($request->product) {
-                $product = Product::whereStatus(1)->whereSlug($request->product)->first();
-                if ($product) {
-                    $pageName = $product->name;
-                    return view('product', compact('pageName'));
-                } else {
-                    abort(404);
-                }
+{
+    $settings = Controller::getSettings();
+    $options = Controller::options();
+    if ($request->catalogue) {
+        $catalogue = Catalogue::whereNull('revision')->whereStatus(1)->whereSlug($request->catalogue)
+            ->with(['products' => function ($query) {
+                $query->whereNull('revision')
+                    ->where('status', '>', 0)
+                    ->orderBy('sort', 'DESC');
+            }])->first();
+        if ($request->product) {
+            $product = Product::whereNull('revision')->whereStatus(1)->whereSlug($request->product)->first();
+            if ($product) {
+                $pageName = $product->name;
+                return view('product', compact('pageName', 'settings', 'options', 'product', 'catalogue'));
             } else {
-                $catalogue = Catalogue::whereStatus(1)->whereSlug($request->catalogue)->first();
-                if ($catalogue) {
-                    $pageName = $catalogue->name;
-                    return view('catalogue', compact('pageName'));
-                } else {
-                    abort(404);
-                }
+                abort(404);
             }
         } else {
-            $pageName = __('Shop');
-            return view('shop', compact('pageName'));
+            if ($catalogue) {
+                $pageName = $catalogue->name;
+                $products = $catalogue->products()->paginate(1); 
+                return view('catalogue', compact('pageName', 'settings', 'options', 'catalogue', 'products'));
+            } else {
+                abort(404);
+            }
         }
+    } else {
+        $catalogues = Catalogue::whereNull('revision')
+            ->where('status', 1)
+            ->orderBy('id', 'DESC')
+            ->get();
+        
+        $products = Product::whereNull('revision')
+            ->where('status', '>', 0)
+            ->orderBy('sort', 'DESC')
+            ->paginate(1); 
+        
+        $pageName = __('Shop');
+        return view('shop', compact('pageName', 'settings', 'options', 'catalogues', 'products'));
     }
+}
+
 
     public function changeLanguage(Request $request)
     {
