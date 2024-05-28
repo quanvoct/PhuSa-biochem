@@ -200,7 +200,7 @@ class ProductController extends Controller
                 'sort' => Product::max('sort') + 1,
                 'gallery' => $request->gallery,
                 'allow_review' => $request->has('allow_review'),
-                'status' => $request->status,
+                'status' => $request->has('status') ? $request->status : 0,
             ], $request->id);
             if ($obj) {
                 $obj->syncCatalogues($request->catalogues);
@@ -301,7 +301,7 @@ class ProductController extends Controller
                 'unit' => $request->unit,
                 'gallery' => $request->gallery,
                 'allow_review' => $request->has('allow_review'),
-                'status' => $request->status,
+                'status' => $request->has('status') ? $request->status : 0,
             ], $request->id);
             if ($obj) {
                 $obj->syncCatalogues($request->catalogues);

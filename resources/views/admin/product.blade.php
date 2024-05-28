@@ -123,11 +123,11 @@
                         <div class="form-group">
                             <label class="form-label mt-1" for="product-status">Trạng thái</label>
                             <select class="form-select @error('status') is-invalid @enderror" id="product-status" name="status">
-                                <option value="1" {{ (isset($product) && $product->status == 1) || old('status') == 1 ? 'selected' : '' }}>
+                                <option value="1" {{ (isset($product) && $product->status == '1') || old('status') == '1' ? 'selected' : '' }}>
                                     Xuất bản</option>
-                                <option value="2" {{ (isset($product) && $product->status == 3) || old('status') == '3' ? 'selected' : '' }}>
+                                <option value="2" {{ (isset($product) && $product->status == '2') || old('status') == '2' ? 'selected' : '' }}>
                                     Nổi bật</option>
-                                <option value="0" {{ (isset($product) && $product->status == 0) || old('status') == 0 ? 'selected' : '' }}>
+                                <option value="0" {{ (isset($product) && $product->status == '0') || old('status') == '0' ? 'selected' : '' }}>
                                     Không hiển thị</option>
                             </select>
                             @error('status')

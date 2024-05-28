@@ -322,7 +322,7 @@
                     @if($uniqueProducts->isEmpty())
                     <p>{{ __('Products are being updated') }}</p>
                     @else
-                    @foreach($uniqueProducts->take(6) as $product)
+                    @foreach($uniqueProducts->where('status', 2)->take(6) as $product)
                     <!-- ltn__product-item -->
                     <div class="col-md-4 col-sm-6 col-6">
                         <div class="ltn__product-item ltn__product-item-2 text-left">
