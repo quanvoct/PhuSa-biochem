@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Catalogue;
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
 class HomeController extends Controller
@@ -59,18 +61,17 @@ class HomeController extends Controller
                 ->with(['products' => function ($query) {
                     $query->whereNull('revision')
                         ->where('status', '>', 0)
-                        ->orderBy('sort', 'DESC');
+                        ->orderBy('sort', 'ASC');
                 }])
-                ->orderBy('id', 'DESC')
+                ->orderBy('sort', 'ASC')
                 ->get();
-
             $categories = Category::whereNull('revision')
                 ->where('status', 1)
                 ->with(['posts' => function ($query) {
                     $query->where('status', 1)
                         ->orderBy('created_at', 'DESC');
                 }])
-                ->orderBy('id', 'DESC')
+                ->orderBy('sort', 'ASC')
                 ->get();
 
             // Lấy tất cả sản phẩm duy nhất từ danh sách catalogues

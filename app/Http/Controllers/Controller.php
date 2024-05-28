@@ -35,7 +35,7 @@ class Controller extends BaseController
             'agent' => new Agent(),
             'roles' => Role::all(),
             'orders' => Order::whereNull('revision')->get(),
-            'categories' => Category::whereNull('revision')->where('status', 1)->orderBy('order', 'ASC')->get(),
+            'categories' => Category::whereNull('revision')->where('status', 1)->orderBy('sort', 'ASC')->get(),
             'products' => Product::whereNull('revision')->where('status', '>=' ,1)->orderBy('sort', 'ASC')->get(),
             'variables' => Variable::whereNull('revision')->get(),
             'catalogue' => Catalogue::whereNull('revision')->whereStatus(1)->orderBy('sort', 'ASC')->get(),
