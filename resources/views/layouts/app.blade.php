@@ -524,7 +524,7 @@
                                                 <i class="icon-placeholder"></i>
                                             </div>
                                             <div class="footer-address-info">
-                                                <p>{{ __('Address: K1.15-16, Vo Nguyen Giap st., Phu Thu w., Cai Rang dis., Cantho City, Vietnam') }}</p>
+                                                <p>{{ __('Address') }}: {{ session('settings')['company_address'] }}</p>
                                             </div>
                                         </li>
                                         <li>
@@ -532,7 +532,7 @@
                                                 <i class="bi bi-headset"></i>
                                             </div>
                                             <div class="footer-address-info">
-                                                <p><a href="tel:{{ $settings['company_phone'] }}">{{ __('Customer service:') }} {{ $settings['company_phone'] }}</a></p>
+                                                <p>{{ __('Customer service') }}: <a href="tel:{{ session('settings')['company_phone'] }}">{{ session('settings')['company_phone'] }}</a></p>
                                             </div>
                                         </li>
                                         <li>
@@ -540,7 +540,7 @@
                                                 <i class="icon-call"></i>
                                             </div>
                                             <div class="footer-address-info">
-                                                <p><a href="tel:(+84)2926533888">{{ __('Accounting:') }} (+84)2926533888</a></p>
+                                                <p>{{ __('Accounting') }}: <a href="tel:(+84)2926533888">(+84)2926533888</a></p>
                                             </div>
                                         </li>
                                         <li>
@@ -548,7 +548,7 @@
                                                 <i class="icon-mail"></i>
                                             </div>
                                             <div class="footer-address-info">
-                                                <p><a href="mailto: {{ $settings['company_email'] }}">Email: {{ $settings['company_email'] }}</a></p>
+                                                <p>{{ __('Email') }}: <a href="mailto: {{ session('settings')['company_email'] }}">{{ session('settings')['company_email'] }}</a></p>
                                             </div>
                                         </li>
                                         <!-- <li>
@@ -589,7 +589,7 @@
                             <div class="footer-widget footer-menu-widget clearfix">
                                 <h4 class="footer-title">{{ __('Policies') }}</h4>
                                 <div class="footer-menu">
-                                    <ul> @foreach ($options['categories']->where('code', 'policies') as $post)
+                                    <ul> @foreach (session('categories')->where('code', 'policies') as $post)
                                         <li><a href="{{ route('home.index', ['page' => 'posts', 'category' => $post->category->code, 'post' => $post->code]) }}">{!! $post->title !!}</a></li>
                                         @endforeach
                                     </ul>
@@ -601,7 +601,7 @@
                                 <h4 class="footer-title">{{ __('Product Categories') }}</h4>
                                 <div class="footer-menu">
                                     <ul>
-                                        @foreach ($options['catalogue']->whereNull('parent_id') as $catalogue)
+                                        @foreach (session('catalogues')->whereNull('parent_id') as $catalogue)
                                         <li><a href="{{ route('shop.index', ['catalogue' => $catalogue->slug]) }}">{!! $catalogue->name !!}</a></li>
                                         @endforeach
                                     </ul>

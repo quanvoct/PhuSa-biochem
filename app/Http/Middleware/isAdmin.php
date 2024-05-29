@@ -23,7 +23,7 @@ class isAdmin
             Session::put('ip', $request->ip());
             return $next($request);
         } else {
-            abort(404);
+            abort(403);
         }
     }
 }

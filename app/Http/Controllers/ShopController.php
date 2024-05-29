@@ -15,6 +15,11 @@ class ShopController extends Controller
      *
      * @return void
      */
+    public function __construct()
+    {
+        $this->middleware('setting');
+        // $this->middleware(['verified','auth']);
+    }
 
     /**
      * Show the application dashboard.
@@ -22,54 +27,44 @@ class ShopController extends Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function shop(Request $request)
-{
-    $settings = Controller::getSettings();
-    $options = Controller::options();
-    if ($request->catalogue) {
-        $catalogue = Catalogue::whereNull('revision')->whereStatus(1)->whereSlug($request->catalogue)
-            ->with(['products' => function ($query) {
-                $query->whereNull('revision')
-                    ->where('status', '>', 0)
-                    ->orderBy('sort', 'DESC');
-            }])->first();
-        if ($request->product) {
-            $product = Product::whereNull('revision')->whereStatus(1)->whereSlug($request->product)->first();
-            if ($product) {
-                $pageName = $product->name;
-                return view('product', compact('pageName', 'settings', 'options', 'product', 'catalogue'));
+    {
+        if ($request->catalogue) {
+            $catalogue = Catalogue::whereNull('revision')->whereStatus(1)->whereSlug($request->catalogue)
+                ->with(['products' => function ($query) {
+                    $query->whereNull('revision')
+                        ->where('status', '>', 0)
+                        ->orderBy('sort', 'DESC');
+                }])->first();
+            if ($request->product) {
+                $product = Product::whereNull('revision')->whereStatus(1)->whereSlug($request->product)->first();
+                if ($product) {
+                    $pageName = $product->name;
+                    return view('product', compact('pageName', 'product', 'catalogue'));
+                } else {
+                    abort(404);
+                }
             } else {
-                abort(404);
+                if ($catalogue) {
+                    $pageName = $catalogue->name;
+                    $products = $catalogue->products()->paginate(1);
+                    return view('catalogue', compact('pageName', 'catalogue', 'products'));
+                } else {
+                    abort(404);
+                }
             }
         } else {
-            if ($catalogue) {
-                $pageName = $catalogue->name;
-                $products = $catalogue->products()->paginate(1); 
-                return view('catalogue', compact('pageName', 'settings', 'options', 'catalogue', 'products'));
-            } else {
-                abort(404);
-            }
+            $catalogues = Catalogue::whereNull('revision')
+                ->where('status', 1)
+                ->orderBy('id', 'DESC')
+                ->get();
+
+            $products = Product::whereNull('revision')
+                ->where('status', '>', 0)
+                ->orderBy('sort', 'DESC')
+                ->paginate(1);
+
+            $pageName = __('Shop');
+            return view('shop', compact('pageName', 'catalogues', 'products'));
         }
-    } else {
-        $catalogues = Catalogue::whereNull('revision')
-            ->where('status', 1)
-            ->orderBy('id', 'DESC')
-            ->get();
-        
-        $products = Product::whereNull('revision')
-            ->where('status', '>', 0)
-            ->orderBy('sort', 'DESC')
-            ->paginate(1); 
-        
-        $pageName = __('Shop');
-        return view('shop', compact('pageName', 'settings', 'options', 'catalogues', 'products'));
-    }
-}
-
-
-    public function changeLanguage(Request $request)
-    {
-        app()->setLocale($request->language, config('app.locale'));
-        Session::put('language', $request->language);
-        return redirect()->back();
     }
 }

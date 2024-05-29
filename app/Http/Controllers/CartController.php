@@ -8,14 +8,12 @@ class CartController extends Controller
 {
     public function cart(Request $request)
     {
-        $settings = Controller::getSettings();
         $pageName = 'Cart';
-        return view('cart', compact('pageName', 'settings'));
+        return view('cart', compact('pageName'));
     }
     public function checkout(Request $request)
     {
-        $settings = Controller::getSettings();
         $pageName = 'Checkout';
-        return view('checkout', compact('pageName', 'settings'));
+        return view('checkout', compact('pageName'));
     }
 }

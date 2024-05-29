@@ -322,7 +322,7 @@
                     @if($uniqueProducts->isEmpty())
                     <p>{{ __('Products are being updated') }}</p>
                     @else
-                    @foreach($uniqueProducts->where('status', 2)->take(6) as $product)
+                    @foreach($uniqueProducts->take(6) as $product)
                     <!-- ltn__product-item -->
                     <div class="col-md-4 col-sm-6 col-6">
                         <div class="ltn__product-item ltn__product-item-2 text-left">
@@ -330,6 +330,30 @@
                                 <a href="{{ route('shop.index', ['catalogue' => $product->catalogues->first()->slug, 'product' => $product->slug]) }}">
                                     <img src="{{ $product->getImageUrlAttribute() }}" alt="img">
                                 </a>
+                                <!-- <div class="product-badge">
+                                    <ul>
+                                        <li class="sale-badge">New</li>
+                                    </ul>
+                                </div>
+                                <div class="product-hover-action">
+                                    <ul>
+                                        <li>
+                                            <a href="#" title="Quick View" data-bs-toggle="modal" data-bs-target="#quick_view_modal">
+                                                <i class="far fa-eye"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#" title="Add to Cart" data-bs-toggle="modal" data-bs-target="#add_to_cart_modal">
+                                                <i class="fas fa-shopping-cart"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#" title="Wishlist" data-bs-toggle="modal" data-bs-target="#liton_wishlist_modal">
+                                                <i class="far fa-heart"></i>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div> -->
                             </div>
                             <div class="product-info">
                                 <div class="product-ratting">
@@ -414,6 +438,30 @@
                         <a href="{{ route('shop.index', ['catalogue' => $product->catalogues->first()->slug, 'product' => $product->slug]) }}">
                             <img src="{{ $product->getImageUrlAttribute() }}" alt="img">
                         </a>
+                        <!-- <div class="product-badge">
+                            <ul>
+                                <li class="sale-badge">New</li>
+                            </ul>
+                        </div>
+                        <div class="product-hover-action">
+                            <ul>
+                                <li>
+                                    <a href="#" title="Quick View" data-bs-toggle="modal" data-bs-target="#quick_view_modal">
+                                        <i class="far fa-eye"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" title="Add to Cart" data-bs-toggle="modal" data-bs-target="#add_to_cart_modal">
+                                        <i class="fas fa-shopping-cart"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" title="Wishlist" data-bs-toggle="modal" data-bs-target="#liton_wishlist_modal">
+                                        <i class="far fa-heart"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div> -->
                     </div>
                     <div class="product-info">
                         <div class="product-ratting">

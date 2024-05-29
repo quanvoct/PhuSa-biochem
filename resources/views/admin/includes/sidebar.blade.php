@@ -108,6 +108,9 @@
                                 <a href="{{ route('admin.setting') }}">Cài đặt</a>
                             </li>
                         @endif
+                            <li class="submenu-item">
+                                <a href="{{ route('admin.language') }}">Ngôn ngữ</a>
+                            </li>
                         @if (!empty(Auth::user()->can(App\Models\User::READ_LOGS)))
                             <li class="submenu-item">
                                 <a href="{{ route('admin.log') }}">Nhật ký</a>
