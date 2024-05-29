@@ -15,11 +15,6 @@ class ShopController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
-        $this->middleware('setting');
-        // $this->middleware(['verified','auth']);
-    }
 
     /**
      * Show the application dashboard.
