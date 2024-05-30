@@ -205,7 +205,7 @@
                         <h4 class="ltn__widget-title ltn__widget-title-border">{{ __('Product categories') }}</h4>
                         <ul>
                             <li><a href="{{ route('shop.index') }}">{{ __('All Product ') }}<span><i class="fas fa-long-arrow-alt-right"></i></span></a></li>
-                            @foreach ($options['catalogue']->whereNull('parent_id') as $catalogue)
+                            @foreach (session('catalogues')->whereNull('parent_id') as $catalogue)
                             <li><a href="{{ route('shop.index', ['catalogue' => $catalogue->slug]) }}">{!! $catalogue->name !!}<span><i class="fas fa-long-arrow-alt-right"></i></span></a></li>
                             @endforeach
                         </ul>

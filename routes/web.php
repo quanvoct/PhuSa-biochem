@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DebtController;
 use App\Http\Controllers\Admin\ImageController;
+use App\Http\Controllers\Admin\LanguageController;
 use App\Http\Controllers\Admin\LogController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\OrderDetailController;
@@ -146,6 +147,11 @@ Route::group(['middleware' => 'admin'], function () {
             Route::post('remove', [LogController::class, 'remove'])->name('admin.log.remove');
         });
 
+        Route::group(['prefix' => 'language'], function () {
+            Route::get('/', [LanguageController::class, 'index'])->name('admin.language');
+            Route::post('update', [LanguageController::class, 'update'])->name('admin.language.update');
+        });
+
         Route::group(['prefix' => 'setting'], function () {
             Route::get('/', [SettingController::class, 'index'])->name('admin.setting');
             Route::post('/companyupdate', [SettingController::class, 'updateCompany'])->name('admin.setting.company.update');
@@ -157,7 +163,7 @@ Route::group(['middleware' => 'admin'], function () {
 
 
 Route::group(['middleware' => 'language'], function () {
-    Route::get('language/{language}', [HomeController::class, 'languageChange'])->name('lang.change');
+    Route::get('lang/{lang?}', [LanguageController::class, 'change'])->name('admin.language.change');
 });
 Route::get('/geolocation/country', [GeolocationController::class, 'getCountry'])->name('geolocation.country');
 Route::get('/geolocation/city', [GeolocationController::class, 'getCity'])->name('geolocation.city');
