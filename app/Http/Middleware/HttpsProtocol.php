@@ -8,7 +8,7 @@ class HttpsProtocol {
     public function handle($request, Closure $next)
     {
             if (!$request->secure()) {
-               return redirect()->secure('/');
+                return redirect()->secure('/');
             }
 
             return $next($request); 
