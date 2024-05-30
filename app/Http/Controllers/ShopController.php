@@ -43,7 +43,7 @@ class ShopController extends Controller
         } else {
             if ($catalogue) {
                 $pageName = $catalogue->name;
-                $products = $catalogue->products()->paginate(1); 
+                $products = $catalogue->products()->paginate(2); 
                 return view('catalogue', compact('pageName', 'settings', 'options', 'catalogue', 'products'));
             } else {
                 abort(404);
@@ -58,7 +58,7 @@ class ShopController extends Controller
         $products = Product::whereNull('revision')
             ->where('status', '>', 0)
             ->orderBy('sort', 'DESC')
-            ->paginate(1); 
+            ->paginate(2); 
         
         $pageName = __('Shop');
         return view('shop', compact('pageName', 'settings', 'options', 'catalogues', 'products'));

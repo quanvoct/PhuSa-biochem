@@ -332,19 +332,18 @@
                                                 <li class="{{ Request::path() == '/' ? 'active' : '' }}"><a href="{{ route('home.index') }}">{{ __('Home') }}</a></li>
                                                 <li class="{{ Request::path() == 'about' ? 'active' : '' }}"><a href="{{ route('home.index', ['page' => 'about']) }}">{{ __('About') }}</a></li>
                                                 <li class="{{ Request::path() == 'shop' ? 'active' : '' }}"><a href="{{ route('shop.index') }}">Shop</a></li>
-                                                <li class="menu-icon {{ Request::path() == 'posts' ? 'active' : '' }}"><a href="#">{{ __('News') }}</a>
+                                                <li class="menu-icon {{ Request::path() == 'posts' ? 'active' : '' }}"><a href="{{ route('home.index', ['page' => 'posts']) }}">{{ __('News') }}</a>
                                                     <ul>
-                                                        <li><a href="{{ route('home.index', ['page' => 'posts', 'category' => 'news']) }}">{{ __('News') }}</a></li>
-                                                        <li><a href="{{ route('home.index', ['page' => 'posts', 'category' => 'promotion']) }}">{{ __('Promotion') }}</a></li>
-                                                        <li><a href="{{ route('home.index', ['page' => 'posts', 'category' => 'recruitment']) }}">{{ __('Recruitment') }}</a></li>
+                                                        @foreach ($options['categories']->where('code', '!=', 'policies') as $category)
+                                                        <li><a href="{{ route('home.index', ['page' => 'posts', 'category' => $category->code]) }}">{!! $category->name !!}</a></li>
+                                                        @endforeach
                                                     </ul>
                                                 </li>
                                                 <li class="menu-icon {{ Request::path() == 'post' ? 'active' : '' }}"><a href="#">{{ __('Policies') }}</a>
                                                     <ul>
-                                                        <li><a href="{{ route('home.index', ['page' => 'sales-policy']) }}">{{ __('Sales policy') }}</a></li>
-                                                        <li><a href="{{ route('home.index', ['page' => 'delivery-return-policy']) }}">{{ __('Delivery & return policy') }}</a>
-                                                        </li>
-                                                        <li><a href="{{ route('home.index', ['page' => 'payment-guide']) }}">{{ __('Payment Guide') }}</a></li>
+                                                        @foreach ($options['categories']->where('code', 'policies')->first()->posts as $post)
+                                                        <li><a href="{{ route('home.index', ['page' => 'posts', 'category' => $post->category->code, 'post' => $post->code]) }}">{!! $post->title !!}</a></li>
+                                                        @endforeach
                                                     </ul>
                                                 </li>
                                                 <li class="{{ Request::path() == 'contact' ? 'active' : '' }}"><a href="{{ route('home.contact') }}">{{ __('Contact') }}</a></li>
@@ -454,15 +453,19 @@
                         <li class="{{ Request::path() == 'shop' ? 'active' : '' }}"><a href="{{ route('shop.index') }}">Shop</a> </li>
                         <li class="{{ Request::path() == 'posts' ? 'active' : '' }}"><a href="#">{{ __('News') }}</a>
                             <ul class="sub-menu">
-                                <li><a href="{{ route('home.index', ['page' => 'code']) }}">{{ __('News') }}</a></li>
-                                <li><a href="{{ route('home.index', ['page' => 'code']) }}">{{ __('Recruitment') }}</a></li>
+                                @foreach ($options['categories']->where('code', '!=', 'policies') as $category)
+                                <li><a href="{{ route('home.index', ['page' => 'posts', 'category' => $category->code]) }}">{!! $category->name !!}</a></li>
+                                @endforeach
                             </ul>
                         </li>
                         <li><a href="#">{{ __('Policies') }}</a>
                             <ul class="sub-menu">
-                                <li><a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">{{ __('Sales policy') }}</a></li>
+                                @foreach ($options['categories']->where('code', 'policies')->first()->posts as $post)
+                                <li><a href="{{ route('home.index', ['page' => 'posts', 'category' => $post->category->code, 'post' => $post->code]) }}">{!! $post->title !!}</a></li>
+                                @endforeach
+                                <!-- <li><a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">{{ __('Sales policy') }}</a></li>
                                 <li><a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">{{ __('Delivery & return policy') }}</a></li>
-                                <li><a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">{{ __('Payment Guide') }}</a></li>
+                                <li><a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">{{ __('Payment Guide') }}</a></li> -->
                             </ul>
                         </li>
                         <li class="{{ Request::path() == '/' ? 'contact' : '' }}"><a href="{{ route('home.contact') }}">{{ __('Contact') }}</a></li>
@@ -551,14 +554,6 @@
                                                 <p><a href="mailto: {{ $settings['company_email'] }}">Email: {{ $settings['company_email'] }}</a></p>
                                             </div>
                                         </li>
-                                        <!-- <li>
-                                            <div class="footer-address-icon">
-                                                <i class="bi bi-credit-card-2-front"></i>
-                                            </div>
-                                            <div class="footer-address-info">
-                                                <p>{{ __('Business code: 1801727039 Issued on July 8, 2022 at Department of Planning and Investment of Cantho city,  Vietnam') }}</p>
-                                            </div>
-                                        </li> -->
                                     </ul>
                                 </div>
                                 <div class="ltn__social-media mt-20">
@@ -589,10 +584,12 @@
                             <div class="footer-widget footer-menu-widget clearfix">
                                 <h4 class="footer-title">{{ __('Policies') }}</h4>
                                 <div class="footer-menu">
-                                    <ul> @foreach ($options['categories']->where('code', 'policies') as $post)
+                                    <ul>
+                                        @foreach ($options['categories']->where('code', 'policies')->first()->posts as $post)
                                         <li><a href="{{ route('home.index', ['page' => 'posts', 'category' => $post->category->code, 'post' => $post->code]) }}">{!! $post->title !!}</a></li>
                                         @endforeach
                                     </ul>
+
                                 </div>
                             </div>
                         </div>
@@ -638,12 +635,6 @@
                         </div>
                         <div class="col-md-6 col-12 align-self-center">
                             <div class="ltn__copyright-menu text-end">
-                                <!-- <ul>
-                                    <li><a href="#">Login</a></li>
-                                    <li><a href="#">My account</a></li>
-                                    <li><a href="#">Order tracking</a></li>
-                                    <li><a href="#">FAQ</a></li>
-                                </ul> -->
                                 <ul>
                                     @guest
                                     @if (Route::has('login'))

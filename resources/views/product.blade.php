@@ -42,6 +42,7 @@
                                     </div>
                                     @endforeach
                                 </div>
+                                @if (count($product->getImagesUrlAttribute()) > 1)
                                 <div class="ltn__shop-details-small-img slick-arrow-2">
                                     @foreach ($product->getImagesUrlAttribute() as $index => $imageUrl)
                                     <div class="single-small-img">
@@ -49,6 +50,7 @@
                                     </div>
                                     @endforeach
                                 </div>
+                                @endif
                             </div>
                         </div>
                         <div class="col-md-7">

@@ -319,7 +319,7 @@
             </div>
             <div class="col-lg-9">
                 <div class="row ltn__tab-product-slider-one-active--- slick-arrow-1">
-                    @if($uniqueProducts->isEmpty())
+                    @if($uniqueProducts->where('status', 2)->isEmpty())
                     <p>{{ __('Products are being updated') }}</p>
                     @else
                     @foreach($uniqueProducts->where('status', 2)->take(6) as $product)
@@ -416,7 +416,7 @@
                         </a>
                     </div>
                     <div class="product-info">
-                        <div class="product-ratting">
+                        <!-- <div class="product-ratting">
                             <ul>
                                 <li><a href="#"><i class="fas fa-star"></i></a></li>
                                 <li><a href="#"><i class="fas fa-star"></i></a></li>
@@ -424,7 +424,7 @@
                                 <li><a href="#"><i class="fas fa-star-half-alt"></i></a></li>
                                 <li><a href="#"><i class="far fa-star"></i></a></li>
                             </ul>
-                        </div>
+                        </div> -->
                         <h2 class="product-title">
                             <a href="{{ route('shop.index', ['catalogue' => $product->catalogues->first()->slug, 'product' => $product->slug]) }}">
                                 {!! $product->name !!}
@@ -512,7 +512,7 @@
             <div class="col-lg-12">
                 <div class="ltn__blog-item ltn__blog-item-3">
                     <div class="ltn__blog-img">
-                        <a href="{{ route('home.index', ['page' => 'posts', 'category' => $post->category->code, 'post' => $post->code]) }}"><img src="{{ $post->imageUrl() }}" alt="#"></a>
+                        <a href="{{ route('home.index', ['page' => 'posts', 'category' => $post->category->code, 'post' => $post->code]) }}"><img src="{{ $post->getImageUrlAttribute() }}" alt="#"></a>
                     </div>
                     <div class="ltn__blog-brief">
                         <h3 class="ltn__blog-title"><a href="{{ route('home.index', ['page' => 'posts', 'category' => $post->category->code, 'post' => $post->code]) }}">{!! $post->title !!}</a></h3>

@@ -120,7 +120,7 @@ class Product extends Model
             if (Image::where('name', $image)->first() && Storage::exists($path)) {
                 $gallery[$key] = asset(env('FILE_STORAGE', '/storage') . '/' . $image);
             } else {
-                $gallery[$key] = asset('/images/placeholder.webp');
+                $gallery[$key] = asset('admin/images/placeholder.webp');
             }
         }
         array_shift($gallery);
