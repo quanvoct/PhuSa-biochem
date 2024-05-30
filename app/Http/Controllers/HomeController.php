@@ -43,10 +43,17 @@ class HomeController extends Controller
                     }
                 }
             } else {
-                $page = Post::whereType('page')->whereStatus(1)->whereCode($request->page)->first();
-                if ($page) {
-                    $pageName = $page->title;
-                    return view('page', compact('pageName', 'page'));
+                if ($request->page == 'posts') {
+                    $categories = Category::whereNull('revision')
+                        ->where('status', 1)
+                        ->with(['posts' => function ($query) {
+                            $query->where('status', 1)
+                                ->orderBy('created_at', 'DESC');
+                        }])
+                        ->orderBy('sort', 'ASC')
+                        ->get();
+                    $pageName = __('Posts');
+                    return view('posts', compact('pageName', 'categories'));
                 } else {
                     abort(404);
                 }
@@ -80,9 +87,9 @@ class HomeController extends Controller
     public function contact()
     {
         $pageName = __('Contact');
-        return view('contact', compact('settings', 'pageName'));
+        return view('contact', compact('pageName'));
     }
-    
+
     public function about(Request $request)
     {
         $categories = Category::whereNull('revision')

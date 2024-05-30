@@ -87,23 +87,13 @@
             <div class="ltn__header-middle-area">
                 <div class="container">
                     <div class="row">
-                        <div class="col">
+                        <div class="col-6 col-md-3">
                             <div class="site-logo">
                                 <a href="{{ route('home.index') }}"><img src="{{ asset('img/logo.jpg') }}" alt="Logo"></a>
                             </div>
                         </div>
-                        <div class="col header-contact-serarch-column d-none d-xl-block">
-                            <div class="header-contact-search">
-                                <!-- header-feature-item -->
-                                <div class="header-feature-item d-none">
-                                    <div class="header-feature-icon">
-                                        <i class="icon-phone"></i>
-                                    </div>
-                                    <div class="header-feature-info">
-                                        <h6>Phone</h6>
-                                        <p><a href="tel:(+84)931035935">+84 931035935</a></p>
-                                    </div>
-                                </div>
+                        <div class="col-md-6 header-contact-serarch-column d-none d-xl-block">
+                            <div class="header-contact-search justify-content-end">
                                 <!-- header-search-2 -->
                                 <div class="header-search-2">
                                     <form id="#123" method="get" action="#">
@@ -115,7 +105,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col">
+                        <div class="col-6 col-md-3">
                             <!-- header-options -->
                             <div class="ltn__header-options">
                                 <ul>
@@ -159,21 +149,21 @@
                                                     <a href="#"><i class="icon-user"></i></a>
                                                     <ul>
                                                         @guest
-                                                        @if (Route::has('login'))
-                                                        <li><a class="dropdown-item" href="{{ route('login') }}">{{ __('Sign in') }}</a></li>
-                                                        @endif
-                                                        @if (Route::has('register'))
-                                                        <li><a class="dropdown-item" href="{{ route('register') }}">{{ __('Register') }}</a></li>
-                                                        @endif
+                                                            @if (Route::has('login'))
+                                                                <li><a class="dropdown-item" href="{{ route('login') }}">{{ __('Sign in') }}</a></li>
+                                                            @endif
+                                                            @if (Route::has('register'))
+                                                                <li><a class="dropdown-item" href="{{ route('register') }}">{{ __('Register') }}</a></li>
+                                                            @endif
                                                         @else
-                                                        @if(Auth::user()->can(app\Models\User::ACCESS_ADMIN))
-                                                        <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}">{{ __('Admin Dashbard') }}</a></li>
-                                                        @endif
-                                                        <li><a class="dropdown-item" href="{{ route('profile.index') }}">{{ __('My Account') }}</a></li>
-                                                        <li><a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
-                                                                {{ __('Logout') }}
-                                                            </a>
-                                                        </li>
+                                                            @if (Auth::user()->can(app\Models\User::ACCESS_ADMIN))
+                                                                <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}">{{ __('Admin Dashbard') }}</a></li>
+                                                            @endif
+                                                            <li><a class="dropdown-item" href="{{ route('profile.index') }}">{{ __('My Account') }}</a></li>
+                                                            <li><a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                                                                    {{ __('Logout') }}
+                                                                </a>
+                                                            </li>
                                                         @endguest
                                                         <form class="d-none" id="logout-form" action="{{ route('logout') }}" method="POST">
                                                             @csrf
@@ -325,7 +315,7 @@
                         </div>
                         <div class="col-lg-7">
                             <div class="col--- header-menu-column justify-content-center---">
-                                <div class="header-menu header-menu-2 text-start">
+                                <div class="header-menu header-menu-2 text-center">
                                     <nav>
                                         <div class="ltn__main-menu">
                                             <ul>
@@ -334,15 +324,15 @@
                                                 <li class="{{ Request::path() == 'shop' ? 'active' : '' }}"><a href="{{ route('shop.index') }}">Shop</a></li>
                                                 <li class="menu-icon {{ Request::path() == 'posts' ? 'active' : '' }}"><a href="{{ route('home.index', ['page' => 'posts']) }}">{{ __('News') }}</a>
                                                     <ul>
-                                                        @foreach ($options['categories']->where('code', '!=', 'policies') as $category)
-                                                        <li><a href="{{ route('home.index', ['page' => 'posts', 'category' => $category->code]) }}">{!! $category->name !!}</a></li>
+                                                        @foreach (session('categories')->where('code', '!=', 'policies') as $category)
+                                                            <li><a href="{{ route('home.index', ['page' => 'posts', 'category' => $category->code]) }}">{!! $category->name !!}</a></li>
                                                         @endforeach
                                                     </ul>
                                                 </li>
                                                 <li class="menu-icon {{ Request::path() == 'post' ? 'active' : '' }}"><a href="#">{{ __('Policies') }}</a>
                                                     <ul>
-                                                        @foreach ($options['categories']->where('code', 'policies')->first()->posts as $post)
-                                                        <li><a href="{{ route('home.index', ['page' => 'posts', 'category' => $post->category->code, 'post' => $post->code]) }}">{!! $post->title !!}</a></li>
+                                                        @foreach (session('categories')->where('code', 'policies')->first()->posts as $post)
+                                                            <li><a href="{{ route('home.index', ['page' => 'posts', 'category' => $post->category->code, 'post' => $post->code]) }}">{!! $post->title !!}</a></li>
                                                         @endforeach
                                                     </ul>
                                                 </li>
@@ -453,15 +443,15 @@
                         <li class="{{ Request::path() == 'shop' ? 'active' : '' }}"><a href="{{ route('shop.index') }}">Shop</a> </li>
                         <li class="{{ Request::path() == 'posts' ? 'active' : '' }}"><a href="#">{{ __('News') }}</a>
                             <ul class="sub-menu">
-                                @foreach ($options['categories']->where('code', '!=', 'policies') as $category)
-                                <li><a href="{{ route('home.index', ['page' => 'posts', 'category' => $category->code]) }}">{!! $category->name !!}</a></li>
+                                @foreach (session('categories')->where('code', '!=', 'policies') as $category)
+                                    <li><a href="{{ route('home.index', ['page' => 'posts', 'category' => $category->code]) }}">{!! $category->name !!}</a></li>
                                 @endforeach
                             </ul>
                         </li>
                         <li><a href="#">{{ __('Policies') }}</a>
                             <ul class="sub-menu">
-                                @foreach ($options['categories']->where('code', 'policies')->first()->posts as $post)
-                                <li><a href="{{ route('home.index', ['page' => 'posts', 'category' => $post->category->code, 'post' => $post->code]) }}">{!! $post->title !!}</a></li>
+                                @foreach (session('categories')->where('code', 'policies')->first()->posts as $post)
+                                    <li><a href="{{ route('home.index', ['page' => 'posts', 'category' => $post->category->code, 'post' => $post->code]) }}">{!! $post->title !!}</a></li>
                                 @endforeach
                                 <!-- <li><a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">{{ __('Sales policy') }}</a></li>
                                 <li><a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">{{ __('Delivery & return policy') }}</a></li>
@@ -584,11 +574,11 @@
                             <div class="footer-widget footer-menu-widget clearfix">
                                 <h4 class="footer-title">{{ __('Policies') }}</h4>
                                 <div class="footer-menu">
-                                    <ul> @foreach ($options['categories']->where('code', 'policies') as $post)
-                                        <li><a href="{{ route('home.index', ['page' => 'posts', 'category' => $post->category->code, 'post' => $post->code]) }}">{!! $post->title !!}</a></li>
+                                    <ul>
+                                        @foreach (session('categories')->where('code', 'policies')->first()->posts as $post)
+                                            <li><a href="{{ route('home.index', ['page' => 'posts', 'category' => $post->category->code, 'post' => $post->code]) }}">{!! $post->title !!}</a></li>
                                         @endforeach
                                     </ul>
-
                                 </div>
                             </div>
                         </div>
@@ -598,7 +588,7 @@
                                 <div class="footer-menu">
                                     <ul>
                                         @foreach (session('catalogues')->whereNull('parent_id') as $catalogue)
-                                        <li><a href="{{ route('shop.index', ['catalogue' => $catalogue->slug]) }}">{!! $catalogue->name !!}</a></li>
+                                            <li><a href="{{ route('shop.index', ['catalogue' => $catalogue->slug]) }}">{!! $catalogue->name !!}</a></li>
                                         @endforeach
                                     </ul>
                                 </div>
@@ -636,21 +626,21 @@
                             <div class="ltn__copyright-menu text-end">
                                 <ul>
                                     @guest
-                                    @if (Route::has('login'))
-                                    <li><a href="{{ route('login') }}">{{ __('Sign in') }}</a></li>
-                                    @endif
-                                    @if (Route::has('register'))
-                                    <li><a href="{{ route('register') }}">{{ __('Register') }}</a></li>
-                                    @endif
+                                        @if (Route::has('login'))
+                                            <li><a href="{{ route('login') }}">{{ __('Sign in') }}</a></li>
+                                        @endif
+                                        @if (Route::has('register'))
+                                            <li><a href="{{ route('register') }}">{{ __('Register') }}</a></li>
+                                        @endif
                                     @else
-                                    @if(Auth::user()->can(app\Models\User::ACCESS_ADMIN))
-                                    <li><a href="{{ route('admin.dashboard') }}">{{ __('Admin Dashbard') }}</a></li>
-                                    @endif
-                                    <li><a href="{{ route('profile.index') }}">{{ __('My Account') }}</a></li>
-                                    <li><a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
-                                            {{ __('Logout') }}
-                                        </a>
-                                    </li>
+                                        @if (Auth::user()->can(app\Models\User::ACCESS_ADMIN))
+                                            <li><a href="{{ route('admin.dashboard') }}">{{ __('Admin Dashbard') }}</a></li>
+                                        @endif
+                                        <li><a href="{{ route('profile.index') }}">{{ __('My Account') }}</a></li>
+                                        <li><a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                                                {{ __('Logout') }}
+                                            </a>
+                                        </li>
                                     @endguest
                                     <form class="d-none" id="logout-form" action="{{ route('logout') }}" method="POST">
                                         @csrf
@@ -787,11 +777,13 @@
                                             </div>
                                             <div class="modal-product-info">
                                                 <h5><a href="{{ route('shop.index', ['product' => 'slug']) }}">Digital Stethoscope</a></h5>
-                                                <p class="added-cart"><i class="fa fa-check-circle"></i> {{ __('Successfully
-                                                    added to your Cart') }}</p>
+                                                <p class="added-cart"><i class="fa fa-check-circle"></i>
+                                                    {{ __('Successfully
+                                                                                                                                                        added to your Cart') }}</p>
                                                 <div class="btn-wrapper">
-                                                    <a class="theme-btn-1 btn btn-effect-1" href="{{ route('cart.index') }}">{{ __('View
-                                                        Cart') }}</a>
+                                                    <a class="theme-btn-1 btn btn-effect-1"
+                                                        href="{{ route('cart.index') }}">{{ __('View
+                                                                                                                                                                    Cart') }}</a>
                                                     <a class="theme-btn-2 btn btn-effect-2" href="{{ route('cart.checkout') }}">{{ __('Checkout') }}</a>
                                                 </div>
                                             </div>

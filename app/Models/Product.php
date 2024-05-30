@@ -178,7 +178,7 @@ class Product extends Model
                 }
             }
         }
-        return $relatedProducts;
+        return array_slice($relatedProducts, 0, 4);
     }
 
     public function displayPrice() {

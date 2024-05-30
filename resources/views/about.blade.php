@@ -480,7 +480,7 @@
         </div>
         <div class="row  ltn__blog-slider-one-active slick-arrow-1 ltn__blog-item-3-normal">
             @foreach($categories as $category)
-            @foreach($category->posts as $post)
+            @foreach($category->posts->take(8) as $post)
             <!-- Blog Item -->
             <div class="col-lg-12">
                 <div class="ltn__blog-item ltn__blog-item-3">
