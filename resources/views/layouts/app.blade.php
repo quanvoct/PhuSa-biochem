@@ -530,14 +530,6 @@
                                         </li>
                                         <li>
                                             <div class="footer-address-icon">
-                                                <i class="icon-call"></i>
-                                            </div>
-                                            <div class="footer-address-info">
-                                                <p>{{ __('Accounting') }}: <a href="tel:(+84)2926533888">(+84)2926533888</a></p>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="footer-address-icon">
                                                 <i class="icon-mail"></i>
                                             </div>
                                             <div class="footer-address-info">
