@@ -1,8 +1,9 @@
 <!doctype html>
 <html class="no-js" lang="zxx">
-
 <head>
     <meta charset="utf-8">
+    {{-- CSRF Token --}}
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>@yield('title') - {{ config('app.name') }} </title>
     <meta name="robots" content="noindex, follow" />
@@ -20,6 +21,8 @@
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <!-- Responsive css -->
     <link href="{{ asset('css/responsive.css') }}" rel="stylesheet">
+    {{-- Toastify --}}
+    <link href="{{ asset('admin/vendors/toastify/toastify.css') }}" rel="stylesheet">
 </head>
 
 <body>
@@ -165,9 +168,6 @@
                                                                 </a>
                                                             </li>
                                                         @endguest
-                                                        <form class="d-none" id="logout-form" action="{{ route('logout') }}" method="POST">
-                                                            @csrf
-                                                        </form>
                                                     </ul>
                                                 </li>
                                             </ul>
@@ -840,12 +840,22 @@
         </div>
     </div>
     <!-- preloader area end -->
-
+<script type="text/javascript">
+const config = {
+    routes: {
+        login: `{{ route('login') }}`,
+        placeholder: `asset('admin/images/placeholder.webp')`
+    }
+}
+</script>
     <!-- All JS Plugins -->
     <script src="{{ asset('js/plugins.js') }}"></script>
+    {{-- Include Toastify --}}
+    <script src="{{ asset('admin/vendors/toastify/toastify.js') }}"></script>
     <!-- Main JS -->
     <script src="{{ asset('js/main.js') }}"></script>
 
+    @stack('scripts')
 </body>
 
 </html>
