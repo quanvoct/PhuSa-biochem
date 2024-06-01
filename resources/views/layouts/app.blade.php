@@ -38,7 +38,7 @@
                         <div class="col-md-7">
                             <div class="ltn__top-bar-menu">
                                 <ul>
-                                    <li><a href="mailto:cskh@phusagenomics.com?Subject=Flower%20greetings%20to%20you"><i class="icon-mail"></i> cskh@phusagenomics.com</a></li>
+                                    <li><a href="mailto:{{ session('settings')['company_email'] }}?Subject=Flower%20greetings%20to%20you"><i class="icon-mail"></i> {{ session('settings')['company_email'] }}</a></li>
                                     <!-- <li><a href="#"><i class="icon-placeholder"></i> K1.15-16, Vo Nguyen Giap, Phu Thu ward, Cai Rang district,
                                             City. Can Tho. Viet Nam</a></li> -->
                                 </ul>
@@ -52,12 +52,20 @@
                                             <!-- ltn__language-menu -->
                                             <div class="ltn__drop-menu ltn__currency-menu ltn__language-menu">
                                                 <ul>
-                                                    <li><a class="dropdown-toggle" href="#"><span class="active-currency">English</span></a>
-                                                        <ul>
-                                                            <li><a href="#">English</a></li>
-                                                            <li><a href="#">Vietnamese</a></li>
-                                                        </ul>
-                                                    </li>
+                                                    @if (Session::get('language') == 'en')
+                                                        <li>
+                                                            <a class="dropdown-item" href="{{ route('language.change', ['language' => 'vn']) }}">
+                                                                <span class="active-currency">{{ __('Vietnamese') }}</span>
+                                                            </a>
+                                                        </li>
+                                                    @endif
+                                                    @if (Session::get('language') == 'vn')
+                                                        <li>
+                                                            <a class="dropdown-item" href="{{ route('language.change', ['language' => 'en']) }}">
+                                                                <span class="active-currency">{{ __('English') }}</span>
+                                                            </a>
+                                                        </li>
+                                                    @endif
                                                 </ul>
                                             </div>
                                         </li>
@@ -101,13 +109,13 @@
                                     </div>
                                     <div class="header-feature-info">
                                         <h6>Phone</h6>
-                                        <p><a href="tel:(+84)931035935">+84 931035935</a></p>
+                                        <p><a href="tel:(+84)931035935">{{ session('settings')['company_phone'] }}</a></p>
                                     </div>
                                 </div>
                                 <!-- header-search-2 -->
                                 <div class="header-search-2">
                                     <form id="#123" method="get" action="#">
-                                        <input name="search" type="text" value="" placeholder="Search here..." />
+                                        <input name="search" type="text" value="" placeholder="{{__('Search here...')}}" />
                                         <button type="submit">
                                             <span><i class="icon-search"></i></span>
                                         </button>
@@ -143,7 +151,7 @@
                                             </div>
                                             <div class="header-search-1-form">
                                                 <form id="#" method="get" action="#">
-                                                    <input name="search" type="text" value="" placeholder="Search here..." />
+                                                    <input name="search" type="text" value="" placeholder="{{__('Search here...')}}" />
                                                     <button type="submit">
                                                         <span><i class="icon-search"></i></span>
                                                     </button>
@@ -159,21 +167,21 @@
                                                     <a href="#"><i class="icon-user"></i></a>
                                                     <ul>
                                                         @guest
-                                                        @if (Route::has('login'))
-                                                        <li><a class="dropdown-item" href="{{ route('login') }}">{{ __('Sign in') }}</a></li>
-                                                        @endif
-                                                        @if (Route::has('register'))
-                                                        <li><a class="dropdown-item" href="{{ route('register') }}">{{ __('Register') }}</a></li>
-                                                        @endif
+                                                            @if (Route::has('login'))
+                                                                <li><a class="dropdown-item" href="{{ route('login') }}">{{ __('Sign in') }}</a></li>
+                                                            @endif
+                                                            @if (Route::has('register'))
+                                                                <li><a class="dropdown-item" href="{{ route('register') }}">{{ __('Register') }}</a></li>
+                                                            @endif
                                                         @else
-                                                        @if(Auth::user()->can(app\Models\User::ACCESS_ADMIN))
-                                                        <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}">{{ __('Admin Dashbard') }}</a></li>
-                                                        @endif
-                                                        <li><a class="dropdown-item" href="{{ route('profile.index') }}">{{ __('My Account') }}</a></li>
-                                                        <li><a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
-                                                                {{ __('Logout') }}
-                                                            </a>
-                                                        </li>
+                                                            @if (Auth::user()->can(app\Models\User::ACCESS_ADMIN))
+                                                                <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}">{{ __('Admin Dashbard') }}</a></li>
+                                                            @endif
+                                                            <li><a class="dropdown-item" href="{{ route('profile.index') }}">{{ __('My Account') }}</a></li>
+                                                            <li><a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                                                                    {{ __('Logout') }}
+                                                                </a>
+                                                            </li>
                                                         @endguest
                                                         <form class="d-none" id="logout-form" action="{{ route('logout') }}" method="POST">
                                                             @csrf
@@ -357,8 +365,11 @@
                         </div>
                         <div class="col-lg-2 align-self-center d-none d-xl-block">
                             <div class="header-contact-info text-end">
-                                <a class="font-weight-6 ltn__primary-color" href="tel:(+84)931035935"><span class="ltn__secondary-color"><i class="icon-call font-weight-7"></i></span> +84
-                                    931035935</a>
+                                <a class="font-weight-6 ltn__primary-color" href="tel:{{ session('settings')['company_phone'] }}">
+                                    <span class="ltn__secondary-color">
+                                        <i class="icon-call font-weight-7"></i>
+                                    </span>
+                                    {{ session('settings')['company_phone'] }}</a>
                             </div>
                         </div>
                     </div>
@@ -443,7 +454,7 @@
                 </div>
                 <div class="ltn__utilize-menu-search-form">
                     <form action="#">
-                        <input type="text" placeholder="Search...">
+                        <input type="text" placeholder="{{__('Search here...')}}">
                         <button><i class="fas fa-search"></i></button>
                     </form>
                 </div>
@@ -471,7 +482,7 @@
                 <div class="ltn__utilize-buttons ltn__utilize-buttons-2">
                     <ul>
                         <li>
-                            <a href="#" title="My Account">
+                            <a href="#" title="{{__('My Account')}}">
                                 <span class="utilize-btn-icon">
                                     <i class="far fa-user"></i>
                                 </span>
@@ -540,7 +551,7 @@
                                                 <i class="icon-mail"></i>
                                             </div>
                                             <div class="footer-address-info">
-                                                <p>{{ __('Email') }}: <a href="mailto: {{ session('settings')['company_email'] }}">{{ session('settings')['company_email'] }}</a></p>
+                                                <p>{{ __('Email') }}: <a href="mailto:{{ session('settings')['company_email'] }}">{{ session('settings')['company_email'] }}</a></p>
                                             </div>
                                         </li>
                                         <!-- <li>
@@ -581,8 +592,9 @@
                             <div class="footer-widget footer-menu-widget clearfix">
                                 <h4 class="footer-title">{{ __('Policies') }}</h4>
                                 <div class="footer-menu">
-                                    <ul> @foreach (session('categories')->where('code', 'policies') as $post)
-                                        <li><a href="{{ route('home.index', ['page' => 'posts', 'category' => $post->category->code, 'post' => $post->code]) }}">{!! $post->title !!}</a></li>
+                                    <ul>
+                                        @foreach (session('categories')->where('code', 'policies') as $post)
+                                            <li><a href="{{ route('home.index', ['page' => 'posts', 'category' => $post->category->code, 'post' => $post->code]) }}">{!! $post->title !!}</a></li>
                                         @endforeach
                                     </ul>
                                 </div>
@@ -594,7 +606,7 @@
                                 <div class="footer-menu">
                                     <ul>
                                         @foreach (session('catalogues')->whereNull('parent_id') as $catalogue)
-                                        <li><a href="{{ route('shop.index', ['catalogue' => $catalogue->slug]) }}">{!! $catalogue->name !!}</a></li>
+                                            <li><a href="{{ route('shop.index', ['catalogue' => $catalogue->slug]) }}">{!! $catalogue->name !!}</a></li>
                                         @endforeach
                                     </ul>
                                 </div>
@@ -638,21 +650,21 @@
                                 </ul> -->
                                 <ul>
                                     @guest
-                                    @if (Route::has('login'))
-                                    <li><a href="{{ route('login') }}">{{ __('Sign in') }}</a></li>
-                                    @endif
-                                    @if (Route::has('register'))
-                                    <li><a href="{{ route('register') }}">{{ __('Register') }}</a></li>
-                                    @endif
+                                        @if (Route::has('login'))
+                                            <li><a href="{{ route('login') }}">{{ __('Sign in') }}</a></li>
+                                        @endif
+                                        @if (Route::has('register'))
+                                            <li><a href="{{ route('register') }}">{{ __('Register') }}</a></li>
+                                        @endif
                                     @else
-                                    @if(Auth::user()->can(app\Models\User::ACCESS_ADMIN))
-                                    <li><a href="{{ route('admin.dashboard') }}">{{ __('Admin Dashbard') }}</a></li>
-                                    @endif
-                                    <li><a href="{{ route('profile.index') }}">{{ __('My Account') }}</a></li>
-                                    <li><a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
-                                            {{ __('Logout') }}
-                                        </a>
-                                    </li>
+                                        @if (Auth::user()->can(app\Models\User::ACCESS_ADMIN))
+                                            <li><a href="{{ route('admin.dashboard') }}">{{ __('Admin Dashbard') }}</a></li>
+                                        @endif
+                                        <li><a href="{{ route('profile.index') }}">{{ __('My Account') }}</a></li>
+                                        <li><a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                                                {{ __('Logout') }}
+                                            </a>
+                                        </li>
                                     @endguest
                                     <form class="d-none" id="logout-form" action="{{ route('logout') }}" method="POST">
                                         @csrf
@@ -790,10 +802,10 @@
                                             <div class="modal-product-info">
                                                 <h5><a href="{{ route('shop.index', ['product' => 'slug']) }}">Digital Stethoscope</a></h5>
                                                 <p class="added-cart"><i class="fa fa-check-circle"></i> {{ __('Successfully
-                                                    added to your Cart') }}</p>
+                                                                                                    added to your Cart') }}</p>
                                                 <div class="btn-wrapper">
                                                     <a class="theme-btn-1 btn btn-effect-1" href="{{ route('cart.index') }}">{{ __('View
-                                                        Cart') }}</a>
+                                                                                                            Cart') }}</a>
                                                     <a class="theme-btn-2 btn btn-effect-2" href="{{ route('cart.checkout') }}">{{ __('Checkout') }}</a>
                                                 </div>
                                             </div>

@@ -163,7 +163,7 @@ Route::group(['middleware' => 'admin'], function () {
 
 
 Route::group(['middleware' => 'language'], function () {
-    Route::get('lang/{lang?}', [LanguageController::class, 'change'])->name('admin.language.change');
+    Route::get('language/{lang?}', [LanguageController::class, 'change'])->name('language.change');
 });
 Route::get('/geolocation/country', [GeolocationController::class, 'getCountry'])->name('geolocation.country');
 Route::get('/geolocation/city', [GeolocationController::class, 'getCity'])->name('geolocation.city');
