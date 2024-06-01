@@ -1,5 +1,6 @@
 <!doctype html>
 <html class="no-js" lang="zxx">
+
 <head>
     <meta charset="utf-8">
     {{-- CSRF Token --}}
@@ -232,81 +233,22 @@
                                         <li class="ltn__category-menu-item ltn__category-menu-drop">
                                             <a href="{{ route('shop.index') }}">{{ __('All products') }}</a>
                                         </li>
-                                        <li class="ltn__category-menu-item ltn__category-menu-drop">
-                                            <a href="#">Oligo/Primer </a>
-                                            <ul class="ltn__category-submenu ">
-                                                <li class="ltn__category-submenu-title ltn__category-menu-drop"><a href="#">Oligo/Primer</a>
-                                                    <ul class="ltn__category-submenu-children">
-                                                        <li><a href="{{ route('shop.index') }}">{{ __('Oligo Tubes') }}</a></li>
-                                                        <li><a href="{{ route('shop.index') }}">{{ __('Oligo Plate') }}</a></li>
-                                                        <li><a href="{{ route('shop.index') }}">{{ __('Oligo Modification') }}</a></li>
+                                        @if (Illuminate\Support\Facades\Session::has('catalogues'))
+                                            @foreach (session('catalogues')->where('status', 1)->whereNull('parent_id') as $catalogue)
+                                                <li class="ltn__category-menu-item ltn__category-menu-drop">
+                                                    <a class="cursor-pointer">{{ $catalogue->name }} </a>
+                                                    <ul class="ltn__category-submenu ">
+                                                        <li class="ltn__category-submenu-title ltn__category-menu-drop"><a href="{{ route('shop.index', ['catalogue' => $catalogue->slug]) }}">{{ $catalogue->name }}</a>
+                                                            <ul class="ltn__category-submenu-children">
+                                                                @foreach ($catalogue->children->where('status', 1) as $catalogue)
+                                                                    <li><a href="{{ route('shop.index', ['catalogue' => $catalogue->slug]) }}">{{ $catalogue->name }}</a></li>
+                                                                @endforeach
+                                                            </ul>
+                                                        </li>
                                                     </ul>
                                                 </li>
-                                            </ul>
-                                        </li>
-                                        <!-- Submenu -->
-                                        <li class="ltn__category-menu-item ltn__category-menu-drop">
-                                            <a href="#">Biology Products</a>
-                                            <ul class="ltn__category-submenu">
-                                                <li class="ltn__category-submenu-title ltn__category-menu-drop"><a href="#">{{ __('Biology Products') }}</a>
-                                                    <ul class="ltn__category-submenu-children">
-                                                        <li><a href="{{ route('shop.index') }}">{{ __('PCR chemicals') }}</a></li>
-                                                        <li><a href="{{ route('shop.index') }}">{{ __('Electrophoretic chemicals') }}</a></li>
-                                                        <li><a href="{{ route('shop.index') }}">{{ __('Diagnostic biological products') }}</a></li>
-                                                        <li><a href="{{ route('shop.index') }}">{{ __('Flow-forming chemicals') }}</a></li>
-                                                    </ul>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li class="ltn__category-menu-item ltn__category-menu-drop">
-                                            <a href="#">Device</a>
-                                            <ul class="ltn__category-submenu">
-                                                <li class="ltn__category-submenu-title ltn__category-menu-drop"><a href="#">{{ __('Device') }}</a>
-                                                    <ul class="ltn__category-submenu-children">
-                                                        <li><a href="{{ route('shop.index') }}">{{ __('PCR machine') }}</a></li>
-                                                        <li><a href="{{ route('shop.index') }}">{{ __('Mobile phones') }}</a></li>
-                                                        <li><a href="{{ route('shop.index') }}">{{ __('Extraction machine') }}</a></li>
-                                                        <li><a href="{{ route('shop.index') }}">{{ __('spot check machine') }}</a></li>
-                                                        <li><a href="{{ route('shop.index') }}">{{ __('Other equipment') }}</a></li>
-                                                    </ul>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li class="ltn__category-menu-item ltn__category-menu-drop">
-                                            <a href="#">{{ __('Utility package') }}</a>
-                                            <ul class="ltn__category-submenu">
-                                                <li class="ltn__category-submenu-title ltn__category-menu-drop"><a href="#">{{ __('Utility package') }}</a>
-                                                    <ul class="ltn__category-submenu-children">
-                                                        <li><a href="{{ route('shop.index') }}">{{ __('Practice combos') }}</a></li>
-                                                    </ul>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li class="ltn__category-menu-item ltn__category-menu-drop">
-                                            <a href="#">Services</a>
-                                            <ul class="ltn__category-submenu">
-                                                <li class="ltn__category-submenu-title ltn__category-menu-drop"><a href="#">{{ __('Services') }}</a>
-                                                    <ul class="ltn__category-submenu-children">
-                                                        <li><a href="{{ route('shop.index') }}">{{ __('Gene synthesis') }}</a></li>
-                                                        <li><a href="{{ route('shop.index') }}">{{ __('Other services') }}</a></li>
-                                                    </ul>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li class="ltn__category-menu-item ltn__category-menu-drop">
-                                            <a href="#">Diagnostic kit</a>
-                                            <ul class="ltn__category-submenu">
-                                                <li class="ltn__category-submenu-title ltn__category-menu-drop"><a href="#">{{ __('Diagnostic kit') }}</a>
-                                                    <ul class="ltn__category-submenu-children">
-                                                        <li><a href="{{ route('shop.index') }}">{{ __('Shrimp disease diagnosis kit') }}</a></li>
-                                                        <li><a href="{{ route('shop.index') }}">{{ __('Pangasius disease diagnosis kit') }}</a></li>
-                                                        <li><a href="{{ route('shop.index') }}">{{ __('Tilapia disease diagnosis kit') }}</a></li>
-                                                        <li><a href="{{ route('shop.index') }}">{{ __('GMO detection kit') }}</a></li>
-                                                        <li><a href="{{ route('shop.index') }}">{{ __('Kit detects animal DNA') }}</a></li>
-                                                    </ul>
-                                                </li>
-                                            </ul>
-                                        </li>
+                                            @endforeach
+                                        @endif
                                         <!-- Single menu end -->
                                     </ul>
                                 </div>
@@ -771,11 +713,12 @@
                                                 <h5><a href="{{ route('shop.index', ['product' => 'slug']) }}">Digital Stethoscope</a></h5>
                                                 <p class="added-cart"><i class="fa fa-check-circle"></i>
                                                     {{ __('Successfully
-                                                                                                                                                        added to your Cart') }}</p>
+                                                                                                                                                                                                            added to your Cart') }}
+                                                </p>
                                                 <div class="btn-wrapper">
                                                     <a class="theme-btn-1 btn btn-effect-1"
                                                         href="{{ route('cart.index') }}">{{ __('View
-                                                                                                                                                                    Cart') }}</a>
+                                                                                                                                                                                                                            Cart') }}</a>
                                                     <a class="theme-btn-2 btn btn-effect-2" href="{{ route('cart.checkout') }}">{{ __('Checkout') }}</a>
                                                 </div>
                                             </div>
@@ -840,14 +783,14 @@
         </div>
     </div>
     <!-- preloader area end -->
-<script type="text/javascript">
-const config = {
-    routes: {
-        login: `{{ route('login') }}`,
-        placeholder: `asset('admin/images/placeholder.webp')`
-    }
-}
-</script>
+    <script type="text/javascript">
+        const config = {
+            routes: {
+                login: `{{ route('login') }}`,
+                placeholder: `asset('admin/images/placeholder.webp')`
+            }
+        }
+    </script>
     <!-- All JS Plugins -->
     <script src="{{ asset('js/plugins.js') }}"></script>
     {{-- Include Toastify --}}
