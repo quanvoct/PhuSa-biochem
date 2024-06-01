@@ -19,11 +19,10 @@ use App\Http\Controllers\Admin\VariableController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\GeolocationController;
-use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\ShopController;
 
 /*
@@ -162,6 +161,10 @@ Route::group(['middleware' => 'admin'], function () {
 });
 
 
+Route::group(['prefix' => 'profile', 'middleware' => 'auth'], function () {
+    Route::get('/', [ProfileController::class, 'index'])->name('profile.index');
+    Route::post('{key?}', [ProfileController::class, 'save'])->name('profile.save');
+});
 Route::group(['middleware' => 'language'], function () {
     Route::get('language/{lang?}', [LanguageController::class, 'change'])->name('language.change');
 });
@@ -175,5 +178,5 @@ Route::get('/cart', [CartController::class, 'cart'])->name('cart.index');
 Route::get('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 Route::get('/cart/checkout/success', [CartController::class, 'checkout'])->name('cart.checkout.success');
 Route::get('/shop/{catalogue?}/{product?}', [ShopController::class, 'shop'])->name('shop.index');
-Route::get('/profile/{page?}/{id?}', [HomeController::class, 'index'])->name('profile.index');
 Route::get('/{page?}/{category?}/{post?}', [HomeController::class, 'index'])->name('home.index');
+

@@ -22,6 +22,32 @@ class Controller extends BaseController
         'min2' => 'Tối thiểu phải từ 2 ký tự!',
         'max191' => 'Tối đa được 191 ký tự!',
     ];
+    public function options(): array
+    {
+        return array(
+            'agent' => new Agent(),
+            'roles' => Role::all(),
+            'orders' => Order::whereNull('revision')->get(),
+            'categories' => Category::whereNull('revision')->where('status', 1)->orderBy('sort', 'ASC')->get(),
+            'products' => Product::whereNull('revision')->where('status', '>=' ,1)->orderBy('sort', 'ASC')->get(),
+            'variables' => Variable::whereNull('revision')->get(),
+            'catalogue' => Catalogue::whereNull('revision')->whereStatus(1)->orderBy('sort', 'ASC')->get(),
+            'users' => User::whereNull('revision')->where('status', 1)->get(),
+            'permissions' => Permission::all(),
+        );
+    }
+
+
+    public function getSettings()
+    {
+        if (Session::has('settings')) {
+            $settings = Session::get('settings', Setting::pluck('value', 'key'));
+        } else {
+            $settings = Setting::pluck('value', 'key');
+        }
+        Session::put('settings', $settings);
+        return $settings;
+    }
 
     public function getCatalogueChildren($catalogues)
     {

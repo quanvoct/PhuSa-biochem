@@ -145,7 +145,7 @@ class PostController extends Controller
         $request->validate($rules, $messages);
         if (!empty(Auth::user()->can(User::UPDATE_POST)) || !empty(Auth::user()->can(User::CREATE_POST))) {
             $post = $this->sync([
-                'code' => Str::slug($request->code),
+                'code' => Str::slug($request->title),
                 'title' => $request->title,
                 'author_id' => Auth::user()->id,
                 'category_id' => $request->category_id,

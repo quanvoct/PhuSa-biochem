@@ -18219,7 +18219,66 @@ input.cart-plus-minus-box {
         padding: 12px 30px;
     }
 }
+/* Key create */
+.product-description-container {
+    max-height: 500px;
+    overflow: hidden;
+    position: relative;
+}
+.product-description-container::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 70px; /* Chiều cao của phần mờ */
+    background: linear-gradient(to top, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, .5) 100%);
+}
+.product-description-container.expand {
+    max-height: none;
+}
+.ltn__blog-img {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-top: 56.25%;
+    overflow: hidden;
+}
 
+.ltn__blog-img img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.avt {
+    position: relative;
+    transition: 0.5;
+}
+.avt::after {
+    content: "\270E";
+    position: absolute;
+    font-size: 2rem;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.avt:hover::after {
+    display: flex;
+
+}
 /* ----------------------------------------------------
     END
 ---------------------------------------------------- */

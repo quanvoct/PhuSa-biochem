@@ -33,7 +33,7 @@
                         <div class="ltn__blog-meta">
                             <ul>
                                 <li class="ltn__blog-category">
-                                    <a href="#">{{ $pageName }}</a>
+                                    <a href="{{ route('home.index', ['page' => 'posts', 'category' => $post->category->code]) }}">{{ $post->category->name }}</a>
                                 </li>
                             </ul>
                         </div>
@@ -94,7 +94,7 @@
                             <div class="col-lg-12">
                                 <div class="ltn__blog-item ltn__blog-item-3">
                                     <div class="ltn__blog-img">
-                                        <a href="{{ route('home.index', ['page' => 'posts', 'category' => $relate->category->code, 'post' => $relate->code]) }}"><img src="{{ $relate->imageUrl() }}" alt="#"></a>
+                                        <a href="{{ route('home.index', ['page' => 'posts', 'category' => $relate->category->code, 'post' => $relate->code]) }}"><img src="{{ $relate->getImageUrlAttribute() }}" alt="#"></a>
                                     </div>
                                     <div class="ltn__blog-brief">
                                         <h3 class="ltn__blog-title"><a href="{{ route('home.index', ['page' => 'posts', 'category' => $relate->category->code, 'post' => $relate->code]) }}">{!! $relate->title !!}</a></h3>

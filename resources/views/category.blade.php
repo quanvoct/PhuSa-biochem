@@ -33,7 +33,7 @@
             <div class="col-lg-4 col-sm-6 col-12">
                 <div class="ltn__blog-item ltn__blog-item-3">
                     <div class="ltn__blog-img">
-                        <a href="{{ route('home.index', ['page' => 'posts', 'category' => $post->category->code, 'post' => $post->code]) }}"><img src="{{ $post->imageUrl() }}" alt="#"></a>
+                        <a href="{{ route('home.index', ['page' => 'posts', 'category' => $post->category->code, 'post' => $post->code]) }}"><img src="{{ $post->getImageUrlAttribute() }}" alt="#"></a>
                     </div>
                     <div class="ltn__blog-brief">
                         <!-- <div class="ltn__blog-meta">

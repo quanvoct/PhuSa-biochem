@@ -140,7 +140,7 @@
                     </div>
                 </div>
                 <!-- Hiển thị liên kết phân trang -->
-                @if($products->count() > 0)
+                @if($products->count() > 0 && $products->lastPage() > 1)
                 <div class="ltn__pagination-area text-center">
                     <div class="ltn__pagination">
                         <ul>
@@ -192,6 +192,14 @@
             </div>
             <div class="col-lg-4">
                 <aside class="sidebar ltn__shop-sidebar ltn__right-sidebar sticky-top">
+                    <!-- Search Widget -->
+                    <div class="widget ltn__search-widget">
+                        <h4 class="ltn__widget-title ltn__widget-title-border">{{ __('Search Objects') }}</h4>
+                        <form action="#">
+                            <input type="text" name="search" placeholder="Search your keyword...">
+                            <button type="submit"><i class="fas fa-search"></i></button>
+                        </form>
+                    </div>
                     <!-- Category Widget -->
                     <div class="widget ltn__menu-widget">
                         <h4 class="ltn__widget-title ltn__widget-title-border">{{ __('Product categories') }}</h4>
@@ -202,14 +210,6 @@
                             @endforeach
                         </ul>
                     </div>
-                    <div class="widget ltn__search-widget">
-                        <h4 class="ltn__widget-title ltn__widget-title-border">{{ __('Search Objects') }}</h4>
-                        <form action="#">
-                            <input type="text" name="search" placeholder="Search your keyword...">
-                            <button type="submit"><i class="fas fa-search"></i></button>
-                        </form>
-                    </div>
-
                 </aside>
             </div>
         </div>

@@ -33,7 +33,7 @@
                         <img src="{{ asset('img/icons/10.png') }}" alt="Icon Image">
                     </div>
                     <h3>{{ __('Email Address') }}</h3>
-                    <p> {{ $settings['company_email'] }}<br></p>
+                    <p> {{ session('settings')['company_email'] }}<br></p>
                 </div>
             </div>
             <div class="col-lg-3">
@@ -42,7 +42,7 @@
                         <img src="{{ asset('img/icons/11.png') }}" alt="Icon Image">
                     </div>
                     <h3>{{ __('Phone Number') }}</h3>
-                    <p><a href="tel:{{ $settings['company_hotline'] }}">{{ $settings['company_hotline'] }}</a> <br> <a href="tel:{{ $settings['company_phone'] }}">{{ $settings['company_phone'] }}</a>
+                    <p><a href="tel:{{ session('settings')['company_hotline'] }}">{{ session('settings')['company_hotline'] }}</a> <br> <a href="tel:{{ session('settings')['company_phone'] }}">{{ session('settings')['company_phone'] }}</a>
                     </p>
                 </div>
             </div>
@@ -52,7 +52,7 @@
                         <img src="{{ asset('img/icons/12.png') }}" alt="Icon Image">
                     </div>
                     <h3>{{ __('Office Address') }}</h3>
-                    <p>{{ $settings['company_address'] }}</p>
+                    <p>{{ session('settings')['company_address'] }}</p>
                 </div>
             </div>
             <div class="col-lg-3">
@@ -120,7 +120,7 @@
 
 <!-- GOOGLE MAP AREA START -->
 <div class="google-map mb-120">
-    {!! $settings['contact_map'] !!}
+    {!! session('settings')['contact_map'] !!}
 
 </div>
 <!-- GOOGLE MAP AREA END -->

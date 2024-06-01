@@ -31,17 +31,18 @@ class ShopController extends Controller
                         ->orderBy('sort', 'DESC');
                 }])->first();
             if ($request->product) {
-                $product = Product::whereNull('revision')->whereStatus(1)->whereSlug($request->product)->first();
+                $product = Product::whereNull('revision')->where('status', '>', 0)->whereSlug($request->product)->first();
                 if ($product) {
                     $pageName = $product->name;
-                    return view('product', compact('pageName', 'product', 'catalogue'));
+                    $specs = json_decode($product->specs, true);
+                    return view('product', compact('pageName', 'product', 'catalogue', 'specs'));
                 } else {
                     abort(404);
                 }
             } else {
                 if ($catalogue) {
                     $pageName = $catalogue->name;
-                    $products = $catalogue->products()->paginate(1);
+                    $products = $catalogue->products()->paginate(12);
                     return view('catalogue', compact('pageName', 'catalogue', 'products'));
                 } else {
                     abort(404);
@@ -50,13 +51,13 @@ class ShopController extends Controller
         } else {
             $catalogues = Catalogue::whereNull('revision')
                 ->where('status', 1)
-                ->orderBy('id', 'DESC')
+                ->orderBy('sort', 'ASC')
                 ->get();
 
             $products = Product::whereNull('revision')
                 ->where('status', '>', 0)
-                ->orderBy('sort', 'DESC')
-                ->paginate(1);
+                ->orderBy('sort', 'ASC')
+                ->paginate(12);
 
             $pageName = __('Shop');
             return view('shop', compact('pageName', 'catalogues', 'products'));
