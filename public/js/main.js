@@ -1960,9 +1960,9 @@
         });
         $(".amount").val(
             "$" +
-                $(".slider-range").slider("values", 0) +
-                " - $" +
-                $(".slider-range").slider("values", 1)
+            $(".slider-range").slider("values", 0) +
+            " - $" +
+            $(".slider-range").slider("values", 1)
         );
 
         /* --------------------------------------------------------
@@ -2068,8 +2068,8 @@
                     slick.slideCount == liIndex ? liIndex - 1 : liIndex;
                 var cart = $(
                     '.ltn__testimonial-slider-4 .slick-slide[data-slick-index="' +
-                        slideImageliIndex +
-                        '"]'
+                    slideImageliIndex +
+                    '"]'
                 ).find(".ltn__testimonial-image");
                 var imgtodrag = $(
                     ".ltn__testimonial-quote-menu li:nth-child(" + liIndex + ")"
@@ -2092,8 +2092,8 @@
                 ltn__testimonial_quote_slider.slick("slickGoTo", elIndex);
                 var cart = $(
                     '.ltn__testimonial-slider-4 .slick-slide[data-slick-index="' +
-                        elIndex +
-                        '"]'
+                    elIndex +
+                    '"]'
                 ).find(".ltn__testimonial-image");
                 var imgtodrag = el.find("img").eq(0);
                 if (imgtodrag) {
@@ -2210,6 +2210,48 @@
             }
         });
     });
+
+    /**
+     * Nén và hiển thị hình ảnh
+     */
+    $(document).on('change', 'input[type=file][name=image]', function (event) {
+        const file = event.target.files[0], input = $(this)
+        if (file) {
+            new Compressor(file, {
+                quality: 0.8,
+                maxWidth: 600,
+                maxHeight: 600,
+                mimeType: 'image/webp',
+                success(result) {
+                    const compressedFile = new File([result], file.name.replace(/\.\w+$/, '.webp'), {
+                        type: 'image/webp',
+                        lastModified: Date.now(),
+                    });
+                    console.log(1);
+                    // Tạo lại input với file đã nén
+                    const dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(compressedFile);
+                    input[0].files = dataTransfer.files;
+                    console.log(2);
+                    // Hiển thị hình ảnh đã nén
+                    const previewURL = URL.createObjectURL(compressedFile);
+                    input.prev().find('img').attr('src', previewURL)
+                    input.next().find('[type=button]').removeClass('d-none');
+                    submitForm(input.parents('form'))
+                },
+                error(err) {
+                    Toastify({
+                        text: err.message,
+                        duration: 3000,
+                        close: true,
+                        gravity: "top",
+                        position: "center",
+                        backgroundColor: "var(--bs-danger)",
+                    }).showToast();
+                },
+            });
+        }
+    });
 })(jQuery);
 
 /**
@@ -2290,8 +2332,8 @@ function submitForm(frm) {
                         el.after(
                             $(
                                 '<span class="text-danger">' +
-                                    error[0] +
-                                    "</span>"
+                                error[0] +
+                                "</span>"
                             )
                         );
                     } else {

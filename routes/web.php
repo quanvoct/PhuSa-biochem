@@ -161,10 +161,20 @@ Route::group(['middleware' => 'admin'], function () {
 });
 
 
-Route::group(['prefix' => 'profile', 'middleware' => 'auth'], function () {
-    Route::get('/', [ProfileController::class, 'index'])->name('profile.index');
-    Route::post('{key?}', [ProfileController::class, 'save'])->name('profile.save');
+Route::group(['middleware' => 'auth'], function () {
+    Route::group(['prefix' => 'profile'], function () {
+        Route::get('/', [ProfileController::class, 'index'])->name('profile.index');
+        Route::post('settings', [ProfileController::class, 'settings'])->name('profile.settings');
+        Route::post('password', [ProfileController::class, 'password'])->name('profile.password');
+        Route::post('avatar', [ProfileController::class, 'avatar'])->name('profile.avatar');
+    });
+    Route::group(['prefix' => 'cart'], function () {
+        Route::get('/', [CartController::class, 'cart'])->name('cart.index');
+        Route::get('checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+        Route::get('checkout/success', [CartController::class, 'checkout'])->name('cart.checkout.success');
+    });
 });
+
 Route::group(['middleware' => 'language'], function () {
     Route::get('language/{lang?}', [LanguageController::class, 'change'])->name('language.change');
 });
@@ -174,9 +184,5 @@ Route::get('/geolocation/district', [GeolocationController::class, 'getDistrict'
 
 Route::get('/contact', [HomeController::class, 'contact'])->name('home.contact');
 Route::get('/about', [HomeController::class, 'about'])->name('home.about');
-Route::get('/cart', [CartController::class, 'cart'])->name('cart.index');
-Route::get('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
-Route::get('/cart/checkout/success', [CartController::class, 'checkout'])->name('cart.checkout.success');
 Route::get('/shop/{catalogue?}/{product?}', [ShopController::class, 'shop'])->name('shop.index');
 Route::get('/{page?}/{category?}/{post?}', [HomeController::class, 'index'])->name('home.index');
-

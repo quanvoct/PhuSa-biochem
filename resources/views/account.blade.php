@@ -49,7 +49,7 @@
                                             <div class="ltn__myaccount-tab-content-inner">
                                                 <div class="row align-items-end mb-3">
                                                     <div class="col-6 col-lg-3 text-center">
-                                                        <form action="{{ route('profile.save', ['key' => 'avatar']) }}" method="POST" enctype="multipart/form-data">
+                                                        <form action="{{ route('profile.avatar') }}" method="POST" enctype="multipart/form-data">
                                                             @csrf
                                                             <label class="avt cursor-pointer" for="profile-avatar">
                                                                 <img class="rounded-circle" src="{{ Auth::user()->imageUrl }}" alt="Admin" style="object-fit: cover; width: 150px; height: 150px;">
@@ -59,7 +59,7 @@
                                                         </form>
                                                     </div>
                                                     <div class="col col-lg-9">
-                                                        <p>Hello <strong>{{ Auth::user()->name }}</strong> (not <strong>{{ Auth::user()->name }}</strong>? <small><a href="{{ route('logout') }}"
+                                                        <p>{{__('Hello')}} <strong>{{ Auth::user()->name }}</strong> (not <strong>{{ Auth::user()->name }}</strong>? <small><a href="{{ route('logout') }}"
                                                                     onclick="event.preventDefault();document.getElementById('logout-form').submit();">
                                                                     {{ __('Logout') }}
                                                                 </a></small> )</p>
@@ -94,7 +94,7 @@
                                             <div class="ltn__myaccount-tab-content-inner">
                                                 <p>The following addresses will be used on the checkout page by default.</p>
 
-                                                <form action="{{ route('profile.save', ['key' => 'settings']) }}" method="post">
+                                                <form action="{{ route('profile.settings') }}" method="post">
                                                     @csrf
                                                     <div class="card mb-3">
                                                         @if (session('response'))
@@ -188,7 +188,7 @@
                                         <div class="tab-pane fade" id="liton_tab_1_4">
                                             <div class="ltn__myaccount-tab-content-inner">
                                                 <p>Change password.</p>
-                                                <form action="{{ route('profile.save', ['key' => 'password']) }}" method="post">
+                                                <form action="{{ route('profile.password') }}" method="post">
                                                     @csrf
                                                     <div class="card mb-3">
                                                         @if (session('response'))
@@ -261,15 +261,3 @@
     </div>
     <!-- WISHLIST AREA START -->
 @endsection
-
-@push('scripts')
-    <script>
-        $('#profile-avatar').change(function(e) {
-            e.preventDefault()
-            const form = $(this).parents('form')
-            src = URL.createObjectURL(document.getElementById('profile-avatar').files[0])
-            $(this).parents('form').find('img').attr('src', src)
-            submitForm(form)
-        })
-    </script>
-@endpush

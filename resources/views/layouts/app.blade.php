@@ -119,7 +119,7 @@
                                 <!-- header-search-2 -->
                                 <div class="header-search-2">
                                     <form id="#123" method="get" action="#">
-                                        <input name="search" type="text" value="" placeholder="{{__('Search here...')}}" />
+                                        <input name="search" type="text" value="" placeholder="{{ __('Search here...') }}" />
                                         <button type="submit">
                                             <span><i class="icon-search"></i></span>
                                         </button>
@@ -155,7 +155,7 @@
                                             </div>
                                             <div class="header-search-1-form">
                                                 <form id="#" method="get" action="#">
-                                                    <input name="search" type="text" value="" placeholder="{{__('Search here...')}}" />
+                                                    <input name="search" type="text" value="" placeholder="{{ __('Search here...') }}" />
                                                     <button type="submit">
                                                         <span><i class="icon-search"></i></span>
                                                     </button>
@@ -284,16 +284,20 @@
                                                 <li class="{{ Request::path() == 'shop' ? 'active' : '' }}"><a href="{{ route('shop.index') }}">Shop</a></li>
                                                 <li class="menu-icon {{ Request::path() == 'posts' ? 'active' : '' }}"><a href="{{ route('home.index', ['page' => 'posts']) }}">{{ __('News') }}</a>
                                                     <ul>
-                                                        @foreach (session('categories')->where('code', '!=', 'policies') as $category)
-                                                            <li><a href="{{ route('home.index', ['page' => 'posts', 'category' => $category->code]) }}">{!! $category->name !!}</a></li>
-                                                        @endforeach
+                                                        @if (session('categories')->where('code', '!=', 'policies')->count())
+                                                            @foreach (session('categories')->where('code', '!=', 'policies') as $category)
+                                                                <li><a href="{{ route('home.index', ['page' => 'posts', 'category' => $category->code]) }}">{!! $category->name !!}</a></li>
+                                                            @endforeach
+                                                        @endif
                                                     </ul>
                                                 </li>
                                                 <li class="menu-icon {{ Request::path() == 'post' ? 'active' : '' }}"><a href="#">{{ __('Policies') }}</a>
                                                     <ul>
-                                                        @foreach (session('categories')->where('code', 'policies')->first()->posts as $post)
-                                                            <li><a href="{{ route('home.index', ['page' => 'posts', 'category' => $post->category->code, 'post' => $post->code]) }}">{!! $post->title !!}</a></li>
-                                                        @endforeach
+                                                        @if (session('categories')->where('code', 'policies')->first())
+                                                            @foreach (session('categories')->where('code', 'policies')->first()->posts as $post)
+                                                                <li><a href="{{ route('home.index', ['page' => 'posts', 'category' => $post->category->code, 'post' => $post->code]) }}">{!! $post->title !!}</a></li>
+                                                            @endforeach
+                                                        @endif
                                                     </ul>
                                                 </li>
                                                 <li class="{{ Request::path() == 'contact' ? 'active' : '' }}"><a href="{{ route('home.contact') }}">{{ __('Contact') }}</a></li>
@@ -395,7 +399,7 @@
                 </div>
                 <div class="ltn__utilize-menu-search-form">
                     <form action="#">
-                        <input type="text" placeholder="{{__('Search here...')}}">
+                        <input type="text" placeholder="{{ __('Search here...') }}">
                         <button><i class="fas fa-search"></i></button>
                     </form>
                 </div>
@@ -403,22 +407,23 @@
                     <ul>
                         <li class="{{ Request::path() == '/' ? 'active' : '' }}"><a href="{{ route('home.index') }}">{{ __('Home') }}</a></li>
                         <li class="{{ Request::path() == 'about' ? 'active' : '' }}"><a href="{{ route('home.index', ['page' => 'about']) }}">{{ __('About') }}</a></li>
-                        <li class="{{ Request::path() == 'shop' ? 'active' : '' }}"><a href="{{ route('shop.index') }}">Shop</a> </li>
+                        <li class="{{ Request::path() == 'shop' ? 'active' : '' }}"><a href="{{ route('shop.index') }}">{{__('Shop')}}</a> </li>
                         <li class="{{ Request::path() == 'posts' ? 'active' : '' }}"><a href="#">{{ __('News') }}</a>
                             <ul class="sub-menu">
-                                @foreach (session('categories')->where('code', '!=', 'policies') as $category)
-                                    <li><a href="{{ route('home.index', ['page' => 'posts', 'category' => $category->code]) }}">{!! $category->name !!}</a></li>
-                                @endforeach
+                                @if (session('categories')->where('code', '!=', 'policies')->count())
+                                    @foreach (session('categories')->where('code', '!=', 'policies') as $category)
+                                        <li><a href="{{ route('home.index', ['page' => 'posts', 'category' => $category->code]) }}">{!! $category->name !!}</a></li>
+                                    @endforeach
+                                @endif
                             </ul>
                         </li>
                         <li><a href="#">{{ __('Policies') }}</a>
                             <ul class="sub-menu">
-                                @foreach (session('categories')->where('code', 'policies')->first()->posts as $post)
-                                    <li><a href="{{ route('home.index', ['page' => 'posts', 'category' => $post->category->code, 'post' => $post->code]) }}">{!! $post->title !!}</a></li>
-                                @endforeach
-                                <!-- <li><a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">{{ __('Sales policy') }}</a></li>
-                                <li><a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">{{ __('Delivery & return policy') }}</a></li>
-                                <li><a href="{{ route('home.index', ['category' => 'code', 'post' => 'code']) }}">{{ __('Payment Guide') }}</a></li> -->
+                                @if (session('categories')->where('code', 'policies')->first())
+                                    @foreach (session('categories')->where('code', 'policies')->first()->posts as $post)
+                                        <li><a href="{{ route('home.index', ['page' => 'posts', 'category' => $post->category->code, 'post' => $post->code]) }}">{!! $post->title !!}</a></li>
+                                    @endforeach
+                                @endif
                             </ul>
                         </li>
                         <li class="{{ Request::path() == '/' ? 'contact' : '' }}"><a href="{{ route('home.contact') }}">{{ __('Contact') }}</a></li>
@@ -427,7 +432,7 @@
                 <div class="ltn__utilize-buttons ltn__utilize-buttons-2">
                     <ul>
                         <li>
-                            <a href="#" title="{{__('My Account')}}">
+                            <a href="#" title="{{ __('My Account') }}">
                                 <span class="utilize-btn-icon">
                                     <i class="far fa-user"></i>
                                 </span>
@@ -530,9 +535,11 @@
                                 <h4 class="footer-title">{{ __('Policies') }}</h4>
                                 <div class="footer-menu">
                                     <ul>
-                                        @foreach (session('categories')->where('code', 'policies')->first()->posts as $post)
-                                            <li><a href="{{ route('home.index', ['page' => 'posts', 'category' => $post->category->code, 'post' => $post->code]) }}">{!! $post->title !!}</a></li>
-                                        @endforeach
+                                        @if (session('categories')->where('code', 'policies')->first())
+                                            @foreach (session('categories')->where('code', 'policies')->first()->posts as $post)
+                                                <li><a href="{{ route('home.index', ['page' => 'posts', 'category' => $post->category->code, 'post' => $post->code]) }}">{!! $post->title !!}</a></li>
+                                            @endforeach
+                                        @endif
                                     </ul>
                                 </div>
                             </div>
@@ -734,12 +741,12 @@
                                                 <h5><a href="{{ route('shop.index', ['product' => 'slug']) }}">Digital Stethoscope</a></h5>
                                                 <p class="added-cart"><i class="fa fa-check-circle"></i>
                                                     {{ __('Successfully
-                                                                                                                                                                                                            added to your Cart') }}
+                                                                                                                                                                                                                                                                                                                                                                        added to your Cart') }}
                                                 </p>
                                                 <div class="btn-wrapper">
                                                     <a class="theme-btn-1 btn btn-effect-1"
                                                         href="{{ route('cart.index') }}">{{ __('View
-                                                                                                                                                                                                                            Cart') }}</a>
+                                                                                                                                                                                                                                                                                                                                                                                                    Cart') }}</a>
                                                     <a class="theme-btn-2 btn btn-effect-2" href="{{ route('cart.checkout') }}">{{ __('Checkout') }}</a>
                                                 </div>
                                             </div>
@@ -818,6 +825,8 @@
     <script src="{{ asset('admin/vendors/toastify/toastify.js') }}"></script>
     <!-- Main JS -->
     <script src="{{ asset('js/main.js') }}"></script>
+    {{-- input image JSCompressor --}}
+    <script src="{{ asset('admin/vendors/compressorjs/compressor.min.js') }}"></script>
 
     @stack('scripts')
 </body>

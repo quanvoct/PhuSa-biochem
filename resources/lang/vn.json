@@ -1,8 +1,1 @@
-{
-    "Hello!": "Xin chào",
-    "Verify Email Address": "Xác thực email",
-    "Please click the button below to verify your email address.": "Vui lòng nhấp vào nút bên dưới để xác minh địa chỉ email của bạn.",
-    "If you did not create an account, no further action is required.": "Nếu bạn chưa tạo tài khoản, bạn không cần thực hiện thêm hành động nào.",
-    "Regards": "Trân trọng",
-    "If you’re having trouble clicking the \":actionText\" button, copy and paste the URL below\ninto your web browser: [:actionURL](:actionURL)": "\":actionText\". Nếu bạn gặp sự cố khi nhấp vào nút Xác minh, hãy sao chép và dán URL bên dưới vào trình duyệt web của bạn: [:actionURL](:actionURL)"
-  }
+{"English":"English","Vietnamese":"Vietnamese","Home":"Trang ch\u1ee7","About":"Gi\u1edbi thi\u1ec7u","Shop":"S\u1ea3n ph\u1ea9m","News":"Tin t\u1ee9c","Policies":"Ch\u00ednh s\u00e1ch","Hello":"Xin ch\u00e0o","Verify Email Address":"X\u00e1c th\u1ef1c email","Search here...":"T\u00ecm ki\u1ebfm s\u1ea3n ph\u1ea9m...","Please click the button below to verify your email address.":"Vui l\u00f2ng nh\u1ea5p v\u00e0o n\u00fat b\u00ean d\u01b0\u1edbi \u0111\u1ec3 x\u00e1c minh \u0111\u1ecba ch\u1ec9 email c\u1ee7a b\u1ea1n.","If you did not create an account, no further action is required.":"N\u1ebfu b\u1ea1n ch\u01b0a t\u1ea1o t\u00e0i kho\u1ea3n, b\u1ea1n kh\u00f4ng c\u1ea7n th\u1ef1c hi\u1ec7n th\u00eam h\u00e0nh \u0111\u1ed9ng n\u00e0o.","Regards":"Tr\u00e2n tr\u1ecdng","If you\u2019re having trouble clicking the \":actionText\" button, copy and paste the URL below\r\ninto your web browser: [:actionURL":"\":actionText\". N\u1ebfu b\u1ea1n g\u1eb7p s\u1ef1 c\u1ed1 khi nh\u1ea5p v\u00e0o n\u00fat X\u00e1c minh, h\u00e3y sao ch\u00e9p v\u00e0 d\u00e1n URL b\u00ean d\u01b0\u1edbi v\u00e0o tr\u00ecnh duy\u1ec7t web c\u1ee7a b\u1ea1n: [:actionURL](:actionURL)"}

@@ -89,7 +89,7 @@ class LanguageController extends Controller
             'success' => true,
             'msg' => __('Update language successfully!'),
         ];
-        return redirect()->route('lang')->with('response', $response);
+        return redirect()->route('admin.language')->with('response', $response);
     }
 
     public function change(Request $request)
