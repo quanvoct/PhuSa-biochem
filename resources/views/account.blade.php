@@ -94,7 +94,7 @@
                                             <div class="ltn__myaccount-tab-content-inner">
                                                 <p>The following addresses will be used on the checkout page by default.</p>
 
-                                                <form action="{{ route('profile.settings') }}" method="post">
+                                                <form action="{{ route('profile.settings') }}" method="post" class="save-form">
                                                     @csrf
                                                     <div class="card mb-3">
                                                         @if (session('response'))
@@ -188,7 +188,7 @@
                                         <div class="tab-pane fade" id="liton_tab_1_4">
                                             <div class="ltn__myaccount-tab-content-inner">
                                                 <p>Change password.</p>
-                                                <form action="{{ route('profile.password') }}" method="post">
+                                                <form action="{{ route('profile.password') }}" method="post" class="save-form">
                                                     @csrf
                                                     <div class="card mb-3">
                                                         @if (session('response'))
@@ -261,3 +261,16 @@
     </div>
     <!-- WISHLIST AREA START -->
 @endsection
+
+@push('scripts')
+    <script>
+
+        $('.save-form').on('submit', function (e) {
+            e.preventDefault();
+            form = $(this);
+            submitForm(form).done(function (response) {
+                form.find("[type=submit]").prop("disabled", false).html("Lưu");
+            });
+        });
+    </script>
+@endpush
