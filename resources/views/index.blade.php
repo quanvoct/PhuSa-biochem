@@ -18,11 +18,11 @@
                                             <div class="slide-item-info">
                                                 <div class="slide-item-info-inner ltn__slide-animation">
                                                     <!-- <h6 class="slide-sub-title ltn__secondary-color animated">Up To 50% Off Today Only!</h6>
-                                                                <h1 class="slide-title  animated">Gold Standard <br>Pre-Workout</h1>
-                                                                <div class="slide-brief animated d-none">
-                                                                    <p>Predictive analytics is drastically changing the real estate industry. In the past, providing data for quick</p>
-                                                                </div>
-                                                                <h5 class="color-orange  animated">Starting at &16.99</h5> -->
+                                                                        <h1 class="slide-title  animated">Gold Standard <br>Pre-Workout</h1>
+                                                                        <div class="slide-brief animated d-none">
+                                                                            <p>Predictive analytics is drastically changing the real estate industry. In the past, providing data for quick</p>
+                                                                        </div>
+                                                                        <h5 class="color-orange  animated">Starting at &16.99</h5> -->
                                                     <div class="btn-wrapper  animated">
                                                         <a class="theme-btn-1 btn btn-effect-1" href="{{ route('shop.index') }}">{{ __('Shop now') }}</a>
                                                     </div>
@@ -47,13 +47,14 @@
                                             <div class="slide-item-info">
                                                 <div class="slide-item-info-inner ltn__slide-animation">
                                                     <!-- <h4 class="slide-sub-title ltn__secondary-color animated text-uppercase">Welcome to our shop</h4>
-                                                                <h1 class="slide-title  animated">TGold Standard <br>Pre-Workout</h1>
-                                                                <div class="slide-brief animated d-none">
-                                                                    <p>Predictive analytics is drastically changing the real estate industry. In the past, providing data for quick</p>
-                                                                </div> -->
+                                                                        <h1 class="slide-title  animated">TGold Standard <br>Pre-Workout</h1>
+                                                                        <div class="slide-brief animated d-none">
+                                                                            <p>Predictive analytics is drastically changing the real estate industry. In the past, providing data for quick</p>
+                                                                        </div> -->
                                                     <div class="btn-wrapper  animated">
-                                                        <a class="theme-btn-1 btn btn-effect-1 text-uppercase" href="{{ route('shop.index') }}">Shop
-                                                            now</a>
+                                                        <a class="theme-btn-1 btn btn-effect-1 text-uppercase"
+                                                            href="{{ route('shop.index') }}">{{ __('Shop
+                                                                                                                                                                                now') }}</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -97,8 +98,8 @@
                                 <img src="{{ asset('img/icons/svg/thiet-bi-chinh-hang.svg') }}" alt="#">
                             </div>
                             <div class="ltn__feature-info">
-                                <h4>Genuine equipment</h4>
-                                <p>From Phu Sa BIOCHEM and leading equipment manufacturers.</p>
+                                <h4>{{ __('Genuine equipment') }}</h4>
+                                <p>{{ __('From Phu Sa BIOCHEM and leading equipment manufacturers.') }}</p>
                             </div>
                         </div>
                     </div>
@@ -110,8 +111,8 @@
                                 <img src="{{ asset('img/icons/svg/san-pham-chat-luong.svg') }}" alt="#">
                             </div>
                             <div class="ltn__feature-info">
-                                <h4>Quality products</h4>
-                                <p>Producing the right quantity and quality, meeting requirements.</p>
+                                <h4>{{ __('Quality products') }}</h4>
+                                <p>{{ __('Producing the right quantity and quality, meeting requirements.') }}</p>
                             </div>
                         </div>
                     </div>
@@ -123,9 +124,8 @@
                                 <img src="{{ asset('img/icons/svg/giao-hang-dung-tien-do.svg') }}" alt="#">
                             </div>
                             <div class="ltn__feature-info">
-                                <h4>Fast production</h4>
-                                <p>Key products are manufactured by the company according to approved technological processes
-                                    invent.</p>
+                                <h4>{{ __('Fast production') }}</h4>
+                                <p>{{ __('Key products are manufactured by the company according to approved technological processes invent.') }}</p>
                             </div>
                         </div>
                     </div>
@@ -137,8 +137,8 @@
                                 <img src="{{ asset('img/icons/svg/ho-tro-chuyen-nghiep.svg') }}" alt="#">
                             </div>
                             <div class="ltn__feature-info">
-                                <h4>Professional support</h4>
-                                <p>Product consultation and professional, quick support.</p>
+                                <h4>{{ __('Professional support') }}</h4>
+                                <p>{{ __('Product consultation and professional, quick support.') }}</p>
                             </div>
                         </div>
                     </div>
@@ -235,54 +235,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- <div class="col-12">
-                                <div class="ltn__category-item ltn__category-item-6 text-center">
-                                    <div class="ltn__category-item-img">
-                                        <a href="{{ route('shop.index') }}">
-                                            <i class="fas fa-syringe"></i>
-                                        </a>
-                                    </div>
-                                    <div class="ltn__category-item-name">
-                                        <h6><a href="{{ route('shop.index') }}">All Products</a></h6>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="ltn__category-item ltn__category-item-6 text-center">
-                                    <div class="ltn__category-item-img">
-                                        <a href="{{ route('shop.index') }}">
-                                            <i class="fas fa-stethoscope"></i>
-                                        </a>
-                                    </div>
-                                    <div class="ltn__category-item-name">
-                                        <h6><a href="{{ route('shop.index') }}">Germs Pads</a></h6>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="ltn__category-item ltn__category-item-6 text-center">
-                                    <div class="ltn__category-item-img">
-                                        <a href="{{ route('shop.index') }}">
-                                            <i class="fas fa-hand-holding-medical"></i>
-                                        </a>
-                                    </div>
-                                    <div class="ltn__category-item-name">
-                                        <h6><a href="{{ route('shop.index') }}">Accessories</a></h6>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="ltn__category-item ltn__category-item-6 text-center">
-                                    <div class="ltn__category-item-img">
-                                        <a href="{{ route('shop.index') }}">
-                                            <i class="fas fa-procedures"></i>
-                                        </a>
-                                    </div>
-                                    <div class="ltn__category-item-name">
-                                        <h6><a href="{{ route('shop.index') }}">Medicine Cap</a></h6>
-                                    </div>
-                                </div>
-                            </div> -->
             </div>
         </div>
     </div>
@@ -330,30 +282,6 @@
                                             <a href="{{ route('shop.index', ['catalogue' => $product->catalogues->first()->slug, 'product' => $product->slug]) }}">
                                                 <img src="{{ $product->getImageUrlAttribute() }}" alt="img">
                                             </a>
-                                            <!-- <div class="product-badge">
-                                                <ul>
-                                                    <li class="sale-badge">New</li>
-                                                </ul>
-                                            </div>
-                                            <div class="product-hover-action">
-                                                <ul>
-                                                    <li>
-                                                        <a data-bs-toggle="modal" data-bs-target="#quick_view_modal" href="#" title="Quick View">
-                                                            <i class="far fa-eye"></i>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a data-bs-toggle="modal" data-bs-target="#add_to_cart_modal" href="#" title="Add to Cart">
-                                                            <i class="fas fa-shopping-cart"></i>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a data-bs-toggle="modal" data-bs-target="#liton_wishlist_modal" href="#" title="Wishlist">
-                                                            <i class="far fa-heart"></i>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div> -->
                                         </div>
                                         <div class="product-info">
                                             <div class="product-ratting">
@@ -372,7 +300,6 @@
                                             </h2>
                                             <div class="product-price">
                                                 <span>{!! $product->displayPrice() !!}</span>
-                                                <!-- <del>$46.00</del> -->
                                             </div>
                                         </div>
                                     </div>
@@ -396,13 +323,14 @@
                         <div class="section-title-area ltn__section-title-2--- text-center---">
                             <h6 class="ltn__secondary-color">{{ __('Todays Hot Offer') }}</h6>
                             <h1 class="section-title">{{ __('Monthly promotional campaign') }}</h1>
-                            <p>Don't miss out on the opportunity to receive promotions today from PhuSa Biochem.</p>
+                            <p>{{ __('Don`t miss out on the opportunity to receive promotions today from PhuSa Biochem.') }}</p>
                         </div>
                         <div class="ltn__countdown ltn__countdown-3 bg-white--" data-countdown="2024/08/31"></div>
                         <div class="btn-wrapper animated">
                             <a class="theme-btn-1 btn btn-effect-1 text-uppercase" href="{{ route('home.contact') }}">{{ __('Book Now') }}</a>
-                            <a class="ltn__secondary-color text-decoration-underline" href="{{ route('shop.index') }}">{{ __('Deal of The
-                                                                                                                Day') }}</a>
+                            <a class="ltn__secondary-color text-decoration-underline"
+                                href="{{ route('shop.index') }}">{{ __('Deal of The
+                                                                                                                                                                                Day') }}</a>
                         </div>
                     </div>
                 </div>
@@ -437,41 +365,17 @@
                                     <a href="{{ route('shop.index', ['catalogue' => $product->catalogues->first()->slug, 'product' => $product->slug]) }}">
                                         <img src="{{ $product->getImageUrlAttribute() }}" alt="img">
                                     </a>
-                                    <!-- <div class="product-badge">
-                                        <ul>
-                                            <li class="sale-badge">New</li>
-                                        </ul>
-                                    </div>
-                                    <div class="product-hover-action">
-                                        <ul>
-                                            <li>
-                                                <a data-bs-toggle="modal" data-bs-target="#quick_view_modal" href="#" title="Quick View">
-                                                    <i class="far fa-eye"></i>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a data-bs-toggle="modal" data-bs-target="#add_to_cart_modal" href="#" title="Add to Cart">
-                                                    <i class="fas fa-shopping-cart"></i>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a data-bs-toggle="modal" data-bs-target="#liton_wishlist_modal" href="#" title="Wishlist">
-                                                    <i class="far fa-heart"></i>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div> -->
                                 </div>
                                 <div class="product-info">
                                     <!-- <div class="product-ratting">
-                                        <ul>
-                                            <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                            <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                            <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                            <li><a href="#"><i class="fas fa-star-half-alt"></i></a></li>
-                                            <li><a href="#"><i class="far fa-star"></i></a></li>
-                                        </ul>
-                                    </div> -->
+                                                <ul>
+                                                    <li><a href="#"><i class="fas fa-star"></i></a></li>
+                                                    <li><a href="#"><i class="fas fa-star"></i></a></li>
+                                                    <li><a href="#"><i class="fas fa-star"></i></a></li>
+                                                    <li><a href="#"><i class="fas fa-star-half-alt"></i></a></li>
+                                                    <li><a href="#"><i class="far fa-star"></i></a></li>
+                                                </ul>
+                                            </div> -->
                                     <h2 class="product-title">
                                         <a href="{{ route('shop.index', ['catalogue' => $product->catalogues->first()->slug, 'product' => $product->slug]) }}">
                                             {!! $product->name !!}
@@ -479,7 +383,6 @@
                                     </h2>
                                     <div class="product-price">
                                         <span>{!! $product->displayPrice() !!}</span>
-                                        <!-- <del>$46.00</del> -->
                                     </div>
                                 </div>
                             </div>
@@ -504,13 +407,12 @@
                 <div class="col-lg-7 align-self-center">
                     <div class="about-us-info-wrap">
                         <div class="section-title-area ltn__section-title-2--- mb-20">
-                            <h6 class="section-subtitle section-subtitle-2--- ltn__secondary-color">About Us</h6>
-                            <h1 class="section-title">{{ __('Phu Sa Genomics Joint Stock Company') }}</h1>
-                            <p>{{ __('The predecessor of PHU SA Genomics comes from PHU SA Biochem. After more than 14
-                                                                                                                years of establishment, with the enthusiasm of a team of professional and creative
-                                                                                                                leaders, along with accumulated experience, PHU SA is honored to be a trusted
-                                                                                                                partner of more than 300 agencies/units and experienced customers. long across the
-                                                                                                                country.') }}
+                            <h6 class="section-subtitle section-subtitle-2--- ltn__secondary-color">{{ __('About Us') }}</h6>
+                            <h1 class="section-title">{{ __('Phu Sa Biochem Joint Stock Company') }}</h1>
+                            <p>{{ __('The predecessor of PHU SA Biochem comes from PHU SA Biochem. After more than 14
+                                                          years of establishment, with the enthusiasm of a team of professional and creative
+                                                          leaders, along with accumulated experience, PHU SA is honored to be a trusted
+                                                           partner of more than 300 agencies/units and experienced customers. long across the country.') }}
                             </p>
                         </div>
                         <ul class="ltn__list-item-half clearfix">

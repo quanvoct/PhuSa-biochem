@@ -22,6 +22,9 @@
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <!-- Responsive css -->
     <link href="{{ asset('css/responsive.css') }}" rel="stylesheet">
+    {{-- Include Select2 CSS --}}
+    <link href="{{ asset('vendors/select2/select2-bootstrap-5-theme.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('vendors/select2/select2.min.css') }}" rel="stylesheet" />
     {{-- Toastify --}}
     <link href="{{ asset('admin/vendors/toastify/toastify.css') }}" rel="stylesheet">
 </head>
@@ -243,13 +246,13 @@
                             <!-- CATEGORY-MENU-LIST START -->
                             <div class="ltn__category-menu-wrap ltn__category-dropdown-hide ltn__category-menu-with-header-menu">
                                 <div class="ltn__category-menu-title">
-                                    <h2 class="section-bg-1--- ltn__secondary-bg text-color-white">{{ __('categories') }}</h2>
+                                    <h2 class="section-bg-1--- ltn__secondary-bg text-color-white">{{ __('Categories') }}</h2>
                                 </div>
                                 <div class="ltn__category-menu-toggle ltn__one-line-active">
                                     <ul>
                                         <!-- Submenu Column - unlimited -->
                                         <li class="ltn__category-menu-item ltn__category-menu-drop">
-                                            <a href="{{ route('shop.index') }}">{{ __('All products') }}</a>
+                                            <a href="{{ route('shop.index') }}">{{ __('All Products') }}</a>
                                         </li>
                                         @if (Illuminate\Support\Facades\Session::has('catalogues'))
                                             @foreach (session('catalogues')->where('status', 1)->whereNull('parent_id') as $catalogue)
@@ -281,7 +284,7 @@
                                             <ul>
                                                 <li class="{{ Request::path() == '/' ? 'active' : '' }}"><a href="{{ route('home.index') }}">{{ __('Home') }}</a></li>
                                                 <li class="{{ Request::path() == 'about' ? 'active' : '' }}"><a href="{{ route('home.index', ['page' => 'about']) }}">{{ __('About') }}</a></li>
-                                                <li class="{{ Request::path() == 'shop' ? 'active' : '' }}"><a href="{{ route('shop.index') }}">Shop</a></li>
+                                                <li class="{{ Request::path() == 'shop' ? 'active' : '' }}"><a href="{{ route('shop.index') }}">{{ __('Shop') }}</a></li>
                                                 <li class="menu-icon {{ Request::path() == 'posts' ? 'active' : '' }}"><a href="{{ route('home.index', ['page' => 'posts']) }}">{{ __('News') }}</a>
                                                     <ul>
                                                         @if (session('categories')->where('code', '!=', 'policies')->count())
@@ -338,7 +341,7 @@
                             <span class="mini-cart-item-delete"><i class="icon-cancel"></i></span>
                         </div>
                         <div class="mini-cart-info">
-                            <h6><a href="#">Antiseptic Spray</a></h6>
+                            <h6><a href="#">{{ __('Antiseptic Spray') }}</a></h6>
                             <span class="mini-cart-quantity">1 x 190.000<sup>đ</sup></span>
                         </div>
                     </div>
@@ -348,7 +351,7 @@
                             <span class="mini-cart-item-delete"><i class="icon-cancel"></i></span>
                         </div>
                         <div class="mini-cart-info">
-                            <h6><a href="#">Digital Stethoscope</a></h6>
+                            <h6><a href="#">{{ __('Digital Stethoscope') }}</a></h6>
                             <span class="mini-cart-quantity">1 x 190.000<sup>đ</sup></span>
                         </div>
                     </div>
@@ -358,7 +361,7 @@
                             <span class="mini-cart-item-delete"><i class="icon-cancel"></i></span>
                         </div>
                         <div class="mini-cart-info">
-                            <h6><a href="#">Cosmetic Containers</a></h6>
+                            <h6><a href="#">{{ __('Cosmetic Containers') }}</a></h6>
                             <span class="mini-cart-quantity">1 x 190.000<sup>đ</sup></span>
                         </div>
                     </div>
@@ -368,7 +371,7 @@
                             <span class="mini-cart-item-delete"><i class="icon-cancel"></i></span>
                         </div>
                         <div class="mini-cart-info">
-                            <h6><a href="#">Thermometer Gun</a></h6>
+                            <h6><a href="#">{{ __('Thermometer Gun') }}</a></h6>
                             <span class="mini-cart-quantity">1 x 190.000<sup>đ</sup></span>
                         </div>
                     </div>
@@ -378,10 +381,10 @@
                         <h5>{{ __('Subtotal:') }} <span>2.190.000<sup>đ</sup></span></h5>
                     </div>
                     <div class="btn-wrapper">
-                        <a class="theme-btn-1 btn btn-effect-1" href="{{ route('cart.index') }}">{{ __('View Cart') }}</a>
-                        <a class="theme-btn-2 btn btn-effect-2" href="{{ route('cart.checkout') }}">{{ __('Checkout') }}</a>
+                        <a class="theme-btn-1 btn btn-effect-1 p-3" href="{{ route('cart.index') }}">{{ __('View Cart') }}</a>
+                        <a class="theme-btn-2 btn btn-effect-2 p-3" href="{{ route('cart.checkout') }}">{{ __('Checkout') }}</a>
                     </div>
-                    <p>{{ __('Free Shipping on All Orders Over ') }}1.000.000<sup>đ</sup>!</p>
+                    <p>{{ __('Free Shipping on All Orders Over') }} 1.000.000<sup>đ</sup>!</p>
                 </div>
 
             </div>
@@ -648,7 +651,7 @@
                                                         <li class="review-total"> <a href="#"> ( 95 Reviews )</a></li>
                                                     </ul>
                                                 </div>
-                                                <h3>Digital Stethoscope</h3>
+                                                <h3>{{ __('Digital Stethoscope') }}</h3>
                                                 <div class="product-price">
                                                     <span>350,000<sup>đ</sup></span>
                                                     <!-- <del>$165.00</del> -->
@@ -656,7 +659,7 @@
                                                 <div class="modal-product-meta ltn__product-details-menu-1">
                                                     <ul>
                                                         <li>
-                                                            <strong>Categories:</strong>
+                                                            <strong>{{ __('Categories:') }}</strong>
                                                             <span>
                                                                 <a href="#">Parts</a>
                                                                 <a href="#">Car</a>
@@ -816,6 +819,27 @@
             routes: {
                 login: `{{ route('login') }}`,
                 placeholder: `asset('admin/images/placeholder.webp')`
+            }, 
+            select2: {
+                ajax: {
+                    processResults: function(data, params) {
+                        params.page = params.page || 1;
+                        return {
+                            results: data,
+                            pagination: {
+                                more: false
+                            }
+                        }
+                    },
+                    cache: 500,
+                    delay: true,
+                },
+                language: "vi",
+                theme: "bootstrap-5",
+                width: '100%',
+                allowClear: true,
+                closeOnSelect: false,
+                scrollOnSelect: true,
             }
         }
     </script>
@@ -827,6 +851,9 @@
     <script src="{{ asset('js/main.js') }}"></script>
     {{-- input image JSCompressor --}}
     <script src="{{ asset('admin/vendors/compressorjs/compressor.min.js') }}"></script>
+    {{-- Include Select2 --}}
+    <script src="{{ asset('vendors/select2/select2.full.min.js') }}"></script>
+    <script src="{{ asset('vendors/select2/i18n/vi.js') }}"></script>
 
     @stack('scripts')
 </body>

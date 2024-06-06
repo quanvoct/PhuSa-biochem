@@ -12,8 +12,8 @@
                         <h1 class="page-title">{{ $pageName }}</h1>
                         <div class="ltn__breadcrumb-list">
                             <ul>
-                                <li><a href="{{ route('home.index') }}"><span class="ltn__secondary-color"><i class="fas fa-home"></i></span> Home</a></li>
-                                <li><a href="{{ route('shop.index') }}"><span class="ltn__secondary-color"></span> Shop</a></li>
+                                <li><a href="{{ route('home.index') }}"><span class="ltn__secondary-color"><i class="fas fa-home"></i></span> {{ __('Home') }}</a></li>
+                                <li><a href="{{ route('shop.index') }}"><span class="ltn__secondary-color"></span> {{ __('Shop') }}</a></li>
                                 <li>{{ $pageName }}</li>
                             </ul>
                         </div>
@@ -56,19 +56,19 @@
                             <div class="col-md-7">
                                 <div class="modal-product-info shop-details-info pl-0">
                                     <!-- <div class="product-ratting">
-                                                            <ul>
-                                                                <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                                                <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                                                <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                                                <li><a href="#"><i class="fas fa-star-half-alt"></i></a></li>
-                                                                <li><a href="#"><i class="far fa-star"></i></a></li>
-                                                                <li class="review-total"> <a href="#"> ( 95 Reviews )</a></li>
-                                                            </ul>
-                                                        </div> -->
+                                                                <ul>
+                                                                    <li><a href="#"><i class="fas fa-star"></i></a></li>
+                                                                    <li><a href="#"><i class="fas fa-star"></i></a></li>
+                                                                    <li><a href="#"><i class="fas fa-star"></i></a></li>
+                                                                    <li><a href="#"><i class="fas fa-star-half-alt"></i></a></li>
+                                                                    <li><a href="#"><i class="far fa-star"></i></a></li>
+                                                                    <li class="review-total"> <a href="#"> ( 95 Reviews )</a></li>
+                                                                </ul>
+                                                            </div> -->
                                     <h4 class="ltn__secondary-color section-subtitle section-subtitle-2---">{{ $product->sku }}</h4>
                                     <!-- <div class="product-price">
-                                                            <span>1,500,000<sup>đ</sup></span>
-                                                        </div> -->
+                                                                <span>1,500,000<sup>đ</sup></span>
+                                                            </div> -->
                                     <h2 class="fs-2">{{ $product->name }}</h2>
                                     <div class="modal-product-meta ltn__product-details-menu-1">
                                         <ul>
@@ -115,7 +115,7 @@
                                                             <li>
                                                                 <a class="theme-btn-1 btn btn-effect-1" data-bs-toggle="modal" data-bs-target="#add_to_cart_modal" href="#" title="Add to Cart">
                                                                     <i class="fas fa-shopping-cart"></i>
-                                                                    <span>ADD TO CART</span>
+                                                                    <span>{{ __('ADD TO CART') }}</span>
                                                                 </a>
                                                             </li>
                                                         </ul>
@@ -134,12 +134,12 @@
                             <div class="col-12 col-lg-8 card">
                                 <div class="ltn__shop-details-tab-menu">
                                     <div class="nav">
-                                        <a class="active show" data-bs-toggle="tab" href="#liton_tab_details_description">Description</a>
+                                        <a class="active show" data-bs-toggle="tab" href="#liton_tab_details_description">{{ __('Description') }}</a>
                                         @if (!empty($specs))
-                                            <a class="" data-bs-toggle="tab" href="#liton_tab_details_specifications">Specifications</a>
+                                            <a class="" data-bs-toggle="tab" href="#liton_tab_details_specifications">{{ __('Specifications') }}</a>
                                         @endif
-                                        <a class="" data-bs-toggle="tab" href="#liton_tab_details_guide">Ordering guide</a>
-                                        <a class="" data-bs-toggle="tab" href="#liton_tab_details_review">Review</a>
+                                        <a class="" data-bs-toggle="tab" href="#liton_tab_details_guide">{{ __('Ordering guide') }}</a>
+                                        <a class="" data-bs-toggle="tab" href="#liton_tab_details_review">{{ __('Review') }}</a>
                                     </div>
                                 </div>
                                 <div class="tab-content">
@@ -149,7 +149,7 @@
                                                 {!! $product->description !!}
                                             </div>
                                         </div>
-                                        <button class="btn btn-effect-1 text-uppercase theme-btn-1 expand-description-btn m-3">Xem thêm</button>
+                                        <button class="btn btn-effect-1 text-uppercase theme-btn-1 expand-description-btn m-3">{{ __('Read more') }}</button>
                                     </div>
                                     @if (!empty($specs))
                                         <div class="tab-pane fade" id="liton_tab_details_specifications">
@@ -157,8 +157,8 @@
                                                 <table class="table table-striped">
                                                     <thead>
                                                         <tr>
-                                                            <th scope="col">Thông số</th>
-                                                            <th scope="col">Giá trị</th>
+                                                            <th scope="col">{{ __('Parameter') }}</th>
+                                                            <th scope="col">{{ __('Value') }}</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -175,7 +175,7 @@
                                     @endif
                                     <div class="tab-pane fade" id="liton_tab_details_guide">
                                         <div class="ltn__shop-details-tab-content-inner">
-                                            <h4 class="title-2">Policies</h4>
+                                            <h4 class="title-2">{{ __('Policies') }}</h4>
                                             <div class="">
                                                 <p>This warranty policy is understood as a policy to ensure the quality of
                                                     PHUSA Genomics products and products previously sold by PHUSA Biochem.
@@ -262,7 +262,7 @@
                                                                     <img src="{{ asset('img/testimonial/1.jpg') }}" alt="Image">
                                                                 </div>
                                                                 <div class="ltn__commenter-comment">
-                                                                    <h6><a href="#">Adam Smit</a></h6>
+                                                                    <h6><a href="#">{{ __('Adam Smit') }}</a></h6>
                                                                     <div class="product-ratting">
                                                                         <ul>
                                                                             <li><a href="#"><i class="fas fa-star"></i></a>
@@ -349,10 +349,10 @@
                                             <!-- comment-reply -->
                                             <div class="ltn__comment-reply-area ltn__form-box mb-30">
                                                 <form action="#">
-                                                    <h4 class="title-2">Add a Review</h4>
+                                                    <h4 class="title-2">{{ __('Add a Review') }}</h4>
                                                     <div class="mb-30">
                                                         <div class="add-a-review">
-                                                            <h6>Your Ratings:</h6>
+                                                            <h6>{{ __('Your Ratings:') }}</h6>
                                                             <div class="product-ratting">
                                                                 <ul>
                                                                     <li><a href="#"><i class="fas fa-star"></i></a></li>
@@ -366,22 +366,20 @@
                                                         </div>
                                                     </div>
                                                     <div class="input-item input-item-textarea ltn__custom-icon">
-                                                        <textarea placeholder="Type your comments...."></textarea>
+                                                        <textarea placeholder="{{ __('Type your comments....') }}"></textarea>
                                                     </div>
                                                     <div class="input-item input-item-name ltn__custom-icon">
-                                                        <input type="text" placeholder="Type your name....">
+                                                        <input type="text" placeholder="{{ __('Type your name....') }}">
                                                     </div>
                                                     <div class="input-item input-item-email ltn__custom-icon">
-                                                        <input type="email" placeholder="Type your email....">
+                                                        <input type="email" placeholder="{{ __('Type your email....') }}">
                                                     </div>
-                                                    <div class="input-item input-item-website ltn__custom-icon">
-                                                        <input name="website" type="text" placeholder="Type your website....">
-                                                    </div>
-                                                    <label class="mb-0"><input name="agree" type="checkbox"> Save my name,
-                                                        email, and website in this browser for the next time I
-                                                        comment.</label>
+                                                    {{-- <div class="input-item input-item-website ltn__custom-icon">
+                                                        <input name="website" type="text" placeholder="{{ __('Type your website....') }}">
+                                                    </div> --}}
+                                                    <label class="mb-0"><input name="agree" type="checkbox"> {{ __('Save my name, email, and website in this browser for the next time I comment.') }}</label>
                                                     <div class="btn-wrapper">
-                                                        <button class="btn theme-btn-1 btn-effect-1 text-uppercase" type="submit">Submit</button>
+                                                        <button class="btn theme-btn-1 btn-effect-1 text-uppercase" type="submit">{{ __('Submit') }}</button>
                                                     </div>
                                                 </form>
                                             </div>

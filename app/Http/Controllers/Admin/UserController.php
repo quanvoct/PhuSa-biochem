@@ -272,7 +272,7 @@ class UserController extends Controller
                     'country' => $request->country,
                     'city' => $request->city,
                     'zip' => $request->zip,
-                    'gender' => $request->has('gender') ? $request->gender : 0,
+                    'gender' => $request->has('gender') ? $request->gender : 2,
                     'status' => $request->has('status'),
                 ], $request->id);
                 if ($user) {

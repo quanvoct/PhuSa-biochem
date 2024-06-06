@@ -615,6 +615,7 @@ ol li {
 }
 .section-bg-3 input[type="text"],
 .section-bg-3 input[type="email"],
+.section-bg-3 input[type="date"],
 .section-bg-3 input[type="password"],
 .section-bg-3 input[type="submit"] {
     border-color: var(--white);
@@ -1009,6 +1010,7 @@ fieldset legend {
     input and button type focus outline disable
 ---------------------------------------------------- */
 input[type="text"]:focus,
+input[type="date"]:focus,
 input[type="email"]:focus,
 input[type="url"]:focus,
 input[type="password"]:focus,
@@ -1035,6 +1037,7 @@ code {
 ---------------------------------------------------- */
 input[type="text"],
 input[type="email"],
+input[type="date"], 
 input[type="password"],
 input[type="submit"],
 textarea {
@@ -1055,6 +1058,7 @@ textarea {
 
 input[type="text"]::-webkit-input-placeholder,
 input[type="email"]::-webkit-input-placeholder,
+input[type="date"]::-webkit-input-placeholder, 
 input[type="password"]::-webkit-input-placeholder,
 input[type="submit"]::-webkit-input-placeholder,
 textarea::-webkit-input-placeholder {
@@ -1064,6 +1068,7 @@ textarea::-webkit-input-placeholder {
 }
 
 input[type="text"]:focus,
+input[type="date"]:focus, 
 input[type="email"]:focus,
 input[type="password"]:focus,
 textarea:focus {
@@ -15970,7 +15975,8 @@ input.cart-plus-minus-box {
     color: var(--ltn__color-1);
 }
 
-.input-item .nice-select {
+.input-item .nice-select,
+.input-item .select2 {
     border: 2px solid;
     border-color: var(--border-color-1);
     border-radius: 0;
@@ -15981,13 +15987,16 @@ input.cart-plus-minus-box {
     width: 100%;
     margin-bottom: 30px;
 }
-.input-item .nice-select .current {
+.input-item .nice-select .current,
+    .input-item .select2 .current {
     font-weight: 700;
 }
-.input-item .nice-select::after {
+.input-item .nice-select::after,
+    .input-item .select2::after {
     display: none;
 }
-.input-item .nice-select::before {
+.input-item .nice-select::before,
+    .input-item .select2::before {
     content: "\f063";
     font-size: 14px;
     position: absolute;
@@ -18224,6 +18233,7 @@ input.cart-plus-minus-box {
     max-height: 500px;
     overflow: hidden;
     position: relative;
+    transition: all .5s;
 }
 .product-description-container::before {
     content: '';
@@ -18236,6 +18246,9 @@ input.cart-plus-minus-box {
 }
 .product-description-container.expand {
     max-height: none;
+}
+.product-description-container.expand::before{
+    display: none;
 }
 .ltn__blog-img {
     position: relative;
@@ -18278,6 +18291,9 @@ input.cart-plus-minus-box {
 .avt:hover::after {
     display: flex;
 
+}
+.input-item .nice-select{
+    margin-bottom: 10px;
 }
 /* ----------------------------------------------------
     END

@@ -236,11 +236,11 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         $result = '';
         if ($this->gender == 2) {
-            $result = 'Khác';
-        } else if ($this->gender == 1) {
-            $result = 'Nữ';
+            $result = __('Undisclosed');
+        } else if ($this->gender == 0) {
+            $result = __('female');
         } else {
-            $result = 'Nam';
+            $result = __('male');
         }
         return $result;
     }

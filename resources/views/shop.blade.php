@@ -12,7 +12,7 @@
                     <h1 class="page-title">{{ $pageName }}</h1>
                     <div class="ltn__breadcrumb-list">
                         <ul>
-                            <li><a href="{{ route('home.index') }}"><span class="ltn__secondary-color"><i class="fas fa-home"></i></span> Home</a></li>
+                            <li><a href="{{ route('home.index') }}"><span class="ltn__secondary-color"><i class="fas fa-home"></i></span> {{ __('Home') }}</a></li>
                             <li>{{ $pageName }}</li>
                         </ul>
                     </div>
@@ -40,17 +40,17 @@
                         </li>
                         <li>
                             <div class="showing-product-number text-right">
-                                <span>Showing {{ $products->firstItem() }}–{{ $products->lastItem() }} of {{ $products->total() }} results</span>
+                                <span>{{ __('Showing') }} {{ $products->firstItem() }}–{{ $products->lastItem() }} {{ __('of') }} {{ $products->total() }} {{ __('results') }}</span>
                             </div>
                         </li>
                         <li>
                             <div class="short-by text-center">
                                 <select class="nice-select">
-                                    <option>Default Sorting</option>
-                                    <option>Sort by popularity</option>
-                                    <option>Sort by new arrivals</option>
-                                    <option>Sort by price: low to high</option>
-                                    <option>Sort by price: high to low</option>
+                                    <option>{{ __('Default Sorting') }}</option>
+                                    <option>{{ __('Sort by popularity') }}</option>
+                                    <option>{{ __('Sort by new arrivals') }}</option>
+                                    <option>{{ __('Sort by price: low to high') }}</option>
+                                    <option>{{ __('Sort by price: high to low') }}</option>
                                 </select>
                             </div>
                         </li>
@@ -186,15 +186,15 @@
                     <div class="widget ltn__search-widget">
                         <h4 class="ltn__widget-title ltn__widget-title-border">{{ __('Search Objects') }}</h4>
                         <form action="#">
-                            <input type="text" name="search" placeholder="Search your keyword...">
+                            <input type="text" name="search" placeholder="{{ __('Search your keyword...') }}">
                             <button type="submit"><i class="fas fa-search"></i></button>
                         </form>
                     </div>
                     <!-- Category Widget -->
                     <div class="widget ltn__menu-widget">
-                        <h4 class="ltn__widget-title ltn__widget-title-border">{{ __('Product categories') }}</h4>
+                        <h4 class="ltn__widget-title ltn__widget-title-border">{{ __('Product Categories') }}</h4>
                         <ul>
-                            <li><a href="{{ route('shop.index') }}">{{ __('All Product ') }}<span><i class="fas fa-long-arrow-alt-right"></i></span></a></li>
+                            <li><a href="{{ route('shop.index') }}">{{ __('All Products') }}<span><i class="fas fa-long-arrow-alt-right"></i></span></a></li>
                             @foreach (session('catalogues')->whereNull('parent_id') as $catalogue)
                             <li><a href="{{ route('shop.index', ['catalogue' => $catalogue->slug]) }}">{!! $catalogue->name !!}<span><i class="fas fa-long-arrow-alt-right"></i></span></a></li>
                             @endforeach

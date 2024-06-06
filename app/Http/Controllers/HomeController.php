@@ -102,7 +102,7 @@ class HomeController extends Controller
             }])
             ->orderBy('id', 'DESC')
             ->get();
-        $pageName = 'About';
+        $pageName = __('About');
         return view('about', compact('pageName', 'categories'));
     }
 }

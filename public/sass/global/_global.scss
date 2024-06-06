@@ -523,6 +523,7 @@ ol li {
         background-color: transparent;
     }
     input[type="text"], 
+    input[type="date"], 
     input[type="email"], 
     input[type="password"], 
     input[type="submit"] {
@@ -862,6 +863,7 @@ fieldset legend {
 ---------------------------------------------------- */
 input[type="text"]:focus,
 input[type="email"]:focus,
+input[type="date"]:focus,
 input[type="url"]:focus,
 input[type="password"]:focus,
 input[type="search"]:focus,
@@ -887,6 +889,7 @@ code {
 ---------------------------------------------------- */
 input[type="text"], 
 input[type="email"], 
+input[type="date"], 
 input[type="password"], 
 input[type="submit"],
 textarea {
@@ -905,12 +908,14 @@ textarea {
 }
 input[type="text"]::-webkit-input-placeholder, 
 input[type="email"]::-webkit-input-placeholder, 
+input[type="date"]::-webkit-input-placeholder, 
 input[type="password"]::-webkit-input-placeholder, 
 input[type="submit"]::-webkit-input-placeholder,
 textarea::-webkit-input-placeholder { /* Chrome/Opera/Safari */
     color: var(--ltn__paragraph-color);
     font-size: 14px;
 }
+input[type="date"]:focus, 
 input[type="text"]:focus, 
 input[type="email"]:focus, 
 input[type="password"]:focus,
