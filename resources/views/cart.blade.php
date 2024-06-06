@@ -12,7 +12,7 @@
                         <h1 class="page-title">{{ $pageName }}</h1>
                         <div class="ltn__breadcrumb-list">
                             <ul>
-                                <li><a href="{{ route('home.index') }}"><span class="ltn__secondary-color"><i class="fas fa-home"></i></span> Home</a></li>
+                                <li><a href="{{ route('home.index') }}"><span class="ltn__secondary-color"><i class="fas fa-home"></i></span> {{__('Home')}}</a></li>
                                 <li>{{ $pageName }}</li>
                             </ul>
                         </div>
@@ -91,41 +91,45 @@
                                     <tr class="cart-coupon-row">
                                         <td colspan="6">
                                             <div class="cart-coupon">
-                                                <input type="text" name="cart-coupon" placeholder="Coupon code">
-                                                <button type="submit" class="btn theme-btn-2 btn-effect-2">Apply Coupon</button>
+                                                <input type="text" name="cart-coupon" placeholder="{{ __('Coupon code') }}">
+                                                <button type="submit" class="btn theme-btn-2 btn-effect-2">{{ __('Apply Coupon') }}</button>
                                             </div>
                                         </td>
                                         <td>
-                                            <button type="submit" class="btn theme-btn-2 btn-effect-2-- disabled">Update Cart</button>
+                                            <button type="submit" class="btn theme-btn-2 btn-effect-2-- disabled">{{ __('Update Cart') }}</button>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                         <div class="shoping-cart-total mt-50">
-                            <h4>Cart Totals</h4>
+                            <h4>{{ __('Cart Totals') }}</h4>
                             <table class="table">
                                 <tbody>
                                     <tr>
-                                        <td>Cart Subtotal</td>
+                                        <td>{{ __('Cart Subtotal') }}<sup>(3)</sup></td>
                                         <td>750,000<sup>đ</sup></td>
                                     </tr>
                                     <tr>
-                                        <td>Shipping and Handing</td>
+                                        <td>{{ __('Shipping and Handing') }}</td>
                                         <td>750,000<sup>đ</sup></td>
                                     </tr>
                                     <tr>
-                                        <td>Vat</td>
+                                        <td>{{ __('Discount') }}</td>
                                         <td>0<sup>đ</sup></td>
                                     </tr>
                                     <tr>
-                                        <td><strong>Order Total</strong></td>
+                                        <td>{{ __('VAT') }}</td>
+                                        <td>0<sup>đ</sup></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>{{ __('Order Total') }}</strong></td>
                                         <td><strong>2.750,000<sup>đ</sup></strong></td>
                                     </tr>
                                 </tbody>
                             </table>
                             <div class="btn-wrapper text-right">
-                                <a href="{{ route('cart.checkout') }}" class="theme-btn-1 btn btn-effect-1">Proceed to checkout</a>
+                                <a href="{{ route('cart.checkout') }}" class="theme-btn-1 btn btn-effect-1">{{ __('Proceed to checkout') }}</a>
                             </div>
                         </div>
                     </div>
@@ -134,25 +138,6 @@
         </div>
     </div>
     <!-- SHOPING CART AREA END -->
-
-    <!-- CALL TO ACTION START (call-to-action-6) -->
-    <div class="ltn__call-to-action-area call-to-action-6 before-bg-bottom" data-bs-bg="{{ asset('img/1.jpg') }}--">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="call-to-action-inner call-to-action-inner-6 ltn__secondary-bg position-relative text-center---">
-                        <div class="coll-to-info text-color-white">
-                            <h1>Products, services and equipment <br>  applied in the field of Molecular Biology</h1>
-                        </div>
-                        <div class="btn-wrapper">
-                            <a class="btn btn-effect-3 btn-white" href="{{ route('shop.index') }}">Explore Products <i class="icon-next"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- CALL TO ACTION END -->
 
    
     @endsection

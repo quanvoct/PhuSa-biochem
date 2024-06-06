@@ -60,7 +60,7 @@
                     <div class="ltn__contact-address-icon">
                         <img src="{{ asset('img/icons/10.png') }}" alt="Icon Image">
                     </div>
-                    <h3>{{ __('Business code:') }}</h3>
+                    <h3>{{ __('Business code') }}</h3>
                     <p>{{ __(' 1801727039 Issued on July 8, 2022 at Department of Planning and Investment of Cantho city,  Vietnam') }}</p>
                 </div>
             </div>
@@ -75,39 +75,37 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="ltn__form-box contact-form-box box-shadow white-bg">
-                    <h4 class="title-2">{{ __('Get A Quote') }}</h4>
+                    <h4 class="title-2">{{ __('Contact form') }}</h4>
                     <form id="contact-form" action="mail.php" method="post">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="input-item input-item-name ltn__custom-icon">
-                                    <input type="text" name="name" placeholder="Enter your name">
+                                    <input type="text" name="name" placeholder="{{ __('Enter your name') }}">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="input-item input-item-email ltn__custom-icon">
-                                    <input type="email" name="email" placeholder="Enter email address">
+                                    <input type="email" name="email" placeholder="{{ __('Enter email address') }}">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="input-item input-item-subject ltn__custom-icon">
-                                    <input type="text" name="subject" placeholder="Enter the subject">
+                                    <input type="text" name="subject" placeholder="{{ __('Enter the subject') }}">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="input-item input-item-phone ltn__custom-icon">
-                                    <input type="text" name="phone" placeholder="Enter phone number">
+                                    <input type="text" name="phone" placeholder="{{ __('Enter phone number') }}">
                                 </div>
                             </div>
                         </div>
                         <div class="input-item input-item-textarea ltn__custom-icon">
-                            <textarea name="message" placeholder="Enter message"></textarea>
+                            <textarea name="message" placeholder="{{ __('Enter message') }}"></textarea>
                         </div>
-                        <p><label class="input-info-save mb-0"><input type="checkbox" name="agree"> {{ __('Save my
-                                        name, email, and website in this browser for the next time I comment.') }}</label>
+                        <p><label class="input-info-save mb-0"><input type="checkbox" name="agree"> {{ __('Save my name, email, and website in this browser for the next time I comment.') }}</label>
                         </p>
                         <div class="btn-wrapper mt-0">
-                            <button class="btn theme-btn-1 btn-effect-1 text-uppercase" type="submit">{{ __('get a free
-                                        service') }}</button>
+                            <button class="btn theme-btn-1 btn-effect-1 text-uppercase" type="submit">{{ __('Submit') }}</button>
                         </div>
                         <p class="form-messege mb-0 mt-20"></p>
                     </form>

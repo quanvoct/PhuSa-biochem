@@ -276,7 +276,7 @@
         /* --------------------------------------------------------
             10. Nice Select
         --------------------------------------------------------- */
-        $("select").niceSelect();
+        $("select:not(.select2)").niceSelect();
 
         /* --------------------------------------------------------
             11. Default active and hover item active
@@ -2211,6 +2211,22 @@
         });
     });
 
+    /**
+     * Khi click nút giao hàng địa chỉ khác
+     */
+    $(document).ready(function() {
+        $('#agree-checkbox').change(function() {
+            const deliveryAddress = $('#delivery_address');
+            if ($(this).is(':checked')) {
+                deliveryAddress.removeClass('d-none');
+            } else {
+                deliveryAddress.addClass('d-none');
+                deliveryAddress.find('input').val('');
+                deliveryAddress.find('select').prop('selectedIndex', 0);
+            }
+        });
+    });
+    
     /**
      * Nén và hiển thị hình ảnh
      */
