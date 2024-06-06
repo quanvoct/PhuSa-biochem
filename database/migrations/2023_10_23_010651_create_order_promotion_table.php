@@ -17,7 +17,6 @@ class CreateOrderPromotionTable extends Migration
             $table->id();
             $table->unsignedBigInteger('order_id')->nullable();
             $table->unsignedBigInteger('promotion_id')->nullable();
-            $table->timestamps();
 
             // Tạo khóa ngoại tới bảng 'orders'
             $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');

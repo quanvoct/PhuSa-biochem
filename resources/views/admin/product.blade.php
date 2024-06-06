@@ -160,6 +160,49 @@
                         <button class="btn btn-info" type="submit">{{ isset($product) ? 'Cập nhật' : 'Đăng sản phẩm' }}</button>
                     </div>
                     <!-- END Publish card -->
+                    <!-- Language card -->
+                    <div class="card card-body mb-3">
+                        <h6 class="mb-0">Ngôn ngữ</h6>
+                        <hr class="horizontal dark">
+                        <div class="form-group mb-4">
+                            <select class="form-select" id="product-language_id" name="language_id[]" required>
+                                <option selected disabled hidden>Chọn một ngôn ngữ</option>
+                                @foreach (App\Models\Language::all() as $language)
+                                    <option value="{{ $language->id }}" {{ isset($product) && $product->languages->count() && $product->language->id == $language->id ? 'selected' : '' }}>{{ $language->name }}</option>
+                                @endforeach
+                            </select>
+                            @error('language')
+                                <span class="invalid-feedback d-block" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                        @if (isset($product) && $product->language)
+                            @php $languages = App\Models\Language::where('id', '!=', $product->language->id)->get() @endphp
+                            @foreach ($languages as $index => $language)
+                                <div class="card mb-0 link-language">
+                                    <div class="form-group">
+                                        <label class="form-label" for="product-{{ $index }}">{{ $language->name }}</label>
+                                        <select class="form-select @error('translate_id') is-invalid @enderror select2" id="product-{{ $index }}" name="translate_id[]"
+                                            data-ajax--url="{{ route('admin.product', ['key' => 'find']) }}?link_language_id={{ $language->id }}&language_id={{ $product->language->id }}" data-placeholder="Chọn một sản phẩm">
+                                            @php
+                                                $translation = $product->product_translations
+                                                    ->where('product_id', $product->id)
+                                                    ->where('language_id', $language->id)
+                                                    ->first();
+                                                if ($translation) {
+                                                    $translate = App\Models\Post::find($translation->translate_id);
+                                                    echo '<option value="' . $translate->id . '">' . $translate->name . '</option>';
+                                                }
+                                            @endphp
+                                        </select>
+                                        <input name="language_id[]" type="hidden" value="{{ $language->id }}">
+                                    </div>
+                                </div>
+                            @endforeach
+                        @endif
+                    </div>
+                    <!-- END Language card -->
                     <!-- Catalog card -->
                     <div class="card card-body mb-3">
                         <div class="row">
@@ -289,6 +332,13 @@
 @endsection
 
 @push('scripts')
+    @if (isset($product) && $product->language)
+        <script type="text/javascript">
+            $('#product-language_id').change(function() {
+                $('.card.link-language').remove()
+            })
+        </script>
+    @endif
     <script>
         $(document).ready(function() {
             $('.btn-product-specs_add').click(function() {
@@ -392,12 +442,6 @@
                 openQuickImages('product-images', false)
             })
 
-            $('[type=submit]').click(function() {
-                $(this).prop('disabled', true).html(
-                        '<span class="spinner-border spinner-border-sm" id="spinner-form" role="status"></span>')
-                    .parents('form').submit()
-            })
-
             $('#product-images').change(function() {
                 viewProductImages()
             })
@@ -411,29 +455,28 @@
 
             function showAttributes(attribute) {
                 let text =
-                    `
-            <input type="checkbox" class="btn-check attribute" name="attributes[]" value="${ attribute.id }" id="attribute-${ attribute.id }" autocomplete="off">
-            <label class="btn btn-outline-primary btn-sm mb-2" for="attribute-${ attribute.id }">${ attribute.value }</label>`
+                    `<input type="checkbox" class="btn-check attribute" name="attributes[]" value="${ attribute.id }" id="attribute-${ attribute.id }" autocomplete="off">
+                    <label class="btn btn-outline-primary btn-sm mb-2" for="attribute-${ attribute.id }">${ attribute.value }</label>`
                 if ($('.attribute-select').find(`button[data-key='${ attribute.key }']`).length) {
                     $(`button[data-key='${ attribute.key }']`).parents('.accordion-body').find('.list-attribute').append(text)
                 } else {
                     $('.attribute-select').prepend(`
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="attribute-heading-${ attribute.id }">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#attributes-${ attribute.id }" aria-expanded="true" aria-controls="attributes-${ attribute.id }">
-                        ${attribute.key}
-                    </button>
-                </h2>
-                <div id="attributes-${ attribute.id }" class="accordion-collapse collapse show" aria-labelledby="attributes-heading-${ attribute.id }">
-                    <div class="accordion-body">
-                        <div class="list-attribute">
-                            ${text}
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="attribute-heading-${ attribute.id }">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#attributes-${ attribute.id }" aria-expanded="true" aria-controls="attributes-${ attribute.id }">
+                                    ${attribute.key}
+                                </button>
+                            </h2>
+                            <div id="attributes-${ attribute.id }" class="accordion-collapse collapse show" aria-labelledby="attributes-heading-${ attribute.id }">
+                                <div class="accordion-body">
+                                    <div class="list-attribute">
+                                        ${text}
+                                    </div>
+                                    <button type="button" class="btn btn-primary btn-sm mb-2 ms-1 pt-0 btn-create-attribute" data-key="${ attribute.key }"><i class="bi bi-plus"></i></button>
+                                </div>
+                            </div>
                         </div>
-                        <button type="button" class="btn btn-primary btn-sm mb-2 ms-1 pt-0 btn-create-attribute" data-key="${ attribute.key }"><i class="bi bi-plus"></i></button>
-                    </div>
-                </div>
-            </div>
-            `)
+                    `)
                 }
             }
 
@@ -461,6 +504,19 @@
                 })
                 $('.row.gallery').html(text)
             }
+            
+            $(`select.select2`).select2(config.select2);
+            $('input.select2-search__field').removeAttr('style')
+
+            $('#product-form').find('[type=submit]').click(function(e) {
+                e.preventDefault()
+                $("select[name='translate_id[]']").each(function() {
+                    if ($(this).val() === null) {
+                        $(this).parents('.card.link-language').remove();
+                    }
+                });
+                $(this).html('<span class="spinner-border spinner-border-sm" id="spinner-form" role="status"></span>').parents('form').submit()
+            })
         })
     </script>
 @endpush

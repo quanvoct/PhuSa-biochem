@@ -19,17 +19,6 @@ class CatalogueController extends Controller
             'description' => ['nullable', 'string', 'min:2', 'max:191'],
             'parent_id' => ['nullable', 'numeric'],
             'avatar' => ['nullable', 'string'],
-        ],
-        MESSAGES = [
-            'name.required' => Controller::VALIDATE['required'],
-            'name.string' => Controller::VALIDATE['invalid'],
-            'name.min' => Controller::VALIDATE['min2'],
-            'name.max' => Controller::VALIDATE['max191'],
-            'description.string' => Controller::VALIDATE['invalid'],
-            'description.min' => Controller::VALIDATE['min2'],
-            'description.max' => Controller::VALIDATE['max191'],
-            'parent_id.numeric' => Controller::VALIDATE['invalid'],
-            'avatar.string' => Controller::VALIDATE['invalid'],
         ];
     public function __construct()
     {
@@ -83,7 +72,7 @@ class CatalogueController extends Controller
             }
         } else {
             if ($request->ajax()) {
-                $catalogues = Catalogue::query();
+                $catalogues = Catalogue::whereNull('revision');
                 return DataTables::of($catalogues)
                     ->addColumn('checkboxes', function ($obj) {
                         if (!empty(Auth::user()->can(User::DELETE_CATALOGUES))) {
@@ -145,7 +134,7 @@ class CatalogueController extends Controller
 
     public function create(Request $request)
     {
-        $request->validate(self::RULES, self::MESSAGES);
+        $request->validate(self::RULES);
         if (!empty(Auth::user()->can(User::CREATE_CATALOGUE))) {
             $catalogue = $this->sync([
                 'name' => $request->name,
@@ -171,7 +160,7 @@ class CatalogueController extends Controller
 
     public function update(Request $request)
     {
-        $request->validate(self::RULES, self::MESSAGES);
+        $request->validate(self::RULES);
         if (!empty(Auth::user()->can(User::UPDATE_CATALOGUE))) {
             if ($request->has('id')) {
                 $catalogue = $this->sync([

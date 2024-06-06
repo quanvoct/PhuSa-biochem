@@ -26,28 +26,6 @@ class OrderController extends Controller
         'detail_quantity.*' => ['required', 'numeric'],
         'detail_price.*' => ['required', 'numeric'],
     ];
-    const MESSAGES = [
-        'customer_id.required' => 'Khách hàng: Thông tin này không được thiếu',
-        'customer_id.numeric' => 'Khách hàng: Dữ liệu không hợp lệ',
-        'dealer_id.required' => 'Người bán: Thông tin này không được thiếu',
-        'dealer_id.numeric' => 'Người bán: Dữ liệu không hợp lệ',
-        'created_at.required' => 'Ngày bán: Thông tin này không được thiếu',
-        'created_at.date_format' => 'Ngày bán: Dữ liệu không hợp lệ',
-        'discount.required' => 'Giảm giá: Thông tin này không được thiếu',
-        'discount.numeric' => 'Giảm giá: Dữ liệu không hợp lệ',
-        'status.required' => 'Trạng thái: Thông tin này không được thiếu',
-        'status.numeric' => 'Trạng thái: Dữ liệu không hợp lệ',
-        'note.max' => 'Ghi chú: Tối đa được 255 ký tự',
-
-        'detail_stock_id.array' => 'Dữ liệu không hợp lệ',
-        'detail_stock_id.min' => 'Tối thiểu phải có 1 sản phẩm',
-        'detail_stock_id.*.required' => 'Thông tin này không được thiếu',
-        'detail_stock_id.*.numeric' => 'Dữ liệu không hợp lệ',
-        'detail_quantity.*.required' => 'Thông tin này không được thiếu',
-        'detail_quantity.*.numeric' => 'Dữ liệu không hợp lệ',
-        'detail_price.*.required' => 'Thông tin này không được thiếu',
-        'detail_price.*.numeric' => 'Dữ liệu không hợp lệ',
-    ];
     /**
      * Create a new controller instance.
      *
@@ -136,7 +114,7 @@ class OrderController extends Controller
 
     public function create(Request $request)
     {
-        $request->validate(self::RULES, self::MESSAGES);
+        $request->validate(self::RULES);
         if (!empty(Auth::user()->can(User::CREATE_ORDER))) {
             $order = $this->sync([
                 'customer_id' => $request->customer_id,
@@ -201,7 +179,7 @@ class OrderController extends Controller
 
     public function update(Request $request)
     {
-        $request->validate(self::RULES, self::MESSAGES);
+        $request->validate(self::RULES);
         if (!empty(Auth::user()->can(User::UPDATE_ORDER))) {
             if ($request->has('id')) {
                 $order = $this->sync([

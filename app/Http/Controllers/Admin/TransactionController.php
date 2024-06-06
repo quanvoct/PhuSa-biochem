@@ -21,22 +21,6 @@ class TransactionController extends Controller
         'amount' => ['required', 'numeric'],
         'status' => ['required', 'numeric'],
     ];
-    const MESSAGES = [
-        'note.required' => 'Không được để trống thông tin này!',
-        'note.string' => 'Dữ liệu không hợp lệ!',
-        'note.min' => 'Tối thiểu phải từ 3 ký tự',
-        'note.max' => 'Tối đa được 125 ký tự',
-        'customer_id.required' => 'Không được để trống thông tin này!',
-        'cashier_id.required' => 'Không được để trống thông tin này!',
-        'payment.required' => 'Không được để trống thông tin này!',
-        'amount.required' => 'Không được để trống thông tin này!',
-        'status.required' => 'Không được để trống thông tin này!',
-        'customer_id.numeric' => 'Dữ liệu không hợp lệ!',
-        'cashier_id.numeric' => 'Dữ liệu không hợp lệ!',
-        'payment.numeric' => 'Dữ liệu không hợp lệ!',
-        'amount.numeric' => 'Dữ liệu không hợp lệ!',
-        'status.numeric' => 'Dữ liệu không hợp lệ!',
-    ];
     /**
      * Create a new controller instance.
      *
@@ -56,8 +40,7 @@ class TransactionController extends Controller
     public function index()
     {
         $pageName = 'Quản lý giao dịch';
-        $options = Controller::options();
-        return view('transaction', compact('pageName', 'options'));
+        return view('transaction', compact('pageName'));
     }
 
     public function load(Request $request)
@@ -109,7 +92,7 @@ class TransactionController extends Controller
                 return $obj->created_at->format('Y-m-d');
             })
             ->addColumn('action', function ($obj) {
-                if (!empty(Auth::user()->hasAnyPermission(User::DELETE_TRANSACTION))) {
+                if (!empty(Auth::user()->can(User::DELETE_TRANSACTION))) {
                     $str = '
                         <form action="' . route('transaction.remove') . '" method="post" class="save-form">
                             <input type="hidden" name="_token" value="' . csrf_token() . '"/>
@@ -124,6 +107,7 @@ class TransactionController extends Controller
             ->rawColumns(['checkbox', 'note', 'order_id', 'customer', 'cashier', 'payment', 'status', 'action'])
             ->make(true);
     }
+
     public function get(Request $request)
     {
         if ($request->id === 'amountOfDate') {
@@ -139,7 +123,7 @@ class TransactionController extends Controller
 
     public function create(Request $request)
     {
-        $request->validate(self::RULES, self::MESSAGES);
+        $request->validate(self::RULES);
         if (!empty(Auth::user()->can(User::CREATE_TRANSACTION))) {
             if ($request->has('order_id') && $request->order_id != null) {
                 $transaction = $this->sync([
@@ -201,7 +185,7 @@ class TransactionController extends Controller
 
     public function update(Request $request)
     {
-        $request->validate(self::RULES, self::MESSAGES);
+        $request->validate(self::RULES);
         if (!empty(Auth::user()->can(User::UPDATE_TRANSACTION))) {
             if ($request->has('id')) {
                 $transaction = $this->sync([

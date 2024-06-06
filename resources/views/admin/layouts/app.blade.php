@@ -100,6 +100,8 @@
     <script src="{{ asset('admin/vendors/datatables/button/vfs_fonts.js') }}"></script>
     {{-- Print JS --}}
     <script src="{{ asset('admin/vendors/print/print.min.js') }}"></script>
+    {{-- input image JSCompressor --}}
+    <script src="{{ asset('admin/vendors/compressorjs/compressor.min.js') }}"></script>
     {{-- input mask js --}}
     <script src="{{ asset('admin/vendors/jquery-mask/jquery.mask.js') }}"></script>
     {{-- Include Select2 --}}
@@ -501,12 +503,12 @@
                                     <p class="text-left mb-0">${order._customer.phone}</p>
                                 </div>
                                 ${(order._customer.tax_id != null) ? `
-                                                    <div class="col-3 mb-0">
-                                                        <p class="text-left">MST:</p>
-                                                    </div>
-                                                    <div class="col-8 mb-0">
-                                                        <p class="text-left">${order._customer.tax_id}</p>
-                                                    </div>` : ``}
+                                                            <div class="col-3 mb-0">
+                                                                <p class="text-left">MST:</p>
+                                                            </div>
+                                                            <div class="col-8 mb-0">
+                                                                <p class="text-left">${order._customer.tax_id}</p>
+                                                            </div>` : ``}
                             </div>
                             <div class="text-dark">
                                 <table class="table">
@@ -529,24 +531,24 @@
                                             <th class="text-end">${number_format(total)}đ</th>
                                         </tr>
                                         ${ order.discount > 0 ? `
-                                                            <tr>
-                                                                <th colspan="5">Giảm giá</th>
-                                                                <th class="text-end">${number_format(order.discount)}đ</th>
-                                                            </tr>
-                                                            <tr>
-                                                                <th colspan="5">Còn lại</th>
-                                                                <th class="text-end">${number_format(total - order.discount)}đ</th>
-                                                            </tr>` : ''
+                                                                    <tr>
+                                                                        <th colspan="5">Giảm giá</th>
+                                                                        <th class="text-end">${number_format(order.discount)}đ</th>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th colspan="5">Còn lại</th>
+                                                                        <th class="text-end">${number_format(total - order.discount)}đ</th>
+                                                                    </tr>` : ''
                                         }
                                         ${ order.paid > 0 ? `
-                                                            <tr>
-                                                                <th colspan="5">Trả trước</th>
-                                                                <th class="text-end">${number_format(order.paid)}đ</th>
-                                                            </tr>
-                                                            <tr>
-                                                                <th colspan="5">Phải thanh toán</th>
-                                                                <th class="text-end">${number_format(total - order.discount - order.paid)}đ</th>
-                                                            </tr>` : ''
+                                                                    <tr>
+                                                                        <th colspan="5">Trả trước</th>
+                                                                        <th class="text-end">${number_format(order.paid)}đ</th>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th colspan="5">Phải thanh toán</th>
+                                                                        <th class="text-end">${number_format(total - order.discount - order.paid)}đ</th>
+                                                                    </tr>` : ''
                                         }
                                     </tfoot>
                                 </table>
@@ -669,6 +671,7 @@
             $('#user-form').attr('action', `{{ route('admin.user.create') }}`)
             $('#user-modal').modal('show')
             resetForm($('#user-form'))
+            form.find(`[name='image']`).prev().find('img').attr('src', user.imageUrl)
         })
 
         $('body').on('shown.bs.modal', '#user-modal', function() {
@@ -691,8 +694,19 @@
                 form.find(`[name='name']`).val(user.name)
                 form.find(`[name='email']`).val(user.email)
                 form.find(`[name='phone']`).val(user.phone)
+                form.find(`[name='birthday']`).val(moment(user.birthday).format('YYYY-MM-DD'))
                 form.find(`[name='address']`).val(user.address)
+                form.find(`[name='zip']`).val(user.zip)
                 form.find(`[name='status']`).prop('checked', user.status)
+                let country = new Option(user.country, user.country, false, false)
+                form.find(`[name=country]`).html(country).trigger({
+                    type: 'select2:select'
+                });
+                let city = new Option(user.city, user.city, false, false)
+                form.find(`[name=city]`).html(city).trigger({
+                    type: 'select2:select'
+                });
+                form.find(`[name='image']`).prev().find('img').attr('src', user.imageUrl)
                 form.find('.modal').modal('show')
             })
         })

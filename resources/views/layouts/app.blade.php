@@ -42,7 +42,9 @@
                         <div class="col-md-7">
                             <div class="ltn__top-bar-menu">
                                 <ul>
-                                    <li><a href="mailto:{{ session('settings')['company_email'] }}?Subject=Flower%20greetings%20to%20you"><i class="icon-mail"></i> {{ session('settings')['company_email'] }}</a></li>
+                                    @if (isset(session('settings')['company_email']))
+                                        <li><a href="mailto:{{ session('settings')['company_email'] }}?Subject=Flower%20greetings%20to%20you"><i class="icon-mail"></i> {{ session('settings')['company_email'] }}</a></li>
+                                    @endif
                                     <!-- <li><a href="#"><i class="icon-placeholder"></i> K1.15-16, Vo Nguyen Giap, Phu Thu ward, Cai Rang district,
                                             City. Can Tho. Viet Nam</a></li> -->
                                 </ul>
@@ -112,8 +114,10 @@
                                         <i class="icon-phone"></i>
                                     </div>
                                     <div class="header-feature-info">
-                                        <h6>Phone</h6>
-                                        <p><a href="tel:(+84)931035935">{{ session('settings')['company_phone'] }}</a></p>
+                                        @if (isset(session('settings')['company_phone']))
+                                            <h6>Phone</h6>
+                                            <p><a href="tel:(+84)931035935">{{ session('settings')['company_phone'] }}</a></p>
+                                        @endif
                                     </div>
                                 </div>
                                 <!-- header-search-2 -->
@@ -310,11 +314,14 @@
                         </div>
                         <div class="col-lg-2 align-self-center d-none d-xl-block">
                             <div class="header-contact-info text-end">
-                                <a class="font-weight-6 ltn__primary-color" href="tel:{{ session('settings')['company_phone'] }}">
-                                    <span class="ltn__secondary-color">
-                                        <i class="icon-call font-weight-7"></i>
-                                    </span>
-                                    {{ session('settings')['company_phone'] }}</a>
+                                @if (isset(session('settings')['company_phone']))
+                                    <a class="font-weight-6 ltn__primary-color" href="tel:{{ session('settings')['company_phone'] }}">
+                                        <span class="ltn__secondary-color">
+                                            <i class="icon-call font-weight-7"></i>
+                                        </span>
+                                        {{ session('settings')['company_phone'] }}
+                                    </a>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -407,7 +414,7 @@
                     <ul>
                         <li class="{{ Request::path() == '/' ? 'active' : '' }}"><a href="{{ route('home.index') }}">{{ __('Home') }}</a></li>
                         <li class="{{ Request::path() == 'about' ? 'active' : '' }}"><a href="{{ route('home.index', ['page' => 'about']) }}">{{ __('About') }}</a></li>
-                        <li class="{{ Request::path() == 'shop' ? 'active' : '' }}"><a href="{{ route('shop.index') }}">{{__('Shop')}}</a> </li>
+                        <li class="{{ Request::path() == 'shop' ? 'active' : '' }}"><a href="{{ route('shop.index') }}">{{ __('Shop') }}</a> </li>
                         <li class="{{ Request::path() == 'posts' ? 'active' : '' }}"><a href="#">{{ __('News') }}</a>
                             <ul class="sub-menu">
                                 @if (session('categories')->where('code', '!=', 'policies')->count())
@@ -480,6 +487,7 @@
                                 </div>
                                 <div class="footer-address">
                                     <ul>
+                                        @if(isset(session('settings')['company_address']))
                                         <li>
                                             <div class="footer-address-icon">
                                                 <i class="icon-placeholder"></i>
@@ -488,6 +496,8 @@
                                                 <p>{{ __('Address') }}: {{ session('settings')['company_address'] }}</p>
                                             </div>
                                         </li>
+                                        @endif
+                                        @if(isset(session('settings')['company_phone']))
                                         <li>
                                             <div class="footer-address-icon">
                                                 <i class="bi bi-headset"></i>
@@ -496,6 +506,8 @@
                                                 <p>{{ __('Customer service') }}: <a href="tel:{{ session('settings')['company_phone'] }}">{{ session('settings')['company_phone'] }}</a></p>
                                             </div>
                                         </li>
+                                        @endif
+                                        @if(isset(session('settings')['company_email']))
                                         <li>
                                             <div class="footer-address-icon">
                                                 <i class="icon-mail"></i>
@@ -504,6 +516,7 @@
                                                 <p>{{ __('Email') }}: <a href="mailto:{{ session('settings')['company_email'] }}">{{ session('settings')['company_email'] }}</a></p>
                                             </div>
                                         </li>
+                                        @endif
                                     </ul>
                                 </div>
                                 <div class="ltn__social-media mt-20">
@@ -741,12 +754,12 @@
                                                 <h5><a href="{{ route('shop.index', ['product' => 'slug']) }}">Digital Stethoscope</a></h5>
                                                 <p class="added-cart"><i class="fa fa-check-circle"></i>
                                                     {{ __('Successfully
-                                                                                                                                                                                                                                                                                                                                                                        added to your Cart') }}
+                                                                                                                                                                                                                                                                                                                                                                                                                            added to your Cart') }}
                                                 </p>
                                                 <div class="btn-wrapper">
                                                     <a class="theme-btn-1 btn btn-effect-1"
                                                         href="{{ route('cart.index') }}">{{ __('View
-                                                                                                                                                                                                                                                                                                                                                                                                    Cart') }}</a>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                            Cart') }}</a>
                                                     <a class="theme-btn-2 btn btn-effect-2" href="{{ route('cart.checkout') }}">{{ __('Checkout') }}</a>
                                                 </div>
                                             </div>

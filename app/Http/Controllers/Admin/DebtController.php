@@ -19,7 +19,6 @@ class DebtController extends Controller
     public function index()
     {
         $pageName = 'Quản lý công nợ';
-        $options = Controller::options();
         return view('debt', compact('pageName', 'options'));
     }
 

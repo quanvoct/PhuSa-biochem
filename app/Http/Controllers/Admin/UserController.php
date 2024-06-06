@@ -37,8 +37,8 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
+        $objs = User::whereNull('revision');
         if (isset($request->key)) {
-            $objs = User::query();
             switch ($request->key) {
                 case 'list':
                     $result = $objs->whereStatus(1)->get();
@@ -63,7 +63,6 @@ class UserController extends Controller
             return response()->json($result, 200);
         } else {
             if ($request->ajax()) {
-                $objs = User::all();
                 return DataTables::of($objs)
                     ->addColumn('checkboxes', function ($obj) {
                         if (!empty(Auth::user()->can(User::DELETE_USERS))) {
@@ -116,40 +115,6 @@ class UserController extends Controller
         }
     }
 
-    public function get(Request $request)
-    {
-        $objs = User::query();
-        switch ($request->id) {
-            case 'list':
-                $result = $objs->orderBy('sort', 'ASC')->get();
-                break;
-            case 'find':
-                $result = $objs->whereStatus(1)
-                    ->where('name', 'LIKE', '%' . $request->q . '%')
-                    ->orWhere('email', 'LIKE', '%' . $request->q . '%')
-                    ->orWhere('phone', 'LIKE', '%' . $request->q . '%')
-                    ->orderByDesc('id')
-                    ->distinct()
-                    ->get()
-                    ->map(function ($obj) {
-                        return [
-                            'id' => $obj->id,
-                            'text' => $obj->name
-                        ];
-                    });
-                break;
-            default:
-                $obj = $objs->with('roles', 'stores')->find($request->id);
-                if ($obj) {
-                    $result = $obj;
-                } else {
-                    abort(404);
-                }
-                break;
-        }
-        return response()->json($result, 200);
-    }
-
     public function create(Request $request)
     {
         $rules = [
@@ -162,26 +127,7 @@ class UserController extends Controller
             'birthday' => ['date_format:Y-m-d'],
             'gender' => ['required', 'numeric'],
         ];
-        $messages = [
-            'name.required' => Controller::VALIDATE['required'],
-            'name.string' => Controller::VALIDATE['invalid'],
-            'name.min' => Controller::VALIDATE['min2'],
-            'name.max' => Controller::VALIDATE['max191'],
-            'phone.required' => Controller::VALIDATE['required'],
-            'phone.numeric' => Controller::VALIDATE['invalid'],
-            'phone.unique' => Controller::VALIDATE['unique'],
-            'gender.required' => Controller::VALIDATE['required'],
-            'gender.numeric' => Controller::VALIDATE['invalid'],
-            'birthday.date_format' => Controller::VALIDATE['invalid'],
-            'email.required' => Controller::VALIDATE['required'],
-            'email.email' => Controller::VALIDATE['invalid'],
-            'email.min' => Controller::VALIDATE['min2'],
-            'email.max' => Controller::VALIDATE['max191'],
-            'email.unique' => Controller::VALIDATE['unique'],
-            'address.string' => Controller::VALIDATE['invalid'],
-            'address.max' => Controller::VALIDATE['max191'],
-        ];
-        $request->validate($rules, $messages);
+        $request->validate($rules);
 
         if (!empty(Auth::user()->can(User::CREATE_USER))) {
             $password = $request->has('password') ? $request->password : Str::random(8);
@@ -191,8 +137,8 @@ class UserController extends Controller
                 'phone' => $request->phone,
                 'birthday' => $request->birthday,
                 'address' => $request->address,
-                'country' => $request->country,
                 'password' => Hash::make($password),
+                'country' => $request->country,
                 'city' => $request->city,
                 'zip' => $request->zip,
                 'gender' => $request->has('gender') ? $request->gender : 0,
@@ -208,11 +154,10 @@ class UserController extends Controller
                 $emailData = [
                     'user' => $user,
                     'password' => $password,
-                    'settings' => Controller::getSettings(),
                 ];
                 Mail::to($user->email)->later(
                     now()->addMinutes(5),
-                    new SendMail('admin.exports.mail.user_created', $emailData, 'Tài khoản của bạn tại ' . $emailData['settings']['company_brandname'])
+                    new SendMail('admin.exports.mail.user_created', $emailData, 'Tài khoản của bạn tại ' . config('app.name'))
                 );
                 $response = [
                     'status' => 'success',
@@ -240,26 +185,7 @@ class UserController extends Controller
             'birthday' => ['date_format:Y-m-d'],
             'gender' => ['required', 'numeric'],
         ];
-        $messages = [
-            'name.required' => Controller::VALIDATE['required'],
-            'name.string' => Controller::VALIDATE['invalid'],
-            'name.min' => Controller::VALIDATE['min2'],
-            'name.max' => Controller::VALIDATE['max191'],
-            'phone.required' => Controller::VALIDATE['required'],
-            'phone.numeric' => Controller::VALIDATE['invalid'],
-            'phone.unique' => Controller::VALIDATE['unique'],
-            'gender.required' => Controller::VALIDATE['required'],
-            'gender.numeric' => Controller::VALIDATE['invalid'],
-            'birthday.date_format' => Controller::VALIDATE['invalid'],
-            'email.required' => Controller::VALIDATE['required'],
-            'email.email' => Controller::VALIDATE['invalid'],
-            'email.min' => Controller::VALIDATE['min2'],
-            'email.max' => Controller::VALIDATE['max191'],
-            'email.unique' => Controller::VALIDATE['unique'],
-            'address.string' => Controller::VALIDATE['invalid'],
-            'address.max' => Controller::VALIDATE['max191'],
-        ];
-        $request->validate($rules, $messages);
+        $request->validate($rules);
 
         if (!empty(Auth::user()->can(User::UPDATE_USER))) {
             if ($request->has('id')) {
@@ -308,13 +234,7 @@ class UserController extends Controller
             'id' => ['required', 'numeric'],
             'role_id' => ['required', 'numeric'],
         ];
-        $messages = [
-            'id.required' => 'Đã có lỗi xảy ra. Hãy tải lại trang và thử lại',
-            'id.numeric' => 'Dữ liệu không hợp lệ',
-            'role_id.required' => 'Phải chọn một vai trò',
-            'role_id.numeric' => 'Dữ liệu không hợp lệ',
-        ];
-        $request->validate($rules, $messages);
+        $request->validate($rules);
 
         $user = User::find($request->id);
         $user->syncRoles($request->role_id);
@@ -333,12 +253,7 @@ class UserController extends Controller
             'id' => ['required', 'numeric'],
             'password' => ['required'],
         ];
-        $messages = [
-            'id.required' => 'Đã có lỗi xảy ra. Hãy tải lại trang và thử lại',
-            'id.numeric' => 'Dữ liệu không hợp lệ',
-            'password.required' => 'Vui lòng nhập mật khẩu hợp lệ',
-        ];
-        $request->validate($rules, $messages);
+        $request->validate($rules);
 
         $user = User::find($request->id);
         if (!$user) {

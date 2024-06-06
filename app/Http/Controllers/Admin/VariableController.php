@@ -27,31 +27,6 @@ class VariableController extends Controller
         'length' => ['nullable', 'numeric', 'min:0', 'max:999.99'],
         'weight' => ['nullable', 'numeric', 'min:0', 'max:999.99'],
     ];
-    const MESSAGES = [
-        'sub_sku.required' => Controller::VALIDATE['required'],
-        'sub_sku.min' => Controller::VALIDATE['min2'],
-        'sub_sku.max' => Controller::VALIDATE['max191'],
-        'name.required' => Controller::VALIDATE['required'],
-        'name.min' => Controller::VALIDATE['min2'],
-        'name.max' => Controller::VALIDATE['max191'],
-        'product_id.required' => Controller::VALIDATE['required'],
-        'description.required' => Controller::VALIDATE['required'],
-        'description.string' => Controller::VALIDATE['invalid'],
-        'price.required' => Controller::VALIDATE['required'],
-        'price.numeric' => Controller::VALIDATE['invalid'],
-        'width.numeric' => Controller::VALIDATE['invalid'],
-        'width.min' => Controller::VALIDATE['min2'],
-        'width.max' => Controller::VALIDATE['max191'],
-        'height.numeric' => Controller::VALIDATE['invalid'],
-        'height.min' => Controller::VALIDATE['min2'],
-        'height.max' => Controller::VALIDATE['max191'],
-        'length.numeric' => Controller::VALIDATE['invalid'],
-        'length.min' => Controller::VALIDATE['min2'],
-        'length.max' => Controller::VALIDATE['max191'],
-        'weight.numeric' => Controller::VALIDATE['invalid'],
-        'weight.min' => Controller::VALIDATE['min2'],
-        'weight.max' => Controller::VALIDATE['max191'],
-    ];
     
     /**
      * Create a new controller instance.
@@ -151,7 +126,7 @@ class VariableController extends Controller
 
     public function create(Request $request)
     {
-        $request->validate(self::RULES, self::MESSAGES);
+        $request->validate(self::RULES);
 
         $variable = $this->sync([
             'sub_sku' => $request->sub_sku,
@@ -176,7 +151,7 @@ class VariableController extends Controller
 
     public function update(Request $request)
     {
-        $request->validate(self::RULES, self::MESSAGES);
+        $request->validate(self::RULES);
 
         if ($request->id) {
             $variable = $this->sync([

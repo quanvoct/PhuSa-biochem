@@ -16,29 +16,6 @@ use Illuminate\Validation\Rule;
 class ProductController extends Controller
 {
     const NAME = 'sản phẩm';
-    const MESSAGES = [
-        'sku.required' => 'Mã sản phẩm: ' . Controller::VALIDATE['required'],
-        'sku.string' => 'Mã sản phẩm: ' . Controller::VALIDATE['invalid'],
-        'sku.max' => 'Mã sản phẩm: ' . Controller::VALIDATE['max191'],
-        'sku.unique' => 'Mã sản phẩm:' . Controller::VALIDATE['unique'],
-        'specs_key.array' => 'Thông số kỹ thuật: ' . Controller::VALIDATE['invalid'],
-        'specs_value.array' => 'Thông số kỹ thuật: ' . Controller::VALIDATE['invalid'],
-        'specs_key.*.required' => 'Thông số kỹ thuật: ' . Controller::VALIDATE['required'],
-        'specs_key.*.min' => 'Thông số kỹ thuật: ' . Controller::VALIDATE['min2'],
-        'specs_key.*.max' => 'Thông số kỹ thuật: ' . Controller::VALIDATE['max191'],
-        'specs_value.*.required' => 'Thông số kỹ thuật: ' . Controller::VALIDATE['required'],
-        'specs_value.*.min' => 'Thông số kỹ thuật: ' . Controller::VALIDATE['min2'],
-        'specs_value.*.max' => 'Thông số kỹ thuật: ' . Controller::VALIDATE['max191'],
-        'name.required' => 'Tên sản phẩm: ' . Controller::VALIDATE['required'],
-        'name.string' => 'Tên sản phẩm: ' . Controller::VALIDATE['invalid'],
-        'name.max' => 'Tên sản phẩm: ' . Controller::VALIDATE['max191'],
-        'unit.required' => 'Đơn vị tính: ' .  Controller::VALIDATE['required'],
-        'unit.string' => 'Đơn vị tính: ' .  Controller::VALIDATE['invalid'],
-        'unit.max' => 'Đơn vị tính: ' .  Controller::VALIDATE['max191'],
-        'status.numeric' => 'Trạng thái: ' . Controller::VALIDATE['invalid'],
-        'catalogues.required' => 'Danh mục: ' . Controller::VALIDATE['required'],
-        'catalogues.array' => 'Danh mục: ' . Controller::VALIDATE['invalid'],
-    ];
 
     public function __construct()
     {
@@ -54,7 +31,7 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         if (isset($request->key)) {
-            $catalogues = Catalogue::whereNull('parent_id')->where('status', 1)->with('children')->get();
+            $catalogues = Catalogue::whereNull('revision')->whereNull('parent_id')->where('status', 1)->with('children')->get();
             $catalogues = Controller::getCatalogueChildren($catalogues);
             switch ($request->key) {
                 case 'new':
@@ -70,10 +47,24 @@ class ProductController extends Controller
                     break;
                 case 'find':
                     $result = Product::where('status', '>', 0)
-                        ->where('name', 'LIKE', '%' . $request->q . '%')
-                        ->orWhere('sku', 'LIKE', '%' . $request->q . '%')
-                        ->orWhereHas('variables', function ($query) use ($request) {
-                            $query->where('name', 'LIKE', '%' . $request->q . '%');
+                        ->where(function ($query) use ($request) {
+                            $query->where('name', 'LIKE', '%' . $request->q . '%')
+                                ->orWhere('sku', 'LIKE', '%' . $request->q . '%')
+                                ->orWhereHas('variables', function ($query) use ($request) {
+                                    $query->where('name', 'LIKE', '%' . $request->q . '%');
+                                });
+                        })
+                        ->when(isset($request->link_language_id), function ($query) use ($request) {
+                            $query->whereHas('translation_products', function ($query) use ($request) {
+                                $query->where('language_id', $request->link_language_id);
+                            })->whereDoesntHave('translation_products', function ($query) use ($request) {
+                                $query->where('language_id', $request->language_id);
+                            });
+                        })
+                        ->when(!isset($request->link_language_id), function ($query) use ($request) {
+                            $query->whereHas('translation_products', function ($query) use ($request) {
+                                $query->where('language_id', $request->language_id);
+                            });
                         })
                         ->orderByDesc('id')
                         ->distinct()
@@ -89,7 +80,7 @@ class ProductController extends Controller
                     $product = Product::with('catalogues', 'variables')->find($request->key);
                     if ($product) {
                         if ($request->ajax()) {
-                            return response()->json($product, 200);
+                            $result = $product;
                         } else {
                             if ($product) {
                                 $pageName = 'Chi tiết ' . self::NAME;
@@ -101,6 +92,7 @@ class ProductController extends Controller
                     }
                     break;
             }
+            return response()->json($result, 200);
         } else {
             if ($request->ajax()) {
                 $objs = Product::whereNull('revision');
@@ -177,7 +169,7 @@ class ProductController extends Controller
             'status' => ['nullable', 'numeric'],
             'catalogues' => ['required', 'array'],
         ];
-        $request->validate($rules, self::MESSAGES);
+        $request->validate($rules);
 
         if (!empty(Auth::user()->can(User::CREATE_PRODUCT, User::UPDATE_PRODUCT))) {
             if($request->has('specs_key') && $request->has('specs_value')) {
@@ -204,6 +196,15 @@ class ProductController extends Controller
             ], $request->id);
             if ($obj) {
                 $obj->syncCatalogues($request->catalogues);
+                if ($request->has('language_id')) {
+                    if ($request->has('translate_id')) {
+                        $translate_id = $request->translate_id;
+                        array_unshift($translate_id, $obj->id);
+                        $obj->linkLanguages($request->language_id, $translate_id);
+                    } else {
+                        $obj->syncLanguages($request->language_id);
+                    }
+                }
             }
             $action = ($request->id) ? 'Đã sửa' : 'Đã thêm';
             $response = array(
@@ -232,7 +233,7 @@ class ProductController extends Controller
             'status' => ['nullable', 'numeric'],
             'catalogues' => ['required', 'array'],
         ];
-        $request->validate($rules, self::MESSAGES);
+        $request->validate($rules);
 
         if (!empty(Auth::user()->can(User::CREATE_PRODUCT))) {
             $obj = $this->sync([
@@ -286,7 +287,7 @@ class ProductController extends Controller
             'status' => ['nullable', 'numeric'],
             'catalogues' => ['required', 'array'],
         ];
-        $request->validate($rules, self::MESSAGES);
+        $request->validate($rules);
 
         if (!empty(Auth::user()->can(User::UPDATE_PRODUCT))) {
             $obj = $this->sync([

@@ -264,7 +264,6 @@
 
 @push('scripts')
     <script>
-
         $('.save-form').on('submit', function (e) {
             e.preventDefault();
             form = $(this);

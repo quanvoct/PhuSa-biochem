@@ -28,21 +28,21 @@ class HomeController extends Controller
         if ($request->page) {
             if ($request->category) {
                 $category = Category::with('posts')->whereStatus(1)->whereCode($request->category)->first();
-                if ($request->post) {
-                    $post = Post::whereStatus(1)->where('category_id', $category->id)->whereCode($request->post)->first();
-                    if ($post) {
-                        $pageName = $post->title;
-                        return view('post', compact('pageName', 'post'));
+                if ($category) {
+                    if ($request->post) {
+                        $post = Post::whereStatus(1)->where('category_id', $category->id)->whereCode($request->post)->first();
+                        if ($post) {
+                            $pageName = $post->title;
+                            return view('post', compact('pageName', 'post'));
+                        } else {
+                            abort(404);
+                        }
                     } else {
-                        abort(404);
-                    }
-                } else {
-                    if ($category) {
                         $pageName = $category->name;
                         return view('category', compact('pageName', 'category'));
-                    } else {
-                        abort(404);
                     }
+                } else {
+                    abort(404);
                 }
             } else {
                 if ($request->page == 'posts') {

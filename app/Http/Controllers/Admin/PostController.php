@@ -29,7 +29,7 @@ class PostController extends Controller
      */
     public function index(Request $request)
     {
-        $categories = Category::where('status', 1)->get();
+        $categories = Category::whereNull('revision')->where('status', 1)->get();
         if (isset($request->key)) {
             switch ($request->key) {
                 case 'new':
@@ -43,38 +43,59 @@ class PostController extends Controller
                     })->get();
                     return response()->json($obj, 200);
                     break;
+                case 'find':
+                    $result = Post::where('status', '>', 0)
+                        ->where('title', 'LIKE', '%' . $request->q . '%')
+                        ->when(isset($request->link_language_id), function ($query) use ($request) {
+                            $query->whereHas('translation_posts', function ($query) use ($request) {
+                                $query->where('language_id', $request->link_language_id);
+                            })->whereDoesntHave('translation_posts', function ($query) use ($request) {
+                                $query->where('language_id', $request->language_id);
+                            });
+                        })
+                        ->orderByDesc('id')
+                        ->distinct()
+                        ->get()
+                        ->map(function ($obj) {
+                            return [
+                                'id' => $obj->id,
+                                'text' => $obj->title
+                            ];
+                        });
+                    break;
                 default:
                     $post = Post::find($request->key);
                     if ($post) {
                         if ($request->ajax()) {
-                            return response()->json($post, 200);
+                            $result = $post;
                         } else {
                             $pageName = $post->title;
                             return view('admin.post', compact('pageName', 'post', 'categories'));
                         }
                     } else {
-                        return redirect()->route('admin.post', ['key' => 'new'], );
+                        return redirect()->route('admin.post', ['key' => 'new']);
                     }
                     break;
             }
+            return response()->json($result, 200);
         } else {
-            $posts = Post::get();
+            $posts = Post::whereNull('revision');
             if ($request->ajax()) {
                 return DataTables::of($posts)
                     ->addColumn('checkboxes', function ($obj) {
-                        if (!empty (Auth::user()->can(User::DELETE_POSTS))) {
+                        if (!empty(Auth::user()->can(User::DELETE_POSTS))) {
                             return '<input class="form-check-input choice" type="checkbox" name="choices[]" value="' . $obj->id . '">';
                         }
                     })
                     ->editColumn('title', function ($obj) {
-                        if (!empty (Auth::user()->can(User::UPDATE_POST))) {
+                        if (!empty(Auth::user()->can(User::UPDATE_POST))) {
                             return (!empty(Auth::user()->can(User::READ_POST))) ? '<a href="' . route('admin.post', ['key' => $obj->id]) . '" class="btn btn-link text-decoration-none text-start">' . $obj->title . '</a>' : $obj->title;
                         } else {
                             return $obj->title;
                         }
                     })
                     ->editColumn('author', function ($obj) {
-                        if (!empty (Auth::user()->can(User::UPDATE_POST))) {
+                        if (!empty(Auth::user()->can(User::UPDATE_POST))) {
                             return '<a class="btn btn-link text-decoration-none text-start btn-update-user" data-id="' . $obj->author->id . '">' . $obj->author->name . '</a>';
                         } else {
                             return $obj->author->name;
@@ -84,7 +105,7 @@ class PostController extends Controller
                         return '<img src="' . $obj->imageUrl . '" class="thumb cursor-pointer object-fit-cover" alt="Ảnh ' . $obj->name . '" width="60px" height="60px">';
                     })
                     ->editColumn('category', function ($obj) {
-                        if (!empty (Auth::user()->can(User::UPDATE_POST))) {
+                        if (!empty(Auth::user()->can(User::UPDATE_POST))) {
                             return '<a class="btn btn-link text-decoration-none text-start btn-update-category" data-id="' . $obj->category->id . '">' . $obj->category->name . '</a>';
                         } else {
                             return $obj->category->name;
@@ -130,34 +151,28 @@ class PostController extends Controller
             'category_id' => ['required', 'numeric'],
             'description' => ['nullable'],
         ];
-        $messages = [
-            'title.required' => 'Tên dịch vụ: ' . Controller::VALIDATE['required'],
-            'title.string' => 'Tên dịch vụ: ' . Controller::VALIDATE['invalid'],
-            'title.max' => 'Tên dịch vụ: ' . Controller::VALIDATE['max191'],
-            'excerpt.string' => 'Mô tả ngắn: ' . Controller::VALIDATE['invalid'],
-            'excerpt.max' => 'Mô tả ngắn: ' . Controller::VALIDATE['max191'],
-            'status.numeric' => 'Trạng thái: ' . Controller::VALIDATE['required'],
-            'status.required' => 'Trạng thái: ' . Controller::VALIDATE['invalid'],
-            'category_id.numeric' => 'Chuyên mục: ' . Controller::VALIDATE['invalid'],
-            'category_id.required' => 'Chuyên mục: ' . Controller::VALIDATE['required'],
-            'image.string' => 'Ảnh: ' . Controller::VALIDATE['invalid'],
-        ];
-        $request->validate($rules, $messages);
-        if (!empty(Auth::user()->can(User::UPDATE_POST)) || !empty(Auth::user()->can(User::CREATE_POST))) {
+        //strip_tags($request->input('content'))  //Loại bỏ các thẻ html
+        $request->validate($rules);
+        if (Auth::user()->can(User::UPDATE_POST, User::CREATE_POST)) {
             $post = $this->sync([
                 'code' => Str::slug($request->title),
                 'title' => $request->title,
                 'author_id' => Auth::user()->id,
                 'category_id' => $request->category_id,
                 'excerpt' => $request->excerpt,
-                'content' => strip_tags($request->input('content')),  //Loại bỏ các thẻ html
+                'content' => $request->input('content'),  //Loại bỏ các thẻ html
                 'type' => 'post',
                 'image' => $request->image,
                 'status' => $request->status,
-            ], $request->ip(), $request->id);
-            if (isset($request->image)) {
-                $post->image = $request->image;
-                $post->save();
+            ], $request->id);
+            if ($post && $request->has('language_id')) {
+                if ($request->has('translate_id')) {
+                    $translate_id = $request->translate_id;
+                    array_unshift($translate_id, $post->id);
+                    $post->linkLanguages($request->language_id, $translate_id);
+                } else {
+                    $post->syncLanguages($request->language_id);
+                }
             }
             $action = ($request->id) ? 'Đã sửa' : 'Đã thêm';
             $response = array(
@@ -210,10 +225,10 @@ class PostController extends Controller
         return response()->json($response, 200);
     }
 
-    public static function sync($array, $ip = null, $id = null)
+    public static function sync($array, $id = null)
     {
         $obj = Post::updateOrCreate(['id' => $id], $array);
-        LogController::create($id ? 'sửa' : 'tạo', self::NAME, $obj->id, $ip);
+        LogController::create($id ? 'sửa' : 'tạo', self::NAME, $obj->id);
         return $obj;
     }
 }

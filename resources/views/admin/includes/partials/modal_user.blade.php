@@ -13,7 +13,7 @@
                             <div class="col-12 col-md-4">
                                 <div class="sticky-top">
                                     <div class="form-group mb-3">
-                                        <label class="form-label ratio ratio-1x1 select-image" for="user-image">
+                                        <label class="form-label ratio ratio-1x1" for="user-image">
                                             <img class="img-fluid rounded-4 object-fit-cover" id="user-image-preview" src="{{ asset('admin/images/placeholder.webp') }}" alt="Ảnh đại diện">
                                         </label>
                                         <input class="form-control" id="user-image" name="image" type="file" hidden accept="image/*">

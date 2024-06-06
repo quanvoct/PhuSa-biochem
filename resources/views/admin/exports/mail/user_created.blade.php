@@ -372,7 +372,7 @@
                                     <tr>
                                         <td>
                                             <p>Chào bạn,</p>
-                                            <p>Một tài khoản của bạn đã được khởi tạo tại {{ $data['settings']['company_brandname'] }}</p>
+                                            <p>Một tài khoản của bạn đã được khởi tạo tại {{ config('app.name') }}</p>
                                             <p>Để thiết lập tài khoản, vui lòng truy cập: <a href="{{ route('profile.index') }}">{{ route('profile.index') }}</a></p>
                                             <p>Sử dụng tài khoản của bạn để đăng nhập:
                                             <ul>
@@ -396,9 +396,9 @@
                         <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                             <tr>
                                 <td class="content-block">
-                                    <span class="apple-link">{{ $data['settings']['company_name'] }}</span>
-                                    <br>Địa chỉ: {{ $data['settings']['company_address'] }}<br />
-                                    Hotline: {{ $data['settings']['company_phone'] }} • Email: <a href="mailto:{{ $data['settings']['company_email'] }}">{{ $data['settings']['company_email'] }}</a>.
+                                    <span class="apple-link">{{ session('settings')['company_name'] }}</span>
+                                    <br>Địa chỉ: {{ session('settings')['company_address'] }}<br />
+                                    Hotline: {{ session('settings')['company_phone'] }} • Email: <a href="mailto:{{ session('settings')['company_email'] }}">{{ session('settings')['company_email'] }}</a>.
                                 </td>
                             </tr>
                         </table>

@@ -21,7 +21,7 @@
             </div>
         </div>
         @if (session('response') && session('response')['status'] == 'success')
-            <div class="alert key-bg-primary alert-dismissible fade show text-white" role="alert">
+            <div class="alert alert-success alert-dismissible fade show text-white" role="alert">
                 <i class="fas fa-check"></i>
                 {!! session('response')['msg'] !!}
                 <button class="btn-close" data-bs-dismiss="alert" type="button" aria-label="Close">
@@ -125,6 +125,49 @@
                                 <button class="btn btn-info" type="submit">{{ isset($post) ? 'Cập nhật' : 'Đăng bài' }}</button>
                             </div>
                             <!-- END Publish card -->
+                            <!-- Language card -->
+                            <div class="card card-body mb-3">
+                                <h6 class="mb-0">Ngôn ngữ</h6>
+                                <hr class="horizontal dark">
+                                <div class="form-group mb-4">
+                                    <select class="form-select" id="post-language_id" name="language_id[]" required>
+                                        <option selected disabled hidden>Chọn một ngôn ngữ</option>
+                                        @foreach (App\Models\Language::all() as $language)
+                                            <option value="{{ $language->id }}" {{ isset($post) && $post->languages->count() && $post->language->id == $language->id ? 'selected' : '' }}>{{ $language->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('language')
+                                        <span class="invalid-feedback d-block" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                                @if (isset($post) && $post->language)
+                                    @php $languages = App\Models\Language::where('id', '!=', $post->language->id)->get() @endphp
+                                    @foreach ($languages as $index => $language)
+                                        <div class="card mb-0 link-language">
+                                            <div class="form-group">
+                                                <label class="form-label" for="post-{{ $index }}">{{ $language->name }}</label>
+                                                <select class="form-select @error('translate_id') is-invalid @enderror select2" id="post-{{ $index }}" name="translate_id[]"
+                                                    data-ajax--url="{{ route('admin.post', ['key' => 'find']) }}?link_language_id={{ $language->id }}&language_id={{ $post->language->id }}" data-placeholder="Chọn một bài viết">
+                                                    @php
+                                                        $translation = $post->post_translations
+                                                            ->where('post_id', $post->id)
+                                                            ->where('language_id', $language->id)
+                                                            ->first();
+                                                        if ($translation) {
+                                                            $translate = App\Models\Post::find($translation->translate_id);
+                                                            echo '<option value="' . $translate->id . '">' . $translate->title . '</option>';
+                                                        }
+                                                    @endphp
+                                                </select>
+                                                <input name="language_id[]" type="hidden" value="{{ $language->id }}">
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                @endif
+                            </div>
+                            <!-- END Language card -->
                             <!-- Catalog card -->
                             <div class="card card-body mb-3">
                                 <h6 class="mb-0">Chuyên mục</h6>
@@ -135,7 +178,7 @@
                                             <li class="list-group-item border border-0" id="category-group-{{ $category->id }}">
                                                 <input class="form-check-input me-1 @error('category') is-invalid @enderror" id="category-{{ $category->id }}" name="category_id" type="radio" value="{{ $category->id }}"
                                                     {{ (isset($post) && $post->category->pluck('id')->contains($category->id)) || collect(old('categories'))->contains($category->id) ? 'checked' : '' }}>
-                                                <label class="form-check-label" for="category-{{ $category->id }}">{{ $category->name }}</label>
+                                                <label class="form-check-label" for="category-{{ $category->id }}">{{ __($category->name) }}</label>
                                             </li>
                                         @endforeach
                                     </ul>
@@ -177,8 +220,26 @@
 @endsection
 
 @push('scripts')
+    @if (isset($post) && $post->language)
+        <script type="text/javascript">
+            $('#post-language_id').change(function() {
+                $('.card.link-language').remove()
+            })
+        </script>
+    @endif
     <script>
         $(document).ready(function() {
+            $(`select.select2`).select2(config.select2);
+            $('input.select2-search__field').removeAttr('style')
+            $('#post-form').find('[type=submit]').click(function(e) {
+                e.preventDefault()
+                $("select[name='translate_id[]']").each(function() {
+                    if ($(this).val() === null) {
+                        $(this).parents('.card.link-language').remove();
+                    }
+                });
+                $(this).html('<span class="spinner-border spinner-border-sm" id="spinner-form" role="status"></span>').parents('form').submit()
+            })
         })
     </script>
 @endpush

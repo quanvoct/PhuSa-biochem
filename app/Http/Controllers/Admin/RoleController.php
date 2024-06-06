@@ -84,14 +84,7 @@ class RoleController extends Controller
         $rules = [
             'name' => ['required', 'string', 'min: 3', 'max:125', 'unique:roles'],
         ];
-        $messages = [
-            'name.unique' => 'Tên này đã tồn tại.',
-            'name.required' => 'Thông tin này không thể trống.',
-            'name.string' => 'Thông tin không hợp lệ.',
-            'name.min' => 'Tối thiểu 3 kí tự',
-            'name.max' => 'Tối đa 125 kí tự.',
-        ];
-        $request->validate($rules, $messages);
+        $request->validate($rules);
 
         if (!empty(Auth::user()->can(User::CREATE_ROLE))) {
             $role = new Role([
@@ -128,13 +121,7 @@ class RoleController extends Controller
             'name' => ['required', 'string', 'min: 3', 'max:125'],
             'name' => Rule::unique('roles')->ignore($request->id),
         ];
-        $messages = [
-            'name.required' => 'Thông tin này không thể trống.',
-            'name.string' => 'Thông tin không hợp lệ.',
-            'name.min' => 'Tối thiểu 3 kí tự',
-            'name.max' => 'Tối đa 125 kí tự.',
-        ];
-        $request->validate($rules, $messages);
+        $request->validate($rules);
         if (!empty(Auth::user()->can(User::UPDATE_ROLE))) {
             if ($request->has('id')) {
                 $role = Role::find($request->id);

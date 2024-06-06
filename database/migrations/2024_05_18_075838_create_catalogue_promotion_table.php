@@ -17,7 +17,6 @@ class CreateCataloguePromotionTable extends Migration
             $table->id();
             $table->unsignedBigInteger('catalogue_id');
             $table->unsignedBigInteger('promotion_id');
-            $table->timestamps();
 
             // Tạo khóa ngoại tới bảng 'promotions'
             $table->foreign('promotion_id')->references('id')->on('promotions')->onDelete('cascade');

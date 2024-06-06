@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use App\Models\Catalogue;
 use App\Models\Category;
+use App\Models\Language;
 use App\Models\Setting;
 use Jenssegers\Agent\Agent;
 
@@ -28,7 +29,9 @@ class GlobalSettings
             Session::put('catalogues', Catalogue::whereNull('revision')->whereStatus(1)->orderBy('sort', 'ASC')->get());
         }
         if (!Session::has('settings')) {
-            Session::put('settings', Setting::pluck('value', 'key'));
+            $code = Session::has('language') ? session('language') : 'en';
+            $language = Language::whereCode($code)->first();
+            Session::put('settings', Setting::where('language_id', $language->id)->pluck('value', 'key'));
         }
         return $next($request);
     }

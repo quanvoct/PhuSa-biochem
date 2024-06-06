@@ -12,6 +12,7 @@ class DatabaseSeeder extends Seeder
             PermissionsTableSeeder::class,
             SuperAdminRoleSeeder::class,
             AdminUserSeeder::class,
+            LanguagesSeeder::class,
             SettingsSeeder::class,
             CataloguesSedder::class,
             ProductsSedder::class,

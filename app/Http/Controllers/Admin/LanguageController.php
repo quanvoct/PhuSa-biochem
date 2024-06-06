@@ -3,18 +3,24 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Language;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
 class LanguageController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
         $pageName = __('Language Management');
-        $vn = $this->get('vn');
-        $en = $this->get('en');
-        return view('admin.languages', compact('vn', 'en', 'pageName'));
+        $language = Language::whereCode($request->key)->first();
+        if($request->key && $language) {
+            $strings = $this->get($request->key);
+            return view('admin.languages', compact('language', 'strings', 'pageName'));
+        } else {
+            abort(404);
+        }
     }
 
     public function get($lang)
@@ -83,19 +89,63 @@ class LanguageController extends Controller
 
     public function update(Request $request)
     {
-        $this->update_exec('vn', $request->vn);
-        $this->update_exec('en', $request->en);
+        $this->update_exec($request->language_code, $request->strings);
         $response = [
-            'success' => true,
+            'status' => 'success',
             'msg' => __('Update language successfully!'),
         ];
-        return redirect()->route('admin.language')->with('response', $response);
+        return redirect()->route('admin.language', ['key' => $request->language_code])->with('response', $response);
+    }
+
+    private function recursiveCopy($src, $dst)
+    {
+        $dir = opendir($src);
+        @mkdir($dst);
+
+        while(false !== ( $file = readdir($dir)) ) {
+            if (( $file != '.' ) && ( $file != '..' )) {
+                if ( is_dir($src . '/' . $file) ) {
+                    $this->recursiveCopy($src . '/' . $file, $dst . '/' . $file);
+                } else {
+                    copy($src . '/' . $file, $dst . '/' . $file);
+                }
+            }
+        }
+        closedir($dir);
+    }
+
+    public function create(Request $request)
+    {
+        $rules = [
+            'code' => ['required', 'string', 'max:191'],
+        ];
+        $request->validate($rules);
+
+        $language = Language::create([
+            'code' => $request->code,
+            'name' => Language::LANG[$request->code],
+        ]);
+
+        if ($language) {
+            $directory = [resource_path('lang/en'), resource_path('lang/' . $language->code)];
+            $json = [resource_path('lang/en.json'), resource_path('lang/' . $language->code . '.json')];
+            $this->recursiveCopy($directory[0], $directory[1]);
+            copy($json[0], $json[1]);
+        }
+
+        $response = [
+            'status' => 'success',
+            'msg' => __('Update language successfully!'),
+        ];
+        return redirect()->route('admin.language', ['key' => $language->code])->with('response', $response);
     }
 
     public function change(Request $request)
     {
         app()->setLocale($request->language, config('app.locale'));
         Session::put('language', $request->language);
+        $language = Language::whereCode($request->language)->first();
+        Session::put('settings', Setting::where('language_id', $language->id)->pluck('value', 'key'));
         return redirect()->back();
     }
 }

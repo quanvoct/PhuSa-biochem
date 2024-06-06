@@ -1,4 +1,4 @@
-<div id="sidebar" class="active">
+<div id="sidebar" class="">
     <div class="sidebar-wrapper active">
         <div class="sidebar-header">
                 <div class="toggler text-end">
@@ -105,11 +105,11 @@
                         @endif
                         @if (!empty(Auth::user()->can(App\Models\User::READ_SETTINGS)))
                             <li class="submenu-item">
-                                <a href="{{ route('admin.setting') }}">Cài đặt</a>
+                                <a href="{{ route('admin.setting', ['key' => 'general']) }}">Cài đặt</a>
                             </li>
                         @endif
                             <li class="submenu-item">
-                                <a href="{{ route('admin.language') }}">Ngôn ngữ</a>
+                                <a href="{{ route('admin.language', ['key' => 'en']) }}">Ngôn ngữ</a>
                             </li>
                         @if (!empty(Auth::user()->can(App\Models\User::READ_LOGS)))
                             <li class="submenu-item">

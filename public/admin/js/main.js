@@ -115,7 +115,7 @@ $(".sidebar-link").each(function () {
     }
 });
 
-$('body').on('hidden.bs.modal', '.modal', function() {
+$('body').on('hidden.bs.modal', '.modal', function () {
     $('.modal.show').find('.select2').select2(config.select2);
 })
 
@@ -123,6 +123,45 @@ $('body').on('hidden.bs.modal', '.modal', function() {
 if ($('.sidebar-item.active').length) {
     document.querySelector('.sidebar-item.active').scrollIntoView(false);
 }
+
+/**
+ * Nén và hiển thị hình ảnh
+ */
+$(document).on('change', 'input[type=file][name=image]', function (event) {
+    const file = event.target.files[0], input = $(this)
+    if (file) {
+        new Compressor(file, {
+            quality: 0.8,
+            maxWidth: 600,
+            maxHeight: 600,
+            mimeType: 'image/webp',
+            success(result) {
+                const compressedFile = new File([result], file.name.replace(/\.\w+$/, '.webp'), {
+                    type: 'image/webp',
+                    lastModified: Date.now(),
+                });
+                // Tạo lại input với file đã nén
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(compressedFile);
+                input[0].files = dataTransfer.files;
+                // Hiển thị hình ảnh đã nén
+                const previewURL = URL.createObjectURL(compressedFile);
+                input.prev().find('img').attr('src', previewURL)
+                input.next().find('[type=button]').removeClass('d-none');
+            },
+            error(err) {
+                Toastify({
+                    text: err.message,
+                    duration: 3000,
+                    close: true,
+                    gravity: "top",
+                    position: "center",
+                    backgroundColor: "var(--bs-danger)",
+                }).showToast();
+            },
+        });
+    }
+});
 
 /**
  * Xử lý hình ảnh
@@ -539,12 +578,12 @@ $(document).on("mouseleave", '[data-bs-toggle="tooltip"]', function () {
 });
 
 //Input mask money
-$(document).on('focus', '.money', function() {
+$(document).on('focus', '.money', function () {
     $('.money').mask("#,##0", {
         reverse: true
     });
 });
-$(document).on('blur', '.money', function() {
+$(document).on('blur', '.money', function () {
     $('.money').unmask();
 })
 

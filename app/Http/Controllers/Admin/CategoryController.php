@@ -16,12 +16,6 @@ class CategoryController extends Controller
         RULES = [
             'name' => ['required', 'string', 'max:191'],
             'note' => ['nullable', 'string'],
-        ],
-        MESSAGES = [
-            'name.required' => Controller::VALIDATE['required'],
-            'name.string' => Controller::VALIDATE['invalid'],
-            'name.max' => Controller::VALIDATE['max191'],
-            'note.string' => Controller::VALIDATE['invalid']
         ];
 
     public function __construct()
@@ -58,7 +52,7 @@ class CategoryController extends Controller
             }
         } else {
             if ($request->ajax()) {
-                $categories = Category::get();
+                $categories = Category::whereNull('revision');
                 return DataTables::of($categories)
                     ->addColumn('checkboxes', function ($obj) {
                         if (!empty(Auth::user()->can(User::DELETE_CATEGORIES))) {
@@ -107,7 +101,7 @@ class CategoryController extends Controller
 
     public function create(Request $request)
     {
-        $request->validate(self::RULES, self::MESSAGES);
+        $request->validate(self::RULES);
         if (!empty(Auth::user()->can(User::CREATE_CATEGORY))) {
             $category = $this->sync([
                 'name' => $request->name,
@@ -130,7 +124,7 @@ class CategoryController extends Controller
 
     public function update(Request $request)
     {
-        $request->validate(self::RULES, self::MESSAGES);
+        $request->validate(self::RULES);
         if (!empty(Auth::user()->can(User::UPDATE_CATEGORY))) {
             if ($request->has('id')) {
                 $category = $this->sync([

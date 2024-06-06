@@ -31,6 +31,45 @@ class Post extends Model
         return $this->belongsTo(Category::class);
     }
 
+    public function post_translations() //các bản dịch của bài viết
+    {
+        return $this->hasMany(PostTranslation::class);
+    }
+
+    public function translation_posts() //các bài viết của bản dịch
+    {
+        return $this->hasMany(PostTranslation::class, 'translate_id');
+    }
+
+    public function translated() //bài dịch
+    {
+        return $this->hasManyThrough(
+            Post::class,
+            PostTranslation::class,
+            'post_id',
+            'id',
+            'id',
+            'translate_id'
+        );
+    }
+
+    public function languages()
+    {
+        return $this->belongsToMany(Language::class, 'post_translations');
+    }
+
+    public function language()
+    {
+        return $this->hasOneThrough(
+            Language::class,
+            PostTranslation::class,
+            'post_id',
+            'id',
+            'id',
+            'language_id'
+        )->where('translate_id', $this->id);
+    }
+
     public function revisions()
     {
         return $this->hasMany(Post::class, 'revision');
@@ -58,6 +97,52 @@ class Post extends Model
     public function createdTime()
     {
         return ($this->created_at) ? Carbon::parse($this->created_at)->format('H:i:s') : '';
+    }
+
+    public function assignLanguage($language, $post)
+    {
+        if($language && $post) {
+            $result = DB::table('post_translations')->insert([
+                'post_id' => $this->id,
+                'language_id' => $language,
+                'translate_id' => $post
+            ]);
+            return $result;
+        }
+    }
+
+    public function syncLanguages($languages, $posts = null)
+    {
+        if ($posts) {
+            foreach ($languages as $key => $language) {
+                $this->assignLanguage($language, $posts[$key]);
+            }
+            return true;
+        } else {
+            PostTranslation::wherePost_id($this->id)->get()->each(function ($translate, $key) {
+                $translate->delete();
+            });
+            PostTranslation::whereTranslate_id($this->id)->get()->each(function ($translate, $key) {
+                $translate->delete();
+            });
+            foreach ($languages as $key => $language) {
+                $this->assignLanguage($language, $this->id);
+            }
+        }
+    }
+
+    public function linkLanguages($languages, $posts)
+    {
+        //clear all link
+        PostTranslation::whereIn('post_id', $posts)->get()->each(function ($translate, $key) {
+            $translate->delete();
+        });
+        PostTranslation::whereIn('translate_id', $posts)->get()->each(function ($translate, $key) {
+            $translate->delete();
+        });
+        Post::whereIn('id', $posts)->get()->each(function ($post, $key) use ($languages, $posts) {
+            $post->syncLanguages($languages, $posts);
+        });
     }
 
     public function getStatusStrAttribute()

@@ -147,19 +147,23 @@ Route::group(['middleware' => 'admin'], function () {
         });
 
         Route::group(['prefix' => 'language'], function () {
-            Route::get('/', [LanguageController::class, 'index'])->name('admin.language');
+            Route::get('/{key?}', [LanguageController::class, 'index'])->name('admin.language');
+            Route::post('create', [LanguageController::class, 'create'])->name('admin.language.create');
             Route::post('update', [LanguageController::class, 'update'])->name('admin.language.update');
         });
 
         Route::group(['prefix' => 'setting'], function () {
-            Route::get('/', [SettingController::class, 'index'])->name('admin.setting');
-            Route::post('/companyupdate', [SettingController::class, 'updateCompany'])->name('admin.setting.company.update');
-            Route::post('/payupdate', [SettingController::class, 'updatePay'])->name('admin.setting.pay.update');
-            Route::post('/mailupdate', [SettingController::class, 'updateMail'])->name('admin.setting.mail.update');
+            Route::get('{key?}', [SettingController::class, 'index'])->name('admin.setting');
+            Route::post('/company', [SettingController::class, 'updateCompany'])->name('admin.setting.company');
+            Route::post('/code', [SettingController::class, 'updateCode'])->name('admin.setting.code');
+            Route::post('/popup', [SettingController::class, 'updatePopup'])->name('admin.setting.popup');
+            Route::post('/pay', [SettingController::class, 'updatePay'])->name('admin.setting.pay');
+            Route::post('/email', [SettingController::class, 'updateEmail'])->name('admin.setting.email');
+            Route::post('/recaptcha', [SettingController::class, 'updateRecaptcha'])->name('admin.setting.recaptcha');
+            Route::post('/social', [SettingController::class, 'updateSocial'])->name('admin.setting.social');
         });
     });
 });
-
 
 Route::group(['middleware' => 'auth'], function () {
     Route::group(['prefix' => 'profile'], function () {

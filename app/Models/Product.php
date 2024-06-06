@@ -26,11 +26,6 @@ class Product extends Model
         return $this->belongsToMany(Catalogue::class)->whereNull('revision');
     }
 
-    public function attributes()
-    {
-        return $this->belongsToMany(Attribute::class, 'attribute_product_variable')->whereNull('revision');
-    }
-
     public function author()
     {
         return $this->belongsTo(User::class, 'author_id');
@@ -49,6 +44,45 @@ class Product extends Model
     public function promotions()
     {
         return $this->belongsToMany(Promotion::class)->whereNull('revision');
+    }
+
+    public function product_translations() //các bản dịch của sản phẩm
+    {
+        return $this->hasMany(ProductTranslation::class);
+    }
+
+    public function translation_products() //các sản phẩm của bản dịch
+    {
+        return $this->hasMany(ProductTranslation::class, 'translate_id');
+    }
+
+    public function translated() //bài dịch
+    {
+        return $this->hasManyThrough(
+            Product::class,
+            ProductTranslation::class,
+            'product_id',
+            'id',
+            'id',
+            'translate_id'
+        );
+    }
+
+    public function languages()
+    {
+        return $this->belongsToMany(Language::class, 'product_translations');
+    }
+
+    public function language()
+    {
+        return $this->hasOneThrough(
+            Language::class,
+            ProductTranslation::class,
+            'product_id',
+            'id',
+            'id',
+            'language_id'
+        )->where('translate_id', $this->id);
     }
 
     public function revisions()
@@ -158,6 +192,52 @@ class Product extends Model
         } else {
             return false;
         }
+    }
+
+    public function assignLanguage($language, $product)
+    {
+        if($language && $product) {
+            $result = DB::table('product_translations')->insert([
+                'product_id' => $this->id,
+                'language_id' => $language,
+                'translate_id' => $product
+            ]);
+            return $result;
+        }
+    }
+
+    public function syncLanguages($languages, $products = null)
+    {
+        if ($products) {
+            foreach ($languages as $key => $language) {
+                $this->assignLanguage($language, $products[$key]);
+            }
+            return true;
+        } else {
+            ProductTranslation::whereProduct_id($this->id)->get()->each(function ($translate, $key) {
+                $translate->delete();
+            });
+            ProductTranslation::whereTranslate_id($this->id)->get()->each(function ($translate, $key) {
+                $translate->delete();
+            });
+            foreach ($languages as $key => $language) {
+                $this->assignLanguage($language, $this->id);
+            }
+        }
+    }
+
+    public function linkLanguages($languages, $products)
+    {
+        //clear all link
+        ProductTranslation::whereIn('product_id', $products)->get()->each(function ($translate, $key) {
+            $translate->delete();
+        });
+        ProductTranslation::whereIn('translate_id', $products)->get()->each(function ($translate, $key) {
+            $translate->delete();
+        });
+        Product::whereIn('id', $products)->get()->each(function ($product, $key) use ($languages, $products) {
+            $product->syncLanguages($languages, $products);
+        });
     }
     
     public function cataloguesName() {

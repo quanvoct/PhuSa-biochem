@@ -5,7 +5,7 @@
     <h2 class='mb-5'>{{ $pageName }}</h2>
     <div class="row justify-content-center">
         <div class="col-12">
-            @if (session('response') && session('response')['success'])
+            @if (session('response') && session('response')['status'] == 'success')
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 <i class="fas fa-check"></i>
                 {!! session('response')['msg'] !!}
@@ -18,43 +18,46 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
             @endif
+            <ul class="nav nav-pills mb-3">
+                @foreach (App\Models\Language::all() as $item)
+                    <li class="nav-item">
+                        <a class="nav-link{!! Request::path() === 'admin/language/' . $item->code ? ' active" aria-current="page' : '' !!}" href="{{ route('admin.language', ['key' => $item->code]) }}">{{ $item->name }}</a>
+                    </li>
+                @endforeach
+                <li class="nav-item">
+                    <a class="nav-link cursor-pointer" data-bs-toggle="modal" data-bs-target="#language-modal"><i class="bi bi-plus-circle"></i> Thêm ngôn ngữ</a>
+                </li>
+            </ul>
             <div class="card mb-4">
                 <form id="language-form" action="{{ route('admin.language.update') }}" method="post">
                     @csrf
                     <div class="card-body">
                         <div class="row mb-3 border-bottom">
-                            <div class="col-4">
+                            <div class="col-6">
                                 <button type="button" class="btn btn-primary btn-sm btn-add">{{__('Add')}}</button>
                                 <button type="button" class="btn btn-primary btn-sm btn-edit">{{__('Edit')}}</button>
                                 <button type="submit" class="btn btn-primary btn-sm btn-save d-none">{{__('Save')}}</button>
+                                <input type="hidden" name="language_code" value="{{ $language->code }}">
                             </div>
-                            <div class="col-4">
-                                <h3>Tiếng Việt</h3>
-                            </div>
-                            <div class="col-4">
-                                <h3>Tiếng Anh</h3>
+                            <div class="col-6">
+                                <h3>{{ $language->name }}</h3>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-4" id="label-lang">
-                                @foreach($en[0] as $label => $value)
+                            <div class="col-6" id="label-lang">
+                                @foreach($strings[0] as $label => $value)
                                 <label class="text-nowrap overflow-hidden pb-0 col-12 col-form-label">{{$label}}</label>
                                 @endforeach
                             </div>
-                            <div class="col-4" id="first-lang">
-                                @foreach($vn[0] as $label => $value)
-                                <input type="text" readonly name="vn[label][{{$label}}]" class="form-control-plaintext" value="{{ $value }}">
-                                @endforeach
-                            </div>
-                            <div class="col-4" id="second-lang">
-                                @foreach($en[0] as $label => $value)
-                                <input type="text" readonly name="en[label][{{$label}}]" class="form-control-plaintext" value="{{ $value }}">
+                            <div class="col-6" id="string-lang">
+                                @foreach($strings[0] as $label => $value)
+                                <input type="text" readonly name="strings[label][{{$label}}]" class="form-control-plaintext" value="{{ $value }}">
                                 @endforeach
                             </div>
                         </div>
                         <div class="row border-top">
-                            <div class="col-4">
-                                @foreach($vn[1] as $fileName => $fileValue)
+                            <div class="col-6">
+                                @foreach($strings[1] as $fileName => $fileValue)
                                 @foreach($fileValue as $label => $value)
                                 @if(is_array($value))
                                 @foreach($value as $label2 => $value2)
@@ -84,8 +87,8 @@
                                 @endforeach
                                 @endforeach
                             </div>
-                            <div class="col-4">
-                                @foreach($vn[1] as $fileName => $fileValue)
+                            <div class="col-6">
+                                @foreach($strings[1] as $fileName => $fileValue)
                                 @foreach($fileValue as $label => $value)
                                 @if(is_array($value))
                                 @foreach($value as $label2 => $value2)
@@ -95,53 +98,22 @@
                                 @foreach($value3 as $label4 => $value4)
                                 @if(is_array($value4))
                                 @foreach($value4 as $label5 => $value5)
-                                <input type="text" class="form-control-plaintext" readonly name="vn[message][{{$fileName}}][{{$label}}][{{$label2}}][{{$label3}}][{{$label4}}][{{$label5}}]" value="{{$value5}}">
+                                <input type="text" class="form-control-plaintext" readonly name="strings[message][{{$fileName}}][{{$label}}][{{$label2}}][{{$label3}}][{{$label4}}][{{$label5}}]" value="{{$value5}}">
                                 @endforeach
                                 @else
-                                <input type="text" class="form-control-plaintext" readonly name="vn[message][{{$fileName}}][{{$label}}][{{$label2}}][{{$label3}}][{{$label4}}]" value="{{$value4}}">
+                                <input type="text" class="form-control-plaintext" readonly name="strings[message][{{$fileName}}][{{$label}}][{{$label2}}][{{$label3}}][{{$label4}}]" value="{{$value4}}">
                                 @endif
                                 @endforeach
                                 @else
-                                <input type="text" class="form-control-plaintext" readonly name="vn[message][{{$fileName}}][{{$label}}][{{$label2}}][{{$label3}}]" value="{{$value3}}">
+                                <input type="text" class="form-control-plaintext" readonly name="strings[message][{{$fileName}}][{{$label}}][{{$label2}}][{{$label3}}]" value="{{$value3}}">
                                 @endif
                                 @endforeach
                                 @else
-                                <input type="text" class="form-control-plaintext" readonly name="vn[message][{{$fileName}}][{{$label}}][{{$label2}}]" value="{{$value2}}">
+                                <input type="text" class="form-control-plaintext" readonly name="strings[message][{{$fileName}}][{{$label}}][{{$label2}}]" value="{{$value2}}">
                                 @endif
                                 @endforeach
                                 @else
-                                <input type="text" class="form-control-plaintext" readonly name="vn[message][{{$fileName}}][{{$label}}]" value="{{$value}}">
-                                @endif
-                                @endforeach
-                                @endforeach
-                            </div>
-                            <div class="col-4">
-                                @foreach($en[1] as $fileName => $fileValue)
-                                @foreach($fileValue as $label => $value)
-                                @if(is_array($value))
-                                @foreach($value as $label2 => $value2)
-                                @if(is_array($value2))
-                                @foreach($value2 as $label3 => $value3)
-                                @if(is_array($value3))
-                                @foreach($value3 as $label4 => $value4)
-                                @if(is_array($value4))
-                                @foreach($value4 as $label5 => $value5)
-                                <input type="text" class="form-control-plaintext" readonly name="en[message][{{$fileName}}][{{$label}}][{{$label2}}][{{$label3}}][{{$label4}}][{{$label5}}]" value="{{$value5}}">
-                                @endforeach
-                                @else
-                                <input type="text" class="form-control-plaintext" readonly name="en[message][{{$fileName}}][{{$label}}][{{$label2}}][{{$label3}}][{{$label4}}]" value="{{$value4}}">
-                                @endif
-                                @endforeach
-                                @else
-                                <input type="text" class="form-control-plaintext" readonly name="en[message][{{$fileName}}][{{$label}}][{{$label2}}][{{$label3}}]" value="{{$value3}}">
-                                @endif
-                                @endforeach
-                                @else
-                                <input type="text" class="form-control-plaintext" readonly name="en[message][{{$fileName}}][{{$label}}][{{$label2}}]" value="{{$value2}}">
-                                @endif
-                                @endforeach
-                                @else
-                                <input type="text" class="form-control-plaintext" readonly name="en[message][{{$fileName}}][{{$label}}]" value="{{$value}}">
+                                <input type="text" class="form-control-plaintext" readonly name="strings[message][{{$fileName}}][{{$label}}]" value="{{$value}}">
                                 @endif
                                 @endforeach
                                 @endforeach
@@ -153,6 +125,31 @@
         </div>
     </div>
 </div>
+
+<!-- Modal language -->
+<form action="{{ route('admin.language.create') }}" method="post">
+    @csrf
+    <div class="modal fade" id="language-modal" aria-labelledby="language-label">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title fs-5" id="language-label">Thêm ngôn ngữ</h3>
+                    <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <select class="form-select" id="language-code" name="code">
+                        @foreach (App\Models\Language::LANG as $key => $value)
+                            <option value="{{ $key }}">{{ $value }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="modal-footer text-end">
+                    <button class="btn btn-primary" type="submit">Lưu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
 @endsection
 
 @push('scripts')
@@ -178,19 +175,11 @@
             $(this).parents('div').find('.btn-edit').addClass('d-none');
             $(this).parents('div').find('.btn-save').removeClass('d-none');
             let label = `<input type="text" class="form-control label-lang" data-index="${index}" placeholder="Nhập cụm từ cần dịch">`,
-                firstLang = `<input type="text" class="form-control" id="first-lang-${index}" placeholder="tiếng Việt">`,
-                secondLang = `<input type="text" class="form-control" id="second-lang-${index}" placeholder="tiếng Anh">`;
+                string = `<input type="text" class="form-control" id="string-lang-${index}" placeholder="{{ $language->name }}">`
             $('#label-lang').prepend(label);
-            $('#first-lang').prepend(firstLang);
-            $('#second-lang').prepend(secondLang);
+            $('#string-lang').prepend(string);
             index++;
         })
-    })
-
-    $(document).on('keydown change', '.label-lang', function () {
-        index = $(this).attr('data-index');
-        $(`#first-lang-${index}`).attr('name', `vn[label][${$(this).val()}]`).attr('placeholder', 'tiếng Việt của ' + $(this).val());
-        $(`#second-lang-${index}`).attr('name', `en[label][${$(this).val()}]`).attr('placeholder', 'tiếng Anh của ' + $(this).val());
     })
 </script>
 @endpush

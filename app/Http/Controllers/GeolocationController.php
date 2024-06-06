@@ -24,7 +24,7 @@ class GeolocationController extends Controller
             }
             $result = $countries->map(function ($country) {
                 return [
-                    'id' => $country['Iso2'],
+                    'id' => $country['name'],
                     'text' => $country['name'],
                 ];
             })->values();
@@ -39,7 +39,7 @@ class GeolocationController extends Controller
     {
         $client = new Client();
 
-        $body = json_encode(['iso2' => $request->country]);
+        $body = json_encode(['country' => $request->country]);
 
         $apiRequest = new GuzzleRequest('POST', 'https://countriesnow.space/api/v0.1/countries/states', [
             'Content-Type' => 'application/json'
@@ -56,7 +56,7 @@ class GeolocationController extends Controller
             }
             $result = $states->map(function ($state) {
                 return [
-                    'id' => $state['state_code'],
+                    'id' => $state['name'],
                     'text' => $state['name'],
                 ];
             })->values();
