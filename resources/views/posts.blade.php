@@ -30,7 +30,7 @@
                 <div class="col-lg-12 order-lg-2 mb-120">
                     @foreach ($categories as $category)
                     @if(count($category->posts))
-                        <h1 class="section-title">{!! $category->name !!}</h1>
+                        <h1 class="section-title">{!! __($category->name) !!}</h1>
                         <hr>
                         <div class="row  ltn__blog-slider-one-active slick-arrow-1 ltn__blog-item-3-normal">
                             @foreach ($category->posts->take(8) as $post)
@@ -77,7 +77,7 @@
                             <h4 class="ltn__widget-title ltn__widget-title-border">{{ __('Posts categories') }}</h4>
                             <ul>
                                 @foreach ($categories as $category)
-                                    <li><a href="{{ route('home.index', ['page' => 'posts', 'category' => $category]) }}">{!! $category->name !!}<span><i class="fas fa-long-arrow-alt-right"></i></span></a></li>
+                                    <li><a href="{{ route('home.index', ['page' => 'posts', 'category' => $category]) }}">{!! __($category->name) !!}<span><i class="fas fa-long-arrow-alt-right"></i></span></a></li>
                                 @endforeach
                             </ul>
                         </div>

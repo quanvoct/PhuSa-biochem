@@ -23,10 +23,10 @@ class GlobalSettings
     public function handle(Request $request, Closure $next)
     {
         if (!Session::has('categories')) {
-            Session::put('categories', Category::whereNull('revision')->whereStatus(1)->orderBy('sort', 'ASC')->get());
+            Session::put('categories', Category::select('id', 'code', 'name')->whereNull('revision')->whereStatus(1)->orderBy('sort', 'ASC')->get());
         }
         if (!Session::has('catalogues')) {
-            Session::put('catalogues', Catalogue::whereNull('revision')->whereStatus(1)->orderBy('sort', 'ASC')->get());
+            Session::put('catalogues', Catalogue::select('id', 'parent_id', 'slug', 'name')->whereNull('revision')->whereStatus(1)->orderBy('sort', 'ASC')->get());
         }
         if (!Session::has('settings')) {
             $code = Session::has('language') ? session('language') : 'en';

@@ -205,7 +205,7 @@
                         <ul>
                             <li><a href="{{ route('shop.index') }}">{{ __('All Products') }}<span><i class="fas fa-long-arrow-alt-right"></i></span></a></li>
                             @foreach (session('catalogues')->whereNull('parent_id') as $catalogue)
-                            <li><a href="{{ route('shop.index', ['catalogue' => $catalogue->slug]) }}">{!! $catalogue->name !!}<span><i class="fas fa-long-arrow-alt-right"></i></span></a></li>
+                            <li><a href="{{ route('shop.index', ['catalogue' => $catalogue->slug]) }}">{!! __($catalogue->name) !!}<span><i class="fas fa-long-arrow-alt-right"></i></span></a></li>
                             @endforeach
                         </ul>
                     </div>
