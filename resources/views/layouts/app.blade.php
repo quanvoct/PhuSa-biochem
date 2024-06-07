@@ -261,12 +261,12 @@
                                         @if (Illuminate\Support\Facades\Session::has('catalogues'))
                                             @foreach (session('catalogues')->where('status', 1)->whereNull('parent_id') as $catalogue)
                                                 <li class="ltn__category-menu-item ltn__category-menu-drop">
-                                                    <a class="cursor-pointer">{{ $catalogue->name }} </a>
+                                                    <a class="cursor-pointer">{{ __($catalogue->name) }} </a>
                                                     <ul class="ltn__category-submenu ">
-                                                        <li class="ltn__category-submenu-title ltn__category-menu-drop"><a href="{{ route('shop.index', ['catalogue' => $catalogue->slug]) }}">{{ $catalogue->name }}</a>
+                                                        <li class="ltn__category-submenu-title ltn__category-menu-drop"><a href="{{ route('shop.index', ['catalogue' => $catalogue->slug]) }}">{{ __($catalogue->name) }}</a>
                                                             <ul class="ltn__category-submenu-children">
                                                                 @foreach ($catalogue->children->where('status', 1) as $catalogue)
-                                                                    <li><a href="{{ route('shop.index', ['catalogue' => $catalogue->slug]) }}">{{ $catalogue->name }}</a></li>
+                                                                    <li><a href="{{ route('shop.index', ['catalogue' => $catalogue->slug]) }}">{{ __($catalogue->name) }}</a></li>
                                                                 @endforeach
                                                             </ul>
                                                         </li>
@@ -293,7 +293,7 @@
                                                     <ul>
                                                         @if (session('categories')->where('code', '!=', 'policies')->count())
                                                             @foreach (session('categories')->where('code', '!=', 'policies') as $category)
-                                                                <li><a href="{{ route('home.index', ['page' => 'posts', 'category' => $category->code]) }}">{!! $category->name !!}</a></li>
+                                                                <li><a href="{{ route('home.index', ['page' => 'posts', 'category' => $category->code]) }}">{!! __($category->name) !!}</a></li>
                                                             @endforeach
                                                         @endif
                                                     </ul>
@@ -422,7 +422,7 @@
                             <ul class="sub-menu">
                                 @if (session('categories')->where('code', '!=', 'policies')->count())
                                     @foreach (session('categories')->where('code', '!=', 'policies') as $category)
-                                        <li><a href="{{ route('home.index', ['page' => 'posts', 'category' => $category->code]) }}">{!! $category->name !!}</a></li>
+                                        <li><a href="{{ route('home.index', ['page' => 'posts', 'category' => $category->code]) }}">{!! __($category->name) !!}</a></li>
                                     @endforeach
                                 @endif
                             </ul>
@@ -566,7 +566,7 @@
                                 <div class="footer-menu">
                                     <ul>
                                         @foreach (session('catalogues')->whereNull('parent_id') as $catalogue)
-                                            <li><a href="{{ route('shop.index', ['catalogue' => $catalogue->slug]) }}">{!! $catalogue->name !!}</a></li>
+                                            <li><a href="{{ route('shop.index', ['catalogue' => $catalogue->slug]) }}">{!! __($catalogue->name) !!}</a></li>
                                         @endforeach
                                     </ul>
                                 </div>

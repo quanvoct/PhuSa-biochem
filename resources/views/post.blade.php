@@ -33,7 +33,7 @@
                         <div class="ltn__blog-meta">
                             <ul>
                                 <li class="ltn__blog-category">
-                                    <a href="{{ route('home.index', ['page' => 'posts', 'category' => $post->category->code]) }}">{{ $post->category->name }}</a>
+                                    <a href="{{ route('home.index', ['page' => 'posts', 'category' => $post->category->code]) }}">{{ __($post->category->name) }}</a>
                                 </li>
                             </ul>
                         </div>

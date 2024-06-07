@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Session;
 
 class LanguageController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        // $this->middleware(['verified','auth']);
+    }
 
     public function index(Request $request)
     {

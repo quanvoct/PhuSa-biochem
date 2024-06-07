@@ -77,7 +77,7 @@
                                                 <span>
                                                     @foreach ($product->catalogues as $catalogue)
                                                         <a href="{{ route('shop.index', ['catalogue' => $catalogue->slug, 'product' => '']) }}">
-                                                            {{ $catalogue->name }}
+                                                            {{ __($catalogue->name) }}
                                                         </a>
                                                     @endforeach
                                                 </span>
