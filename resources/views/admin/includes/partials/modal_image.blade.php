@@ -5,7 +5,7 @@
         <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="image-label">Cập nhật hình ảnh</h1>
+                    <h1 class="modal-title fs-5" id="image-label">{{ __('Update meta image') }}</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -17,16 +17,16 @@
                         </div>
                         <div class="col-12 col-md-6">
                             <div class="form-group">
-                                <label for="image-name">Tên file</label>
-                                <input type="text" class="form-control" name="name" id="image-name" placeholder="Nhập tên file">
+                                <label for="image-name">{{ __('File name') }}</label>
+                                <input type="text" class="form-control" name="name" id="image-name" placeholder="{{ __('Enter file name') }}">
                             </div>
                             <div class="form-group">
-                                <label for="image-alt">Thay thế</label>
-                                <input type="text" class="form-control" name="alt" id="image-alt" placeholder="Nhập nội dung thay thế (hỗ trợ SEO)">
+                                <label for="image-alt">{{ __('Alternate') }}</label>
+                                <input type="text" class="form-control" name="alt" id="image-alt" placeholder="{{ __('Enter alternate description') }}">
                             </div>
                             <div class="form-group">
-                                <label for="image-caption">Mô tả</label>
-                                <textarea class="form-control" name="caption" id="image-caption" rows="10" placeholder="Nhập mô tả hình ảnh"></textarea>
+                                <label for="image-caption">{{ __('Description') }}</label>
+                                <textarea class="form-control" name="caption" id="image-caption" rows="10" placeholder="{{ __('Enter image description') }}"></textarea>
                             </div>
                         </div>
                     </div>

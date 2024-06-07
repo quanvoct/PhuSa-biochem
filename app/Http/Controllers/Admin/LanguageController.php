@@ -18,7 +18,7 @@ class LanguageController extends Controller
 
     public function index(Request $request)
     {
-        $pageName = __('Language Management');
+        $pageName = __('Languages');
         $language = Language::whereCode($request->key)->first();
         if($request->key && $language) {
             $strings = $this->get($request->key);
@@ -97,7 +97,7 @@ class LanguageController extends Controller
         $this->update_exec($request->language_code, $request->strings);
         $response = [
             'status' => 'success',
-            'msg' => __('Update language successfully!'),
+            'msg' => __('Successfully updated language'),
         ];
         return redirect()->route('admin.language', ['key' => $request->language_code])->with('response', $response);
     }
@@ -140,7 +140,7 @@ class LanguageController extends Controller
 
         $response = [
             'status' => 'success',
-            'msg' => __('Update language successfully!'),
+            'msg' => __('Successfully created language'),
         ];
         return redirect()->route('admin.language', ['key' => $language->code])->with('response', $response);
     }

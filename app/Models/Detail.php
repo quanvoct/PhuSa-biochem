@@ -11,6 +11,7 @@ class Detail extends Model
 {
     use HasFactory, SoftDeletes;
     protected $table = 'details';
+    protected $appends = array('statusStr');
     protected $fillable = [
         'order_id', 'variable_id', 'quantity', 
         'unit_price', 'status', 'revision', 'appointmented_at'
@@ -54,31 +55,17 @@ class Detail extends Model
         return Carbon::parse($this->appointmented_at)->format('d/m/Y');
     }
 
-    public function statusName()
+    public function getStatusStrAttribute()
     {
         switch ($this->status) {
             case '1':
-                $status = 'Hoạt động';
+                $name = __('Enable');
                 break;
 
             default:
-                $status = 'Bị khoá';
+                $name = __('Disabled');
                 break;
         }
-        return $status;
-    }
-
-    public function statusStr($num)
-    {
-        switch ($num) {
-            case '1':
-                $status = 'Hoạt động';
-                break;
-
-            default:
-                $status = 'Bị khoá';
-                break;
-        }
-        return $status;
+        return $name;
     }
 }

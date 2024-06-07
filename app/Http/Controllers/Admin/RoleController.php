@@ -73,7 +73,7 @@ class RoleController extends Controller
                     ->rawColumns(['checkbox', 'name', 'permissions', 'action'])
                     ->make(true);
             } else {
-                $pageName = 'Quản lý nhóm quyền';
+                $pageName = __('Roles');
                 return view('admin.roles', compact('pageName'));
             }
         }

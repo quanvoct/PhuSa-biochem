@@ -62,9 +62,12 @@ Route::group(['middleware' => 'admin'], function () {
             Route::get('{key?}', [PostController::class, 'index'])->name('admin.post');
             Route::post('sort', [PostController::class, 'sort'])->name('admin.post.sort');
             Route::post('save', [PostController::class, 'save'])->name('admin.post.save');
-            Route::post('create', [PostController::class, 'create'])->name('admin.post.create');
-            Route::post('update', [PostController::class, 'update'])->name('admin.post.update');
             Route::post('remove', [PostController::class, 'remove'])->name('admin.post.remove');
+        });
+
+        Route::group(['prefix' => 'page'], function () {
+            Route::get('{key?}', [PostController::class, 'index'])->name('admin.page');
+            Route::post('save', [PostController::class, 'save'])->name('admin.page.save');
         });
 
         Route::group(['prefix' => 'image'], function () {

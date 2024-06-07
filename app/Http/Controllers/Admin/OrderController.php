@@ -43,9 +43,8 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $pageName = 'Quản lý đơn hàng';
-        $options = Controller::options();
-        return view('order', compact('pageName', 'options'));
+        $pageName = __('Orders');
+        return view('order', compact('pageName'));
     }
 
     public function load(Request $request)

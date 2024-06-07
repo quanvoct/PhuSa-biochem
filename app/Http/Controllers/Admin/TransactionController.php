@@ -39,7 +39,7 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        $pageName = 'Quản lý giao dịch';
+        $pageName = __('Transactions');
         return view('transaction', compact('pageName'));
     }
 

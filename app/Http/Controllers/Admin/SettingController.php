@@ -29,7 +29,7 @@ class SettingController extends Controller
      */
     public function index(Request $request)
     {
-        $pageName = 'Cài đặt hệ thống';
+        $pageName = __('Settings');
         if (isset($request->key) && $request->key != 'general') {
             $language = Language::whereCode($request->key)->first();
             $settings = Setting::whereLanguage_id($language->id)->pluck('value', 'key')->put('language_id', $language->id);
@@ -100,12 +100,12 @@ class SettingController extends Controller
             ));
             $response = [
                 'status' => 'success',
-                'msg' => __('Đã cập nhật cài đặt email')
+                'msg' => __('Successfully updated email settings')
             ];
         } catch (\Throwable $th) {
             $response = [
                 'status' => 'error',
-                'msg' => __('Đã có lỗi xảy ra! Vui lòng liên hệ đơn vị phát triển phần mềm để khắc phục.')
+                    'msg' => __('An error has occurred') . '. ' . __('Please try again later') .'!'
             ];
         }
         return  redirect()->back()->with('response', $response);
@@ -122,12 +122,12 @@ class SettingController extends Controller
             ));
             $response = [
                 'status' => 'success',
-                'msg' => __('Đã cập nhật thành công cài đặt Google Recaptcha v3')
+                'msg' => __('Successfully updated Google Recaptcha v3 settings')
             ];
         } catch (\Throwable $th) {
             $response = [
                 'status' => 'error',
-                'msg' => __('Đã có lỗi xảy ra! Vui lòng liên hệ đơn vị phát triển phần mềm để khắc phục.')
+                    'msg' => __('An error has occurred') . '. ' . __('Please try again later') .'!'
             ];
         }
         return  redirect()->back()->with('response', $response);
@@ -144,12 +144,12 @@ class SettingController extends Controller
 
             $response = [
                 'status' => 'success',
-                'msg' => __('Đã cập nhật thành công cài đặt các kênh mạng xã hội')
+                'msg' => __('Successfully updated social links settings')
             ];
         } catch (\Throwable $th) {
             $response = [
                 'status' => 'error',
-                'msg' => __('Đã có lỗi xảy ra! Vui lòng liên hệ đơn vị phát triển phần mềm để khắc phục.')
+                    'msg' => __('An error has occurred') . '. ' . __('Please try again later') .'!'
             ];
         }
         return  redirect()->back()->with('response', $response);
@@ -171,7 +171,7 @@ class SettingController extends Controller
 
             $response = [
                 'status' => 'success',
-                'msg' => __('Đã cập nhật thành công cài đặt popup')
+                'msg' => __('Successfully updated popup settings')
             ];
             return redirect()->back()->with('response', $response);
         } catch (\Exception  $exception) {
@@ -201,12 +201,12 @@ class SettingController extends Controller
             $this->updateSetting('company_email', $request->company_email, $request->language_id);
             $response = [
                 'status' => 'success',
-                'msg' => 'Đã cập nhật thành công cài đặt thông tin'
+                'msg' => __('Successfully updated company information settings')
             ];
         } catch (\Throwable $th) {
             $response = [
                 'status' => 'error',
-                'msg' => 'Đã có lỗi xảy ra! Vui lòng liên hệ đơn vị phát triển phần mềm để khắc phục.'
+                    'msg' => __('An error has occurred') . '. ' . __('Please try again later') .'!'
             ];
         }
         return  redirect()->back()->with('response', $response);
@@ -222,12 +222,12 @@ class SettingController extends Controller
 
             $response = [
                 'status' => 'success',
-                'msg' => 'Đã cập nhật thành công cài đặt mã bổ sung'
+                'msg' => __('Successfully updated additional code settings')
             ];
         } catch (\Throwable $th) {
             $response = [
                 'status' => 'error',
-                'msg' => 'Đã có lỗi xảy ra! Vui lòng liên hệ đơn vị phát triển phần mềm để khắc phục.'
+                    'msg' => __('An error has occurred') . '. ' . __('Please try again later') .'!'
             ];
         }
         return  redirect()->back()->with('response', $response);
@@ -246,12 +246,12 @@ class SettingController extends Controller
             }
             $response = [
                 'status' => 'success',
-                'msg' => 'Đã cập nhật thành công cài đặt thanh toán'
+                'msg' => __('Successfully updated payment settings')
             ];
         } catch (\Throwable $th) {
             $response = [
                 'status' => 'error',
-                'msg' => 'Đã có lỗi xảy ra! Vui lòng liên hệ đơn vị phát triển phần mềm để khắc phục.'
+                    'msg' => __('An error has occurred') . '. ' . __('Please try again later') .'!'
             ];
         }
         return  redirect()->route('setting')->with('response', $response);

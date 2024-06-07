@@ -13,7 +13,6 @@ use Illuminate\Support\Str;
 
 class ImageController extends Controller
 {
-    const NAME = 'hình ảnh';
     public function __construct()
     {
         $this->middleware('auth');
@@ -43,7 +42,7 @@ class ImageController extends Controller
                 $images = Image::select('images.*')->with('author')->orderBy('id', 'DESC')->get();
                 return DataTables::of($images->toArray())->make(true);
             } else {
-                $pageName = 'Quản lý ' . self::NAME;
+                $pageName = __('Images');
                 return view('admin.images', compact('pageName'));
             }
         }
@@ -66,9 +65,8 @@ class ImageController extends Controller
                     'name' => $imageName,
                     'author_id' => Auth::user()->id
                 ]);
-                LogController::create('tạo', self::NAME . ' ' . $image->name,  $image->id);
+                LogController::create('tạo', 'image',  $image->id);
             }
-
             return response()->json(['images' => $uploadedImages]);
         } catch (\Exception $exception) {
             return back()->withError($exception)->withInput();
@@ -80,11 +78,7 @@ class ImageController extends Controller
         $rules = [
             'name' => 'required|regex:/^[a-zA-Z0-9\-]+$/',
         ];
-        $messages = [
-            'name.required' => 'Đừng để trống thông tin này!',
-            'name.regex' => 'Tên chỉ được chứa chữ viết thường, chữ viết hoa, số và ký tự gạch ngang.',
-        ];
-        $request->validate($rules, $messages);
+        $request->validate($rules);
         try {
             $image = Image::find($request->id);
             $ext = explode('.', $image->name);
@@ -108,17 +102,17 @@ class ImageController extends Controller
                 $image->alt = $request->alt;
                 $image->caption = $request->caption;
                 $image->save();
-                LogController::create('xóa', self::NAME . ' ' . $image->name,  $image->id, $request->ip());
+                LogController::create('xóa', 'image',  $image->id, $request->ip());
             } else {
                 $image->delete();
                 $response = array(
                     'status' => 'error',
-                    'msg' => 'Tập tin không còn tồn tại! Dữ liệu về tập tin sẽ được xoá khỏi hệ thống.',
+                    'msg' => __('The file no longer exists! File data will be deleted from the system.'),
                 );
             }
             $response = array(
                 'status' => 'success',
-                'msg' => 'Đã cập nhật ' . self::NAME . ' ' . $image->name,
+                'msg' => __('Successfully updated :name :title', ['name' => $image->name, 'title' => __('image')]),
             );
             return response()->json($response, 200);
         } catch (\Exception $exception) {
@@ -136,7 +130,7 @@ class ImageController extends Controller
                 } else {
                     $response = array(
                         'status' => 'error',
-                        'msg' => 'Không thể xóa ' . $id,
+                        'msg' => __('Cannot delete :id', ['id' => $id]),
                     );
                     return response()->json($response, 200);
                     break;
@@ -144,12 +138,12 @@ class ImageController extends Controller
             }
             $response = array(
                 'status' => 'success',
-                'msg' => 'Đã xoá ' . self::NAME . ' ' . implode(', ', $names)
+                'msg' => __('Successfully removed :name :title', ['name' => implode(', ', $names), 'title' => __('image')])
             );
         } else {
             $response = array(
                 'status' => 'error',
-                'msg' => 'Không thể thực hiện yêu cầu.',
+                'msg' => __('The request could not be complete'),
             );
         }
         return response()->json($response, 200);
@@ -160,7 +154,7 @@ class ImageController extends Controller
         $image = Image::find($id);
         if ($image) {
             $path = 'public/' . $image->name;
-            LogController::create('xóa', self::NAME . ' ' . $image->name,  $image->id, $ip);
+            LogController::create('xóa', 'image',  $image->id, $ip);
             $image->delete();
             if (Storage::exists($path)) {
                 Storage::delete($path);

@@ -256,7 +256,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function getStatusStrAttribute()
     {
-        return ($this->status) ? 'Kích hoạt' : 'Đã khóa';
+        return ($this->status) ? __('Enabled') : __('Disabled');
     }
 
     public function getFullAddressAttribute()
@@ -264,7 +264,7 @@ class User extends Authenticatable implements MustVerifyEmail
         $address = $this->address ? $this->address . ', ' : '';
         $location = $this->local ? ($this->local->district . ', ' . $this->local->city) : '';
         $fullAddress = $address . $location;
-        return $fullAddress ?: "Không có";
+        return $fullAddress ?: __('Nothing');
     }
 
     public function getImageUrlAttribute()

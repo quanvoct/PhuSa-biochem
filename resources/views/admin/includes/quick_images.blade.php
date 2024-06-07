@@ -3,12 +3,12 @@
     <div class="card-header">
         @if (!empty(Auth::user()->can(App\Models\User::CREATE_IMAGE)))
             <a class="btn btn-primary btn-upload-images cursor-pointer" type="button">
-                <i class="bi bi-plus-circle-dotted"></i> Thêm
+                <i class="bi bi-cloud-upload-fill"></i> {{ __('Upload') }}
             </a>
         @endif
         @if (!empty(Auth::user()->can(App\Models\User::DELETE_IMAGES)))
             <a class="btn btn-danger btn-delete-images ms-2 d-none" type="button">
-                <i class="bi bi-trash"></i> Xoá
+                <i class="bi bi-trash"></i> {{ __('Remove') }}
             </a>
         @endif
     </div>
@@ -26,10 +26,10 @@
             <form id="quick_images-form" method="post">
                 @csrf
                 <table class="display" id="quick_images-table" style="display: none;" cellspacing="0" width="100%"></table>
-                <div class="row quick_images-grid-view" id="quick_images-grid-view"> </div>
+                <div class="row quick_images-grid-view" id="quick_images-grid-view"></div>
                 <div class="d-flex justify-content-end">
-                    <button class="btn btn-primary btn-insert-images d-none" type="button">Thêm hình ảnh</button>
-                    <button class="btn btn-primary btn-select-images d-none" type="button">Chọn hình ảnh</button>
+                    <button class="btn btn-primary btn-insert-images d-none" type="button">{{ __('Add') }}</button>
+                    <button class="btn btn-primary btn-select-images d-none" type="button">{{ __('Select') }}</button>
                 </div>
             </form>
         @else

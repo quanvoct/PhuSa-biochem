@@ -118,15 +118,15 @@ class Product extends Model
     {
         switch ($this->status) {
             case '2':
-                $status = 'Nổi bật';
+                $status = __('Featured');
                 break;
 
             case '1':
-                $status = 'Hiển thị';
+                $status = __('Published');
                 break;
 
             default:
-                $status = 'Không hiển thị';
+                $status = __('Hidden');
                 break;
         }
         return $status;
@@ -280,13 +280,5 @@ class Product extends Model
 
     public function salePrice() {
         return number_format($this->variables->min('price')) . '₫';
-    }
-
-    public function canRemove()
-    {
-        if (!$this->variables->count()) {
-            return true;
-        }
-        return false;
     }
 }

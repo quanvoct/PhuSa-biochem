@@ -34,14 +34,14 @@ class Category extends Model
     {
         switch ($this->status) {
             case '1':
-                $status = 'Hoạt động';
+                $name = __('Enable');
                 break;
 
             default:
-                $status = 'Bị khoá';
+                $name = __('Disabled');
                 break;
         }
-        return $status;
+        return $name;
     }
     
     public function revisions()
@@ -59,6 +59,6 @@ class Category extends Model
     }
 
     public function canRemove() {
-        return $this->posts->count() ? true : false;
+        return $this->posts->count() ? false : true;
     }
 }

@@ -69,11 +69,11 @@ class Review extends Model
     {
         switch ($this->status) {
             case '1':
-                $status = 'Hiển thị';
+                $status = __('Enable');
                 break;
 
             default:
-                $status = 'Đã ẩn';
+                $status = __('Disabled');
                 break;
         }
         return $status;

@@ -59,11 +59,11 @@ class Catalogue extends Model
     {
         switch ($this->status) {
             case '1':
-                $name = 'Hoạt động';
+                $name = __('Enable');
                 break;
 
             default:
-                $name = 'Bị khoá';
+                $name = __('Disabled');
                 break;
         }
         return $name;

@@ -35,18 +35,18 @@ class ProductController extends Controller
             $catalogues = Controller::getCatalogueChildren($catalogues);
             switch ($request->key) {
                 case 'new':
-                    $pageName = 'Thêm ' . self::NAME;
+                    $pageName = __('New product');
                     return view('admin.product', compact('pageName', 'catalogues'));
                     break;
                 case 'list':
                     $ids = json_decode($request->ids);
-                    $obj = Product::orderBy('sort', 'ASC')->whereNull('revision')->when(count($ids), function ($query) use ($ids) {
+                    $obj = Product::whereNull('revision')->orderBy('sort', 'ASC')->when(count($ids), function ($query) use ($ids) {
                         $query->whereIn('id', $ids);
                     })->get();
                     return response()->json($obj, 200);
                     break;
                 case 'find':
-                    $result = Product::where('status', '>', 0)
+                    $result = Product::whereNull('revision')->where('status', '>', 0)
                         ->where(function ($query) use ($request) {
                             $query->where('name', 'LIKE', '%' . $request->q . '%')
                                 ->orWhere('sku', 'LIKE', '%' . $request->q . '%')
@@ -83,7 +83,7 @@ class ProductController extends Controller
                             $result = $product;
                         } else {
                             if ($product) {
-                                $pageName = 'Chi tiết ' . self::NAME;
+                                $pageName = $product->name;
                                 return view('admin.product', compact('pageName', 'catalogues', 'product'));
                             }
                         }
@@ -133,7 +133,7 @@ class ProductController extends Controller
                     ->rawColumns(['checkboxes', 'sku', 'image', 'catalogues', 'status', 'action'])
                     ->make(true);
             } else {
-                $pageName = 'Quản lý ' . self::NAME;
+                $pageName = __('Products');
                 return view('admin.products', compact('pageName'));
             }
         }
@@ -152,7 +152,7 @@ class ProductController extends Controller
                 Product::find($ids[$index])->update(['sort' => $sort]);
             }
         }
-        return response()->json(['msg' => 'Thứ tự đã được cập nhật thành công']);
+        return response()->json(['msg' => __('The order has been updated successfully')]);
     }
 
 
@@ -206,15 +206,15 @@ class ProductController extends Controller
                     }
                 }
             }
-            $action = ($request->id) ? 'Đã sửa' : 'Đã thêm';
+            $action = ($request->id) ? 'updated' : 'created';
             $response = array(
                 'status' => 'success',
-                'msg' => $action . ' ' . self::NAME . ' ' . $obj->name
+                'msg' => __('Successfully ' . $action . ' :name :title', ['name' => $obj->name, 'title' => __('product')])
             );
         } else {
             $response = array(
                 'status' => 'danger',
-                'msg' => 'Thao tác chưa được cấp quyền!'
+                'msg' => __('The operation is not authorized')
             );
         }
         return redirect()->route('admin.product', ['key' => $obj->id])->with('response', $response);
@@ -263,12 +263,12 @@ class ProductController extends Controller
             }
             $response = array(
                 'status' => 'success',
-                'msg' => 'Đã tạo ' . self::NAME . ' ' . $obj->name
+                'msg' => __('Successfully created :name :title', ['name' => $obj->name, 'title' => __('product')])
             );
         } else {
             $response = array(
                 'status' => 'danger',
-                'msg' => 'Thao tác chưa được cấp quyền!'
+                'msg' => __('The operation is not authorized')
             );
         }
         return response()->json($response, 200);
@@ -318,12 +318,12 @@ class ProductController extends Controller
             }
             $response = array(
                 'status' => 'success',
-                'msg' => 'Đã cập nhật ' . self::NAME . ' ' . $obj->name
+                'msg' => __('Successfully updated :name :title', ['name' => $obj->name, 'title' => __('product')])
             );
         } else {
             $response = array(
                 'status' => 'danger',
-                'msg' => 'Thao tác chưa được cấp quyền!'
+                'msg' => __('The operation is not authorized')
             );
         }
         return response()->json($response, 200);
@@ -332,35 +332,23 @@ class ProductController extends Controller
     public function remove(Request $request)
     {
         $success = [];
-        $fail = [];
         if (Auth::user()->can(User::DELETE_PRODUCT)) {
             foreach ($request->choices as $key => $id) {
                 $obj = Product::find($id);
-                if ($obj->canRemove()) {
                     $obj->revision();
                     DB::table('catalogue_product')->where('product_id', $obj->id)->delete();
                     $obj->delete();
-                    LogController::create("xóa", self::NAME, $obj->id);
+                    LogController::create("xóa", 'product', $obj->id);
                     array_push($success, $obj->name);
-                } else {
-                    array_push($fail, $obj->name);
-                }
-            }
-            $msg = '';
-            if (count($success)) {
-                $msg .= 'Đã xóa ' . self::NAME . ' ' . implode(', ', $success) . '. ';
-            }
-            if (count($fail)) {
-                $msg .= implode(', ', $fail) . ' đang sử dụng, không thể xóa!';
             }
             $response = array(
                 'status' => 'success',
-                'msg' => $msg
+                'msg' => __('Successfully removed :name :title', ['name' => $obj->name, 'title' => __('product')])
             );
         } else {
             $response = array(
                 'status' => 'danger',
-                'msg' => 'Thao tác chưa được cấp quyền!'
+                'msg' => __('The operation is not authorized')
             );
         }
         return response()->json($response, 200);
@@ -372,7 +360,7 @@ class ProductController extends Controller
             Product::find($id)->revision();
         }
         $obj = Product::updateOrCreate(['id' => $id], $array);
-        LogController::create($id ? 'sửa' : 'tạo', self::NAME, $obj->id);
+        LogController::create($id ? 'sửa' : 'tạo', 'product', $obj->id);
         return $obj;
     }
 }

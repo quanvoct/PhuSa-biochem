@@ -101,7 +101,7 @@ class Post extends Model
 
     public function assignLanguage($language, $post)
     {
-        if($language && $post) {
+        if ($language && $post) {
             $result = DB::table('post_translations')->insert([
                 'post_id' => $this->id,
                 'language_id' => $language,
@@ -148,14 +148,18 @@ class Post extends Model
     public function getStatusStrAttribute()
     {
         switch ($this->status) {
-            case '1':
-                $status = 'xuất bản';
+            case '2':
+                $name = __('Featured');
                 break;
+            case '1':
+                $name = __('Published');
+                break;
+
             default:
-                $status = 'không hiển thị';
+                $name = __('Hidden');
                 break;
         }
-        return $status;
+        return $name;
     }
 
     public function getTypeStrAttribute()

@@ -16,72 +16,77 @@
                 <li class="sidebar-item ">
                     <a href="{{ route('admin.dashboard') }}" class='sidebar-link'>
                         <i class="bi bi-grid-fill"></i>
-                        <span>Bảng tin</span>
+                        <span>{{ __('Dashboard') }}</span>
                     </a>
                 </li>
 
                 <li class="sidebar-item  has-sub">
                     <a class='sidebar-link cursor-pointer'>
-                        <i class="bi bi-currency-exchange"></i>
-                        <span>Quản lý đơn hàng</span>
+                        <i class="icon-mid bi bi-currency-exchange"></i>
+                        <span>{{ __('Sales management') }}</span>
                     </a>
-                    <ul class="submenu ">
+                    <ul class="submenu">
                         @if (!empty(Auth::user()->can(App\Models\User::READ_ORDERS)))
                             <li class="submenu-item">
-                                <a href="{{ route('admin.order') }}">Đơn hàng</a>
+                                <a href="{{ route('admin.order') }}">{{ __('Orders') }}</a>
                             </li>
                         @endif
                         @if (!empty(Auth::user()->can(App\Models\User::READ_TRANSACTIONS)))
                             <li class="submenu-item">
-                                <a href="{{ route('admin.transaction') }}">Giao dịch</a>
+                                <a href="{{ route('admin.transaction') }}">{{ __('Transactions') }}</a>
                             </li>
                         @endif
                         @if (!empty(Auth::user()->can(App\Models\User::READ_TRANSACTIONS)))
                             <li class="submenu-item">
-                                <a href="{{ route('admin.debt') }}">Công nợ</a>
+                                <a href="{{ route('admin.debt') }}">{{ __('Debts') }}</a>
                             </li>
                         @endif
                     </ul>
                 </li>
 
-                <li class="sidebar-item  has-sub">
+                <li class="sidebar-item has-sub">
                     <a class='sidebar-link cursor-pointer'>
-                        <i class="bi bi-postcard-heart-fill"></i>
-                        <span>Quản lý sản phẩm</span>
+                        <i class="icon-mid bi bi-box2-heart-fill"></i>
+                        <span>{{ __('Shop management') }}</span>
                     </a>
-                    <ul class="submenu ">
+                    <ul class="submenu">
                         @if (!empty(Auth::user()->can(App\Models\User::READ_PRODUCTS)))
                             <li class="submenu-item">
-                                <a href="{{ route('admin.product') }}">Sản phẩm</a>
+                                <a href="{{ route('admin.product') }}">{{ __('Products') }}</a>
                             </li>
                         @endif
                         @if (!empty(Auth::user()->can(App\Models\User::READ_CATALOGUES)))
                             <li class="submenu-item">
-                                <a href="{{ route('admin.catalogue') }}">Danh mục</a>
+                                <a href="{{ route('admin.catalogue') }}">{{ __('Catalogues') }}</a>
                             </li>
                         @endif
                     </ul>
                 </li>
 
-                <li class="sidebar-item  has-sub">
+                <li class="sidebar-item has-sub">
                     <a class='sidebar-link cursor-pointer'>
-                        <i class="bi bi-postcard-heart-fill"></i>
-                        <span>Quản lý bài viết</span>
+                        <i class="bi bi-newspaper"></i>
+                        <span>{{ __('Content management') }}</span>
                     </a>
                     <ul class="submenu ">
                         @if (!empty(Auth::user()->can(App\Models\User::READ_POSTS)))
                             <li class="submenu-item">
-                                <a href="{{ route('admin.post') }}">Bài viết</a>
+                                <a href="{{ route('admin.post') }}">{{ __('Posts') }}</a>
+                            </li>
+                        @endif
+                        @if (!empty(Auth::user()->can(App\Models\User::READ_POSTS)))
+                            <li class="submenu-item">
+                                <a href="{{ route('admin.page') }}">{{ __('Pages') }}</a>
                             </li>
                         @endif
                         @if (!empty(Auth::user()->can(App\Models\User::READ_CATEGORIES)))
                             <li class="submenu-item">
-                                <a href="{{ route('admin.category') }}">Chuyên mục</a>
+                                <a href="{{ route('admin.category') }}">{{ __('Categories') }}</a>
                             </li>
                         @endif
                         @if (!empty(Auth::user()->can(App\Models\User::READ_IMAGES)))
                             <li class="submenu-item">
-                                <a href="{{ route('admin.image') }}">Hình ảnh</a>
+                                <a href="{{ route('admin.image') }}">{{ __('Images') }}</a>
                             </li>
                         @endif
                     </ul>
@@ -90,30 +95,30 @@
                 <li class="sidebar-item has-sub">
                     <a class='sidebar-link cursor-pointer'>
                         <i class="bi bi-gear"></i>
-                        <span>Quản lý hệ thống</span>
+                        <span>{{ __('System settings') }}</span>
                     </a>
                     <ul class="submenu">
                         @if (!empty(Auth::user()->can(App\Models\User::READ_USERS)))
                             <li class="submenu-item">
-                                <a href="{{ route('admin.user') }}">Tài khoản</a>
+                                <a href="{{ route('admin.user') }}">{{ __('Users') }}</a>
                             </li>
                         @endif
                         @if (!empty(Auth::user()->can(App\Models\User::READ_ROLES)))
                             <li class="submenu-item">
-                                <a href="{{ route('admin.role') }}">Phân quyền</a>
+                                <a href="{{ route('admin.role') }}">{{ __('Roles') }}</a>
                             </li>
                         @endif
                         @if (!empty(Auth::user()->can(App\Models\User::READ_SETTINGS)))
                             <li class="submenu-item">
-                                <a href="{{ route('admin.setting', ['key' => 'general']) }}">Cài đặt</a>
+                                <a href="{{ route('admin.setting', ['key' => 'general']) }}">{{ __('Settings') }}</a>
                             </li>
                         @endif
                             <li class="submenu-item">
-                                <a href="{{ route('admin.language', ['key' => 'en']) }}">Ngôn ngữ</a>
+                                <a href="{{ route('admin.language', ['key' => 'en']) }}">{{ __('Languages') }}</a>
                             </li>
                         @if (!empty(Auth::user()->can(App\Models\User::READ_LOGS)))
                             <li class="submenu-item">
-                                <a href="{{ route('admin.log') }}">Nhật ký</a>
+                                <a href="{{ route('admin.log') }}">{{ __('Logs') }}</a>
                             </li>
                         @endif
                     </ul>

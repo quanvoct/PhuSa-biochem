@@ -109,7 +109,7 @@ class UserController extends Controller
                     ->rawColumns(['checkboxes', 'name', 'status', 'action'])
                     ->make(true);
             } else {
-                $pageName = 'Quản lý ' . self::NAME;
+                $pageName = __('Users');
                 return view('admin.users', compact('pageName'));
             }
         }

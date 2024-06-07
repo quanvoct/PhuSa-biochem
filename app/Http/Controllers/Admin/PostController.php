@@ -15,7 +15,6 @@ use Yajra\DataTables\DataTables;
 
 class PostController extends Controller
 {
-    const NAME = 'bài viết';
     public function __construct()
     {
         $this->middleware('auth');
@@ -33,7 +32,7 @@ class PostController extends Controller
         if (isset($request->key)) {
             switch ($request->key) {
                 case 'new':
-                    $pageName = 'Bài viết mới';
+                    $pageName = __('New post');
                     return view('admin.post', compact('pageName', 'categories'));
                     break;
                 case 'list':
@@ -108,11 +107,11 @@ class PostController extends Controller
                         if (!empty(Auth::user()->can(User::UPDATE_POST))) {
                             return '<a class="btn btn-link text-decoration-none text-start btn-update-category" data-id="' . $obj->category->id . '">' . $obj->category->name . '</a>';
                         } else {
-                            return $obj->category->name;
+                            return __($obj->category->name);
                         }
                     })
-                    ->editColumn('type', function ($obj) {
-                        return $obj->typeStr;
+                    ->addColumn('language', function ($obj) {
+                        return $obj->language->name;
                     })
                     ->editColumn('status', function ($obj) {
                         return $obj->statusStr;
@@ -135,7 +134,7 @@ class PostController extends Controller
                     ->rawColumns(['checkboxes', 'title', 'author', 'category', 'image', 'status', 'action'])
                     ->make(true);
             } else {
-                $pageName = 'Quản lý ' . self::NAME;
+                $pageName = __('Posts');
                 return view('admin.posts', compact('pageName'));
             }
         }
@@ -160,7 +159,7 @@ class PostController extends Controller
                 'author_id' => Auth::user()->id,
                 'category_id' => $request->category_id,
                 'excerpt' => $request->excerpt,
-                'content' => $request->input('content'),  //Loại bỏ các thẻ html
+                'content' => $request->input('content'),
                 'type' => 'post',
                 'image' => $request->image,
                 'status' => $request->status,
@@ -174,15 +173,15 @@ class PostController extends Controller
                     $post->syncLanguages($request->language_id);
                 }
             }
-            $action = ($request->id) ? 'Đã sửa' : 'Đã thêm';
+            $action = ($request->id) ? 'updated' : 'created';
             $response = array(
                 'status' => 'success',
-                'msg' => $action . ' ' . self::NAME . ' ' . $post->name
+                'msg' => __('Successfully ' . $action . ' :name :title', ['name' => $post->title, 'title' => __('post')])
             );
         } else {
             $response = array(
                 'status' => 'danger',
-                'msg' => 'Thao tác chưa được cấp quyền!'
+                'msg' => __('The operation is not authorized')
             );
         }
         return redirect()->route('admin.post', ['key' => $post->id])->with('response', $response);
@@ -191,35 +190,26 @@ class PostController extends Controller
     public function remove(Request $request)
     {
         $success = [];
-        $fail = [];
         if (Auth::user()->can(User::DELETE_POST)) {
             foreach ($request->choices as $key => $id) {
                 $obj = Post::find($id);
-                if ($obj->canRemove()) {
                     $obj->revision();
                     $obj->delete();
-                    LogController::create("xóa", self::NAME, $obj->id, $request->ip());
-                    array_push($success, $obj->name);
-                } else {
-                    array_push($fail, $obj->name);
-                }
+                    LogController::create("xóa", 'post', $obj->id, $request->ip());
+                    array_push($success, $obj->title);
             }
             if (count($success)) {
-                $msg = 'Đã xóa ' . self::NAME . ' ' . implode(', ', $success);
-            }
-            if (count($fail) && count($success)) {
-                $msg .= ' ngoại trừ ' . implode(', ', $fail) . '!';
-            } else if (count($fail)) {
-                $msg = 'Không thể xóa ' . self::NAME . ' ' . implode(', ', $fail) . '!';
+                $status = 'success';
+                $msg = __('Successfully removed :name :title', ['name' => implode(', ', $success), 'title' => __('post')]);
             }
             $response = array(
-                'status' => 'success',
+                'status' => $status,
                 'msg' => $msg
             );
         } else {
             $response = array(
                 'status' => 'danger',
-                'msg' => 'Thao tác chưa được cấp quyền!'
+                'msg' => __('The operation is not authorized')
             );
         }
         return response()->json($response, 200);
@@ -228,7 +218,7 @@ class PostController extends Controller
     public static function sync($array, $id = null)
     {
         $obj = Post::updateOrCreate(['id' => $id], $array);
-        LogController::create($id ? 'sửa' : 'tạo', self::NAME, $obj->id);
+        LogController::create($id ? 'sửa' : 'tạo', 'post', $obj->id);
         return $obj;
     }
 }

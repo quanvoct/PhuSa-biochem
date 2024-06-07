@@ -12,8 +12,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 class CategoryController extends Controller
 {
-    const NAME = 'chuyên mục',
-        RULES = [
+    const RULES = [
             'name' => ['required', 'string', 'max:191'],
             'note' => ['nullable', 'string'],
         ];
@@ -35,7 +34,7 @@ class CategoryController extends Controller
             switch ($request->key) {
                 case 'list':
                     $ids = json_decode($request->ids);
-                    $obj = Category::orderBy('sort', 'ASC')->when(count($ids), function ($query) use ($ids) {
+                    $obj = Category::whereNull('revision')->orderBy('sort', 'ASC')->when(count($ids), function ($query) use ($ids) {
                         $query->whereIn('id', $ids);
                     })->get();
                     return response()->json($obj, 200);
@@ -84,7 +83,7 @@ class CategoryController extends Controller
                     ->rawColumns(['checkboxes', 'name', 'status', 'action'])
                     ->make(true);
             } else {
-                $pageName = 'Quản lý ' . self::NAME;
+                $pageName = __('Categories');
                 return view('admin.categories', compact('pageName'));
             }
         }
@@ -96,7 +95,7 @@ class CategoryController extends Controller
         foreach ($sort as $index => $id) {
             Category::where('id', $id)->update(['sort' => $index + 1]);
         }
-        return response()->json(['msg' => 'Thứ tự đã được cập nhật thành công']);
+        return response()->json(['msg' => __('The order has been updated successfully')]);
     }
 
     public function create(Request $request)
@@ -111,12 +110,12 @@ class CategoryController extends Controller
             ]);
             $response = array(
                 'status' => 'success',
-                'msg' => 'Đã tạo ' . self::NAME . ' ' . $category->name
+                'msg' => __('Successfully created :name :title', ['name' => $category->name, 'title' => __('category')])
             );
         } else {
             $response = array(
                 'status' => 'danger',
-                'msg' => 'Thao tác chưa được cấp quyền!'
+                'msg' => __('The operation is not authorized')
             );
         }
         return response()->json($response, 200);
@@ -136,18 +135,18 @@ class CategoryController extends Controller
 
                 $response = array(
                     'status' => 'success',
-                    'msg' => 'Đã cập nhật ' . $category->name
+                    'msg' => __('Successfully updated :name :title', ['name' => $category->name, 'title' => __('category')])
                 );
             } else {
                 $response = array(
                     'status' => 'danger',
-                    'msg' => 'Đã có lỗi xảy ra, vui lòng tải lại trang và thử lại!'
+                    'msg' => __('An error has occurred') . '. ' . __('Please try again later') .'!'
                 );
             }
         } else {
             $response = array(
                 'status' => 'danger',
-                'msg' => 'Thao tác chưa được cấp quyền!'
+                'msg' => __('The operation is not authorized')
             );
         }
         return response()->json($response, 200);
@@ -158,33 +157,35 @@ class CategoryController extends Controller
         $success = [];
         $fail = [];
         $msg = '';
-
+        
         if (Auth::user()->can(User::DELETE_CATEGORY)) {
             foreach ($request->choices as $key => $id) {
                 $obj = Category::find($id);
                 if ($obj->canRemove()) {
                     $obj->revision();
                     $obj->delete();
-                    LogController::create("xóa", self::NAME, $obj->id);
+                    LogController::create("xóa", 'category', $obj->id);
                     array_push($success, $obj->name);
                 } else {
                     array_push($fail, $obj->name);
                 }
             }
             if (count($success)) {
-                $msg = 'Đã xóa ' . self::NAME . ' ' . implode(', ', $success) . '. ';
+                $status = 'success';
+                $msg = __('Successfully removed :name :title.', ['name' => implode(', ', $success), 'title' => __('category')]);
             }
             if (count($fail)) {
-                $msg .= implode(', ', $fail) . ' đang sử dụng, không thể xóa!';
+                $status = 'danger';
+                $msg .= __(':name are in use and cannot be deleted', ['name' => implode(', ', $fail)]);
             }
             $response = array(
-                'status' => 'success',
+                'status' => $status,
                 'msg' => $msg
             );
         } else {
             $response = array(
                 'status' => 'danger',
-                'msg' => 'Thao tác chưa được cấp quyền!'
+                'msg' => __('The operation is not authorized')
             );
         }
         return response()->json($response, 200);
@@ -197,7 +198,7 @@ class CategoryController extends Controller
             Category::find($id)->revision();
         }
         $obj = Category::updateOrCreate(['id' => $id], $array);
-        LogController::create($id ? 'sửa' : 'tạo', self::NAME, $obj->id);
+        LogController::create($id ? 'sửa' : 'tạo', 'category', $obj->id);
         return $obj;
     }
 }

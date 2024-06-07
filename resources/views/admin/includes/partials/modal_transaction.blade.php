@@ -4,7 +4,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="transaction-modal-label">Giao dịch</h1>
+                    <h1 class="modal-title fs-5" id="transaction-modal-label">{{ __('Transaction') }}</h1>
                     <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -22,10 +22,10 @@
                     <div class="form-group mb-3">
                         <div class="row">
                             <div class="col-4 my-auto">
-                                <label for="transaction-customer_id">Khách hàng</label>
+                                <label for="transaction-customer_id">{{ __('Customer') }}</label>
                             </div>
                             <div class="col-8">
-                                <select class="form-select select2" id="transaction-customer_id" name="customer_id" data-placeholder="Chọn một khách hàng">
+                                <select class="form-select select2" id="transaction-customer_id" name="customer_id" data-placeholder="{{ __('Choose a person') }}">
                                 </select>
                             </div>
                         </div>
@@ -33,11 +33,11 @@
                     <div class="form-group mb-3">
                         <div class="row">
                             <div class="col-4 my-auto">
-                                <label for="transaction-cashier_id">Thu ngân</label>
+                                <label for="transaction-cashier_id">{{ __('Cashier') }}</label>
                             </div>
                             <div class="col-8">
                                 <select class="form-select" id="transaction-cashier_id" name="cashier_id">
-                                    <option selected disabled hidden>Chọn thu ngân</option>
+                                    <option selected disabled hidden>{{ __('Choose a person') }}</option>
                                     @foreach (app\Models\User::permission(app\Models\User::CREATE_TRANSACTION) as $index => $cashier)
                                         <option value="{{ $cashier->id }}">{{ $cashier->name }}</option>
                                     @endforeach
@@ -48,18 +48,18 @@
                     <div class="mb-3">
                         <div class="row">
                             <div class="col-4 my-auto">
-                                <label class="form-label" for="transaction-cash">Hình thức</label>
+                                <label class="form-label" for="transaction-cash">{{ __('Payments') }}</label>
                             </div>
                             <div class="col-8">
                                 <div class="my-3 me-5">
                                     <div class="btn-group">
                                         <input class="btn-check" id="transaction-cash" name="payment" type="radio" value="0" checked>
                                         <label class="btn btn-outline-primary" for="transaction-cash">
-                                            Tiền mặt
+                                            {{ __('Cash') }}
                                         </label>
                                         <input class="btn-check" id="transaction-transfer" name="payment" type="radio" value="1">
                                         <label class="btn btn-outline-primary" for="transaction-transfer">
-                                            Chuyển khoản
+                                            {{ __('Transfer') }}
                                         </label>
                                     </div>
                                 </div>
@@ -69,70 +69,38 @@
                     <div class="form-group mb-3">
                         <div class="row">
                             <div class="col-4 my-auto">
-                                <label for="transaction-amount">Số tiền</label>
+                                <label for="transaction-amount">{{ __('Amount') }}</label>
                             </div>
                             <div class="col-8">
-                                <h5>
-                                    <div class="input-group">
-                                        <input class="form-control w-50 transaction-amount money" id="transaction-amount" name="amount" type="text" value="0" placeholder="Số tiền thanh toán" onclick="this.select()" inputmode="numeric">
-                                        <span class="input-group-text">VND</span>
-                                    </div>
-                                </h5>
-                            </div>
-                        </div>
-                    </div>
-                    {{-- <div class="form-group mb-3">
-                        <div class="row">
-                            <div class="col-4 my-auto">
-                                <label for="transaction-value">Khách đưa</label>
-                            </div>
-                            <div class="col-8">
-                                <div class="input-group">
-                                    <input type="text" class="form-control w-50 pay-receive"
-                                        id="transaction-value" name="receive" placeholder="Vui lòng nhập giá">
-                                    <span class="input-group-text">VND</span>
-                                </div>
+                                <input class="form-control w-50 transaction-amount money" id="transaction-amount" name="amount" type="text" value="0" placeholder="{{ __('Amount') }}" onclick="this.select()" inputmode="numeric">
                             </div>
                         </div>
                     </div>
                     <div class="form-group mb-3">
                         <div class="row">
                             <div class="col-4 my-auto">
-                                <label for="transaction-return">Tiền thừa</label>
+                                <label for="transaction-note">{{ __('Note') }}</label>
                             </div>
                             <div class="col-8">
-                                <div class="input-group">
-                                    <input type="text" class="form-control w-50 return-amount bg-white" id="transaction-return" name="return" value="0" readonly>
-                                    <span class="input-group-text">VND</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div> --}}
-                    <div class="form-group mb-3">
-                        <div class="row">
-                            <div class="col-4 my-auto">
-                                <label for="transaction-note">Nội dung</label>
-                            </div>
-                            <div class="col-8">
-                                <input class="form-control" id="transaction-note" name="note" type="text" placeholder="Nhập nội dung thanh toán">
+                                <input class="form-control" id="transaction-note" name="note" type="text" placeholder="{{ __('Enter payment note') }}">
                             </div>
                         </div>
                     </div>
                     <div class="mb-3">
                         <div class="row">
                             <div class="col-4 my-auto">
-                                <label class="form-label" for="transaction-cashback">Trạng thái</label>
+                                <label class="form-label" for="transaction-cashback">{{ __('Status') }}</label>
                             </div>
                             <div class="col-8">
                                 <div class="my-3">
                                     <div class="btn-group">
                                         <input class="btn-check" id="transaction-normal" name="status" type="radio" value="1" checked>
                                         <label class="btn btn-outline-primary" for="transaction-normal">
-                                            Thu tiền
+                                            {{ __('Checkout') }}
                                         </label>
                                         <input class="btn-check" id="transaction-cashback" name="status" type="radio" value="0">
                                         <label class="btn btn-outline-primary" for="transaction-cashback">
-                                            Hoàn tiền
+                                            {{ __('Refund') }}
                                         </label>
                                     </div>
                                 </div>
@@ -145,7 +113,7 @@
                             <input name="id" type="hidden">
                             <input name="order_id" type="hidden">
                             <button class="btn btn-primary" id="transaction-submit" type="submit">
-                                Lưu
+                                {{ __('Save') }}
                             </button>
                         @endif
                     </div>

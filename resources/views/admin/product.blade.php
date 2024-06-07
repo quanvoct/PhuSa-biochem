@@ -12,47 +12,49 @@
                 <div class="col-12 col-md-6 order-md-2 order-first">
                     <nav class="breadcrumb-header float-start float-lg-end" aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Bảng tin</a></li>
-                            <li class="breadcrumb-item"><a href="{{ route('admin.product') }}">Sản phẩm</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{ __('Dashboard') }}</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('admin.product') }}">{{ __('Products') }}</a></li>
                             <li class="breadcrumb-item active" aria-current="page">{{ $pageName }}</li>
                         </ol>
                     </nav>
                 </div>
             </div>
         </div>
-        @if (session('response') && session('response')['status'] == 'success')
-            <div class="alert alert-primary alert-dismissible fade show text-white" role="alert">
-                <i class="fas fa-check"></i>
-                {!! session('response')['msg'] !!}
-                <button class="btn-close" data-bs-dismiss="alert" type="button" aria-label="Close">
-                </button>
-            </div>
-        @elseif (session('response'))
+    </div>
+    @if (session('response') && session('response')['status'] == 'success')
+        <div class="alert alert-primary alert-dismissible fade show text-white" role="alert">
+            <i class="fas fa-check"></i>
+            {!! session('response')['msg'] !!}
+            <button class="btn-close" data-bs-dismiss="alert" type="button" aria-label="Close">
+            </button>
+        </div>
+    @elseif (session('response'))
+        <div class="alert alert-danger alert-dismissible fade show text-white" role="alert">
+            <i class="fa-solid fa-xmark"></i>
+            {!! session('response')['msg'] !!}
+            <button class="btn-close" data-bs-dismiss="alert" type="button" aria-label="Close">
+            </button>
+        </div>
+    @elseif ($errors->any())
+        @foreach ($errors->all() as $error)
             <div class="alert alert-danger alert-dismissible fade show text-white" role="alert">
                 <i class="fa-solid fa-xmark"></i>
-                {!! session('response')['msg'] !!}
+                {{ $error }}
                 <button class="btn-close" data-bs-dismiss="alert" type="button" aria-label="Close">
                 </button>
             </div>
-        @elseif ($errors->any())
-            @foreach ($errors->all() as $error)
-                <div class="alert alert-danger alert-dismissible fade show text-white" role="alert">
-                    <i class="fa-solid fa-xmark"></i>
-                    {{ $error }}
-                    <button class="btn-close" data-bs-dismiss="alert" type="button" aria-label="Close">
-                    </button>
-                </div>
-            @endforeach
-        @endif
+        @endforeach
+    @endif
+    <div class="page-content mb-3">
         <form id="product-form" action="{{ route('admin.product.save') }}" method="post">
             @csrf
             <div class="row">
                 <div class="col-12 col-lg-9 mx-auto">
                     <section class="section">
                         @if (!empty(Auth::user()->hasAnyPermission(App\Models\User::UPDATE_PRODUCT, App\Models\User::CREATE_PRODUCT)))
-                            <div class="card card-body">
+                            <div class="card card-body mb-0">
                                 <div class="form-group">
-                                    <label class="form-label" for="product-name">Tên sản phẩm</label>
+                                    <label class="form-label" for="product-name">{{ __('Product name') }}</label>
                                     <input class="form-control @error('name') is-invalid @enderror" id="product-name" name="name" type="text" value="{{ old('name') != null ? old('name') : (isset($product) ? $product->name : '') }}">
                                     @error('name')
                                         <span class="invalid-feedback d-block" role="alert">
@@ -61,7 +63,7 @@
                                     @enderror
                                 </div>
                                 <div class="form-group">
-                                    <label for="product-excerpt">Mô tả ngắn</label>
+                                    <label for="product-excerpt">{{ __('Product excerpt') }}</label>
                                     <textarea class="form-control @error('excerpt') is-invalid @enderror" id="product-excerpt" name="excerpt" rows="3">{{ old('excerpt') != null ? old('excerpt') : (isset($product) ? $product->excerpt : '') }}</textarea>
                                     @error('excerpt')
                                         <span class="invalid-feedback d-block" role="alert">
@@ -70,7 +72,7 @@
                                     @enderror
                                 </div>
                                 <div class="form-group">
-                                    <label for="product-description">Nội dung sản phẩm</label>
+                                    <label for="product-description">{{ __('Product description') }}</label>
                                     @error('description')
                                         <span class="invalid-feedback d-inline-block" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -79,7 +81,7 @@
                                     <textarea class="form-control summernote @error('description') is-invalid @enderror" id="product-description" name="description" rows="100">{{ old('description') != null ? old('description') : (isset($product) ? $product->description : '') }}</textarea>
                                 </div>
                                 <div class="form-group">
-                                    <label for="product-images">Gallery ảnh sản phẩm</label>
+                                    <label for="product-images">{{ __('Product gallery') }}</label>
                                     <input id="product-images" name="gallery" type="hidden" value="{{ old('gallery') != null ? old('gallery') : (isset($product) ? $product->gallery : '') }}">
                                     <div class="row gallery align-items-center pt-2">
                                     </div>
@@ -92,17 +94,17 @@
                                             @if (Auth::user()->can(App\Models\User::CREATE_VARIABLE))
                                                 <a class="btn btn-primary mb-3 block btn-create-variable">
                                                     <i class="bi bi-plus-circle"></i>
-                                                    Thêm
+                                                    {{ __('Add') }}
                                                 </a>
                                             @endif
                                         </div>
                                         <table class="table table-hover" id="data-table">
                                             <thead>
                                                 <tr>
-                                                    <th class="text-start">Mã biến thể</th>
-                                                    <th class="text-start">Tên biến thể</th>
-                                                    <th class="text-end">Giá</th>
-                                                    <th class="text-start">Trạng thái</th>
+                                                    <th class="text-start">{{ __('Sub SKU') }}</th>
+                                                    <th class="text-start">{{ __('Variable name') }}</th>
+                                                    <th class="text-end">{{ __('Price') }}</th>
+                                                    <th class="text-start">{{ __('Status') }}</th>
                                                     <th class="text-center"></th>
                                                 </tr>
                                             </thead>
@@ -118,17 +120,17 @@
                 <div class="col-12 col-lg-3 mx-auto">
                     <!-- Publish card -->
                     <div class="card card-body mb-3">
-                        <h6 class="mb-0">Đăng bài</h6>
+                        <h6 class="mb-0">{{ __('Product meta') }}</h6>
                         <hr class="horizontal dark">
                         <div class="form-group">
-                            <label class="form-label mt-1" for="product-status">Trạng thái</label>
+                            <label class="form-label mt-1" for="product-status">{{ __('Status') }}</label>
                             <select class="form-select @error('status') is-invalid @enderror" id="product-status" name="status">
                                 <option value="1" {{ (isset($product) && $product->status == '1') || old('status') == '1' ? 'selected' : '' }}>
-                                    Xuất bản</option>
+                                    {{ __('Published') }}</option>
                                 <option value="2" {{ (isset($product) && $product->status == '2') || old('status') == '2' ? 'selected' : '' }}>
-                                    Nổi bật</option>
+                                    {{ __('Featured') }}</option>
                                 <option value="0" {{ (isset($product) && $product->status == '0') || old('status') == '0' ? 'selected' : '' }}>
-                                    Không hiển thị</option>
+                                    {{ __('Hidden') }}</option>
                             </select>
                             @error('status')
                                 <span class="invalid-feedback d-block" role="alert">
@@ -137,12 +139,12 @@
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label class="form-label" for="product-date">Thời gian</label>
+                            <label class="form-label" for="product-date">{{ __('Date time') }}</label>
                             <div class="input-group">
                                 <input class="form-control @error('date') is-invalid @enderror" id="product-date" name="date" type="date"
-                                    value="{{ old('date') != null ? old('date') : (isset($product) ? $product->createdDate() : Carbon\Carbon::now()->format('Y-m-d')) }}" aria-label="Ngày">
+                                    value="{{ old('date') != null ? old('date') : (isset($product) ? $product->createdDate() : Carbon\Carbon::now()->format('Y-m-d')) }}" aria-label="{{ __('Date') }}">
                                 <input class="form-control @error('time') is-invalid @enderror" id="product-time" name="time" type="time"
-                                    value="{{ old('time') != null ? old('time') : (isset($product) ? $product->createdTime() : Carbon\Carbon::now()->format('H:i:s')) }}" aria-label="Giờ">
+                                    value="{{ old('time') != null ? old('time') : (isset($product) ? $product->createdTime() : Carbon\Carbon::now()->format('H:i:s')) }}" aria-label="{{ __('Time') }}">
                             </div>
                         </div>
                         @error('date')
@@ -157,16 +159,16 @@
                         @enderror
                         <input id="product-deleted_at" name="deleted_at" type="hidden" value="{{ isset($product) ? $product->deleted_at : '' }}">
                         <input id="product-id" name="id" type="hidden" value="{{ isset($product) ? ($product->revision ? $product->revision : $product->id) : '' }}">
-                        <button class="btn btn-info" type="submit">{{ isset($product) ? 'Cập nhật' : 'Đăng sản phẩm' }}</button>
+                        <button class="btn btn-primary" type="submit">{{ isset($product) ? __('Update') : __('Publish') }}</button>
                     </div>
                     <!-- END Publish card -->
                     <!-- Language card -->
                     <div class="card card-body mb-3">
-                        <h6 class="mb-0">Ngôn ngữ</h6>
+                        <h6 class="mb-0">{{ __('Languages') }}</h6>
                         <hr class="horizontal dark">
                         <div class="form-group mb-4">
                             <select class="form-select" id="product-language_id" name="language_id[]" required>
-                                <option selected disabled hidden>Chọn một ngôn ngữ</option>
+                                <option selected disabled hidden>{{ __('Choose product display language') }}</option>
                                 @foreach (App\Models\Language::all() as $language)
                                     <option value="{{ $language->id }}" {{ isset($product) && $product->languages->count() && $product->language->id == $language->id ? 'selected' : '' }}>{{ $language->name }}</option>
                                 @endforeach
@@ -184,7 +186,7 @@
                                     <div class="form-group">
                                         <label class="form-label" for="product-{{ $index }}">{{ $language->name }}</label>
                                         <select class="form-select @error('translate_id') is-invalid @enderror select2" id="product-{{ $index }}" name="translate_id[]"
-                                            data-ajax--url="{{ route('admin.product', ['key' => 'find']) }}?link_language_id={{ $language->id }}&language_id={{ $product->language->id }}" data-placeholder="Chọn một sản phẩm">
+                                            data-ajax--url="{{ route('admin.product', ['key' => 'find']) }}?link_language_id={{ $language->id }}&language_id={{ $product->language->id }}" data-placeholder="{{ __('Choose a product') }}">
                                             @php
                                                 $translation = $product->product_translations
                                                     ->where('product_id', $product->id)
@@ -207,11 +209,11 @@
                     <div class="card card-body mb-3">
                         <div class="row">
                             <div class="col-6 d-flex align-items-center">
-                                <h6 class="form-label mb-0">Danh mục</h6>
+                                <h6 class="form-label mb-0">{{ __('Catalogues') }}</h6>
                             </div>
                             <div class="col-6 text-end">
                                 <a class="btn btn-outline-primary btn-sm btn-refresh-catalogue">
-                                    <i class="bi bi-arrow-repeat"></i> Refresh
+                                    <i class="bi bi-arrow-repeat"></i> {{ __('Refresh') }}
                                 </a>
                             </div>
                         </div>
@@ -229,17 +231,17 @@
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
-                        <a class="btn btn-sm btn-link mt-3 btn-create-catalogue">Thêm danh mục</a>
+                        <a class="btn btn-sm btn-link mt-3 btn-create-catalogue">{{ __('Add catalogue') }}</a>
                     </div>
                     <!-- END Catalog card -->
                     <!-- Setting product -->
                     <div class="card card-body mb-3">
-                        <h6 class="mb-0">Thiết lập sản phẩm</h6>
+                        <h6 class="mb-0">{{ __('Product settings') }}</h6>
                         <hr class="horizontal dark">
                         <div class="form-group">
-                            <label class="form-label mt-1" for="product-sku">Mã sản phẩm (SKU)</label>
+                            <label class="form-label mt-1" for="product-sku">{{ __('SKU') }}</label>
                             <input class="form-control @error('sku') is-invalid @enderror" id="product-sku" name="sku" type="text" value="{{ old('sku') != null ? old('sku') : (isset($product) ? $product->sku : '') }}"
-                                placeholder="Mã sản phẩm" autocomplete="off">
+                                placeholder="{{ __('SKU') }}" autocomplete="off">
                             @error('sku')
                                 <span class="invalid-feedback d-block" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -247,9 +249,9 @@
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label class="form-label mt-1" for="product-unit">Đơn vị tính</label>
+                            <label class="form-label mt-1" for="product-unit">{{ __('Unit') }}</label>
                             <input class="form-control @error('unit') is-invalid @enderror" id="product-unit" name="unit" type="text" value="{{ old('unit') != null ? old('unit') : (isset($product) ? $product->unit : '') }}"
-                                placeholder="Đơn vị tính" autocomplete="off">
+                                placeholder="{{ __('Unit') }}" autocomplete="off">
                             @error('unit')
                                 <span class="invalid-feedback d-block" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -257,9 +259,9 @@
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label class="form-label mt-1" for="product-keyword">Các từ khoá</label>
+                            <label class="form-label mt-1" for="product-keyword">{{ __('Keywords') }}</label>
                             <input class="form-control @error('keyword') is-invalid @enderror" id="product-keyword" name="keyword" type="text" value="{{ old('keyword') != null ? old('keyword') : (isset($product) ? $product->keyword : '') }}"
-                                placeholder="Từ khoá hỗ trợ tối ưu tìm kiếm" autocomplete="off">
+                                placeholder="{{ __('Keywords support search optimization') }}" autocomplete="off">
                             @error('keyword')
                                 <span class="invalid-feedback d-block" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -269,10 +271,9 @@
                         </div>
                         <div class="form-group mt-3">
                             <div class="form-check">
-                                <input class="form-check-input form-check-info form-check-glow @error('allow_review') is-invalid @enderror" id="product-allow_review" name="allow_review" type="checkbox"
+                                <input class="form-check-input form-check-primary form-check-glow @error('allow_review') is-invalid @enderror" id="product-allow_review" name="allow_review" type="checkbox"
                                     {{ (isset($product) && $product->allow_review) || old('allow_review') ? 'checked' : '' }} autocomplete="off">
-                                <label class="form-check-label" for="product-allow_review">Cho phép đánh giá
-                                    sản phẩm</label>
+                                <label class="form-check-label" for="product-allow_review">{{ __('Allow review') }}</label>
                             </div>
                             @error('allow_review')
                                 <span class="invalid-feedback d-block" role="alert">
@@ -283,8 +284,8 @@
                     </div>
                     <!-- END Setting product -->
                     <!-- Specs product -->
-                    <div class="card card-body mb-3">
-                        <h6 class="mb-0">Thiết lập sản phẩm</h6>
+                    <div class="card card-body mb-0">
+                        <h6 class="mb-0">{{ __('Specifications') }}</h6>
                         <hr class="horizontal dark">
                         <div id="product-specs">
                             @if (old('specs_key') !== null)
@@ -322,7 +323,7 @@
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
-                        <button class="btn btn-outline-primary btn-sm btn-product-specs_add" type="button">Thêm thông số</button>
+                        <button class="btn btn-outline-primary btn-sm btn-product-specs_add" type="button">{{ __('Add specs') }}</button>
                     </div>
                     <!-- END Specs product card -->
                 </div>
@@ -345,11 +346,11 @@
                 $('#product-specs').append(`
                     <div class="row mb-3">
                         <div class="col-sm-4 pe-0">
-                            <input class="form-control" id="product-specs_key" name="specs_key[]" type="text" placeholder="Mô tả" required>
+                            <input class="form-control" id="product-specs_key" name="specs_key[]" type="text" placeholder="{{ __('Key') }}" required>
                         </div>
                         <div class="col-sm-8">
                             <div class="input-group">
-                                <input class="form-control" id="product-specs_value[]" name="specs_value[]" type="text" placeholder="Thông số" autocomplete="off" required>
+                                <input class="form-control" id="product-specs_value[]" name="specs_value[]" type="text" placeholder="{{ __('Value') }}" autocomplete="off" required>
                                 <div class="btn btn-outline-danger btn-product-specs_remove">&#10005;</div>
                             </div>
                         </div>
@@ -504,7 +505,7 @@
                 })
                 $('.row.gallery').html(text)
             }
-            
+
             $(`select.select2`).select2(config.select2);
             $('input.select2-search__field').removeAttr('style')
 

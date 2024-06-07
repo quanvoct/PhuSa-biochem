@@ -40,7 +40,7 @@ class LogController extends Controller
      */
     public function index()
     {
-        $pageName = 'Nhật ký hệ thống';
+        $pageName = __('Logs');
         return view('log', compact('pageName', 'options'));
     }
     public function load(Request $request)

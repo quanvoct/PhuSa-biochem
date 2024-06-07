@@ -362,7 +362,7 @@ $(document).on("click", "img.thumb", function () {
 /**
  * Check choice
  */
-$(document).on("change", ".all-choices", function (e) {
+$(document).on("change", ".all-choices, #all-choices", function (e) {
     $(".choice").prop("checked", $(this).prop("checked")).change();
 });
 
@@ -624,11 +624,11 @@ $(document).on('click', '.btn-remove', function (e) {
 });
 
 $(document).on('click', '.btn-removes', function () {
-    var form = $('#batch-form');
+    var form = $('.batch-form');
     $(".btn-removes").prop("disabled", true).html('<span class="spinner-border spinner-border-sm" id="spinner-form" role="status"></span>');
     form.attr('action', config.routes.remove);
     submitForm(form).done(function () {
-        $(".btn-removes").prop("disabled", false).html('<i class="bi bi-trash"></i> Xóa').addClass("d-none");
+        $(".btn-removes").prop("disabled", false).html('<i class="bi bi-trash"></i> Xóa').parent().addClass("d-none");
     });
 });
 

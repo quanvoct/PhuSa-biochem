@@ -15,10 +15,9 @@
     <meta name="apple-mobile-web-app-title" content="MediLabor">
     <meta name="apple-mobile-web-app-status-bar-style" content="white">
     {{-- Mô tả của web app --}}
-    <meta name="apple-mobile-web-app-description" content="Ứng dụng quản lý bán hàng của MediLabor">
+    <meta name="apple-mobile-web-app-description" content="Website trực tuyến của Phù Sa Biochem">
     {{-- Ảnh hiển thị khi thêm vào màn hình Home --}}
     <link href="{{ asset('admin/images/favicon.svg') }}" rel="apple-touch-icon">
-
     {{-- CSRF Token --}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="https://fonts.gstatic.com" rel="preconnect">
@@ -30,7 +29,8 @@
     <link href="{{ asset('admin/css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('admin/css/key.css') }}" rel="stylesheet">
     <link href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css" rel="stylesheet">
-
+    {{-- DateRange Picker --}}
+    <link type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.css" rel="stylesheet" />
     {{-- Include Select2 CSS --}}
     <link href="{{ asset('admin/vendors/select2/select2-bootstrap-5-theme.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('admin/vendors/select2/select2.min.css') }}" rel="stylesheet" />
@@ -78,7 +78,7 @@
     </div>
     <div class="loading d-none">
         <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Loading...</span>
+            <span class="visually-hidden">{{ __('Loading...') }}</span>
         </div>
     </div>
 
@@ -107,8 +107,6 @@
     {{-- Include Select2 --}}
     <script src="{{ asset('admin/vendors/select2/select2.full.min.js') }}"></script>
     <script src="{{ asset('admin/vendors/select2/i18n/vi.js') }}"></script>
-    {{-- data range! --}}
-    <link type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.css" rel="stylesheet" />
     {{-- Include moment JS --}}
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/moment.min.js"></script>
     {{-- Include sweetalert2 JS --}}
@@ -117,7 +115,7 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.min.js"></script>
     {{-- Include Toastify --}}
     <script src="{{ asset('admin/vendors/toastify/toastify.js') }}"></script>
-    <!-- Include Summernote Editor -->
+    {{-- Include Summernote Editor --}}
     <script src="{{ asset('admin/vendors/summernote/summernote-lite.min.js') }}"></script>
     <script type="text/javascript">
         if ('serviceWorker' in navigator) {
@@ -143,15 +141,15 @@
             },
             dataTable: {
                 lang: {
-                    sProcessing: "Đang xử lý...",
-                    sLengthMenu: "_MENU_ dòng/trang",
-                    sZeroRecords: "Nội dung trống.",
-                    sInfo: "Từ _START_ đến _END_ của _TOTAL_ mục",
-                    sInfoEmpty: "Không có mục nào",
-                    sInfoFiltered: "(được lọc từ _MAX_ mục)",
-                    searchPlaceholder: "Tìm kiếm dữ liệu",
+                    sProcessing: "{{ __('Loading...') }}",
+                    sLengthMenu: "_MENU_ {{ __('rows/page') }}",
+                    sZeroRecords: "{{ __('No data') }}",
+                    sInfo: "{{ _('From _START_ to _END_ of _TOTAL_ items') }}",
+                    sInfoEmpty: "{{ __('No item') }}",
+                    sInfoFiltered: "({{ __('filtered from _MAX_ items') }})",
+                    searchPlaceholder: "{{ __('Search') }}",
                     sInfoPostFix: "",
-                    sSearch: "Tìm kiếm",
+                    sSearch: "{{ __('Search') }}",
                     sUrl: "",
                     oPaginate: {
                         sFirst: "&laquo;",
@@ -272,7 +270,7 @@
                             return type == "display" ?
                                 data != null ?
                                 moment(data).format("DD/MM/YYYY HH:mm") :
-                                "Chưa đăng nhập" :
+                                "{{ __('No data') }}" :
                                 data;
                         },
                     },
@@ -336,7 +334,7 @@
                     if (err.status == 401) {
                         window.location.href = config.routes.login;
                     } else {
-                        Swal.fire(`ĐÃ CÓ LỖI XẢY RA!`, err.responseJSON.message, 'error');
+                        Swal.fire(`{{ __('An error has occurred') }}!`, err.responseJSON.message, 'error');
                     }
                 },
             },
@@ -597,9 +595,9 @@
             e.preventDefault()
             $('#product-variables').append(`
                 <tr>
-                    <td><input type="text" name="variable_sub_sku[]" class="form-control" placeholder="Mã"/></td>
-                    <td><input type="text" name="variable_name[]" class="form-control" placeholder="Tên biến thể"/></td>
-                    <td><input type="text" name="variable_unit[]" class="form-control" placeholder="Đơn vị tính"></td>
+                    <td><input type="text" name="variable_sub_sku[]" class="form-control" placeholder="{{ __('Sub SKU') }}"/></td>
+                    <td><input type="text" name="variable_name[]" class="form-control" placeholder="{{ __('Variable name') }}"/></td>
+                    <td><input type="text" name="variable_unit[]" class="form-control" placeholder="{{ __('Unit') }}"></td>
                     <td>
                         <input type="hidden" name="variable_id[]" />
                         <form method="post" action="{{ route('admin.variable.remove') }}">
@@ -648,9 +646,9 @@
         function htmlVariable(variable) {
             return `
                 <tr>
-                    <td><input type="text" name="variable_sub_sku[]" class="form-control" placeholder="Mã" value="${variable.sub_sku ? variable.sub_sku : ''}"/></td>
-                    <td><input type="text" name="variable_name[]" class="form-control" placeholder="Tên biến thể" value="${variable.name ? variable.name : ''}"/></td>
-                    <td><input type="text" name="variable_unit[]" class="form-control" placeholder="Đơn vị tính" value="${variable.unit ? variable.unit : ''}"></td>
+                    <td><input type="text" name="variable_sub_sku[]" class="form-control" placeholder="{{ __('Sub SKU') }}" value="${variable.sub_sku ? variable.sub_sku : ''}"/></td>
+                    <td><input type="text" name="variable_name[]" class="form-control" placeholder="{{ __('Variable name') }}" value="${variable.name ? variable.name : ''}"/></td>
+                    <td><input type="text" name="variable_unit[]" class="form-control" placeholder="{{ __('Unit') }}" value="${variable.unit ? variable.unit : ''}"></td>
                     <td>
                         <input type="hidden" name="variable_id[]" value="${variable.id}"/>
                         <form method="post" action="{{ route('admin.variable.remove') }}">
@@ -1033,7 +1031,7 @@
             });
             form.find(`[name='order_id']`).val(order_id)
             form.find('[name=amount]').val(amount)
-            form.find('[name=note]').val(order_id ? 'Thanh toán đơn hàng ' + order_id : 'Thanh toán công nợ')
+            form.find('[name=note]').val(order_id ? `{{ __('Pay for order') }} ` + order_id : `{{ __('Pay for debt') }}`)
             form.find('[name=cashier_id]').val(`{{ Auth::user()->id }}`)
             form.attr('action', `{{ route('admin.transaction.create') }}`)
             form.find('.modal').modal('show')

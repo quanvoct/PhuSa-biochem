@@ -13,8 +13,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 class CatalogueController extends Controller
 {
-    const NAME = 'danh mục',
-        RULES = [
+    const RULES = [
             'name' => ['required', 'string', 'min:2', 'max:191'],
             'description' => ['nullable', 'string', 'min:2', 'max:191'],
             'parent_id' => ['nullable', 'numeric'],
@@ -37,17 +36,17 @@ class CatalogueController extends Controller
             switch ($request->key) {
                 case 'list':
                     $ids = json_decode($request->ids);
-                    $obj = Catalogue::orderBy('sort', 'ASC')->when(count($ids), function ($query) use ($ids) {
+                    $obj = Catalogue::whereNull('revision')->orderBy('sort', 'ASC')->when(count($ids), function ($query) use ($ids) {
                         $query->whereIn('id', $ids);
                     })->get();
                     return response()->json($obj, 200);
                     break;
                 case 'tree':
-                    $catalogues = Catalogue::whereNull('parent_id')->where('status', 1)->with('children')->get();
+                    $catalogues = Catalogue::whereNull('revision')->whereNull('parent_id')->where('status', 1)->with('children')->get();
                     return view('admin.includes.catalogue_recursion', ['catalogues' => $catalogues]);
                     break;
                 case 'find':
-                    return Catalogue::whereStatus(1)
+                    return Catalogue::whereNull('revision')->whereStatus(1)
                         ->where('name', 'LIKE', '%' . $request->q . '%')
                         ->orWhere('description', 'LIKE', '%' . $request->q . '%')
                         ->orderByDesc('id')
@@ -59,7 +58,7 @@ class CatalogueController extends Controller
                                 'text' => $obj->name
                             ];
                         })
-                        ->push(['id' => " ", 'text' => 'Không có']);
+                        ->push(['id' => " ", 'text' => __('Nothing')]);
                     break;
                 default:
                     $obj = Catalogue::with('parent')->find($request->key);
@@ -93,7 +92,7 @@ class CatalogueController extends Controller
                         return '<span class="badge bg-' . ($obj->status ? 'success' : 'danger') . '">' . $obj->statusStr . '</span>';
                     })
                     ->addColumn('parent', function ($obj) {
-                        return $obj->parent ? $obj->parent->name : 'Không có';
+                        return $obj->parent ? $obj->parent->name : __('Nothing');
                     })
                     ->addColumn('action', function ($obj) {
                         if (!empty(Auth::user()->can(User::DELETE_CATALOGUE))) {
@@ -110,7 +109,7 @@ class CatalogueController extends Controller
                     ->rawColumns(['checkboxes', 'name', 'image', 'status', 'action'])
                     ->make(true);
             } else {
-                $pageName = 'Quản lý ' . self::NAME;
+                $pageName = __('Catalogues');
                 return view('admin.catalogues', compact('pageName'));
             }
         }
@@ -129,7 +128,7 @@ class CatalogueController extends Controller
                 Catalogue::find($ids[$index])->update(['sort' => $sort]);
             }
         }
-        return response()->json(['msg' => 'Thứ tự đã được cập nhật thành công']);
+        return response()->json(['msg' => __('The order has been updated successfully')]);
     }
 
     public function create(Request $request)
@@ -147,12 +146,12 @@ class CatalogueController extends Controller
             ], $request->ip());
             $response = array(
                 'status' => 'success',
-                'msg' => 'Đã tạo ' . self::NAME . ' ' . $catalogue->name
+                'msg' => __('Successfully created :name :title', ['name' => $catalogue->name, 'title' => __('catalogue')])
             );
         } else {
             $response = array(
                 'status' => 'danger',
-                'msg' => 'Thao tác chưa được cấp quyền!'
+                'msg' => __('The operation is not authorized')
             );
         }
         return response()->json($response, 200);
@@ -174,18 +173,18 @@ class CatalogueController extends Controller
 
                 $response = array(
                     'status' => 'success',
-                    'msg' => 'Đã cập nhật ' . $catalogue->name
+                    'msg' => __('Successfully updated :name :title', ['name' => $catalogue->name, 'title' => __('catalogue')])
                 );
             } else {
                 $response = array(
                     'status' => 'danger',
-                    'msg' => 'Đã có lỗi xảy ra, vui lòng tải lại trang và thử lại!'
+                    'msg' => __('An error has occurred') . '. ' . __('Please try again later') .'!'
                 );
             }
         } else {
             $response = array(
                 'status' => 'danger',
-                'msg' => 'Thao tác chưa được cấp quyền!'
+                'msg' => __('The operation is not authorized')
             );
         }
         return response()->json($response, 200);
@@ -199,11 +198,11 @@ class CatalogueController extends Controller
             $obj->revision();
             $obj->delete();
             array_push($msg, $obj->name);
-            LogController::create("xóa", self::NAME, $obj->id, $request->ip());
+            LogController::create("xóa", 'catalogue', $obj->id, $request->ip());
         }
         $response = array(
             'status' => 'success',
-            'msg' => 'Đã xóa ' . self::NAME . ' ' . implode(', ', $msg)
+            'msg' => __('Successfully removed :name :title', ['name' => implode(', ', $msg), 'title' => __('catalogue')])
         );
         return  response()->json($response, 200);
     }
@@ -212,7 +211,7 @@ class CatalogueController extends Controller
     public static function sync($array, $ip = null, $id = null)
     {
         $obj = Catalogue::updateOrCreate(['id' => $id], $array);
-        LogController::create($id ? 'sửa' : 'tạo', self::NAME, $obj->id, $ip);
+        LogController::create($id ? 'sửa' : 'tạo', 'catalogue', $obj->id, $ip);
         return $obj;
     }
 }

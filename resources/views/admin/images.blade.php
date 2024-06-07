@@ -3,7 +3,6 @@
 {{ $pageName }}
 @endsection
 @section('content')
-@section('content')
     <div class="page-heading">
         <div class="page-title">
             <div class="row">
@@ -14,7 +13,7 @@
                     <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">
-                                    <p class="text-light-primary">Bảng tin</p>
+                                    <p class="text-light-primary">{{ __('Dashboard') }}</p>
                                 </a></li>
                             <li class="breadcrumb-item text-dark active" aria-current="page">{{ $pageName }}</li>
                         </ol>
@@ -23,9 +22,7 @@
             </div>
         </div>
     </div>
-    <div class="page-content">
+    <div class="page-content mb-3">
         @include('admin.includes.quick_images')
     </div>
 @endsection
-@push('scripts')
-@endpush

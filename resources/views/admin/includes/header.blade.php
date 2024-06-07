@@ -44,11 +44,11 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
                         <li>
-                            <h6 class="dropdown-header">Xin chào, {{ Auth::user()->name }}</h6>
+                            <h6 class="dropdown-header">{{ __('Hello') }}, {{ Auth::user()->name }}</h6>
                         </li>
                         <li><a class="dropdown-item" href="{{ route('profile.index') }}">
                                 <i class="icon-mid bi bi-person me-2"></i>
-                                Thông tin tài khoản
+                                {{ __('Your profile') }}
                             </a>
                         </li>
                         <li>
@@ -72,19 +72,19 @@
     <div style="min-width: 65rem">
         <div class="btn-group" role="group">
             @if (!empty(Auth::user()->can(app\Models\User::READ_ORDERS))) 
-            <a class="btn btn-primary" href="{{ route('admin.order') }}">Đơn hàng</a>
+            <a class="btn btn-primary" href="{{ route('admin.order') }}">{{ __('Orders') }}</a>
             @endif
             @if (!empty(Auth::user()->can(app\Models\User::CREATE_ORDER))) 
-            <a class="btn btn-primary btn-create-order cursor-pointer">Đơn hàng mới</a>
+            <a class="btn btn-primary btn-create-order cursor-pointer">{{ __('New order') }}</a>
             @endif
             @if (!empty(Auth::user()->can(app\Models\User::READ_TRANSACTIONS))) 
-            <a class="btn btn-primary" href="{{ route('admin.transaction') }}">Giao dịch</a>
+            <a class="btn btn-primary" href="{{ route('admin.transaction') }}">{{ __('Transactions') }}</a>
             @endif
             @if (!empty(Auth::user()->can(app\Models\User::CREATE_TRANSACTION))) 
-            <a class="btn btn-primary btn-create-transaction cursor-pointer">Thêm thanh toán</a>
+            <a class="btn btn-primary btn-create-transaction cursor-pointer">{{ __('New transaction') }}</a>
             @endif
             @if (!empty(Auth::user()->can(app\Models\User::READ_DEBTS))) 
-            <a class="btn btn-primary" href="{{ route('admin.debt') }}">Danh sách công nợ</a>
+            <a class="btn btn-primary" href="{{ route('admin.debt') }}">{{ __('Debts') }}</a>
             @endif
         </div>
     </div>
