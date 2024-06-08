@@ -62,12 +62,12 @@
                     <div class="row">
                         <div class="col-6" id="label-lang">
                             @foreach ($strings[0] as $label => $value)
-                                <label class="text-nowrap overflow-hidden pb-0 col-12 col-form-label">{{ $label }}</label>
+                                <label for="string-{{ $loop->index }}" class="text-nowrap overflow-hidden pb-0 col-12 col-form-label">{{ $label }}</label>
                             @endforeach
                         </div>
                         <div class="col-6" id="string-lang">
                             @foreach ($strings[0] as $label => $value)
-                                <input class="form-control-plaintext" name="strings[label][{{ $label }}]" type="text" value="{{ $value }}" readonly>
+                                <input id="string-{{ $loop->index }}" class="form-control-plaintext" name="strings[label][{{ $label }}]" type="text" value="{{ $value }}" readonly>
                             @endforeach
                         </div>
                     </div>
@@ -83,23 +83,23 @@
                                                         @foreach ($value3 as $label4 => $value4)
                                                             @if (is_array($value4))
                                                                 @foreach ($value4 as $label5 => $value5)
-                                                                    <label
+                                                                    <label for="file-{{$loop->index . $loop->parent->index . $loop->parent->parent->index . $loop->parent->parent->parent->index . $loop->parent->parent->parent->parent->index}}"
                                                                         class="text-nowrap overflow-hidden pb-0 col-12 col-form-label">{{ $fileName }}.{{ $label }}.{{ $label2 }}.{{ $label3 }}.{{ $label4 }}.{{ $label5 }}</label>
                                                                 @endforeach
                                                             @else
-                                                                <label class="text-nowrap overflow-hidden pb-0 col-12 col-form-label">{{ $fileName }}.{{ $label }}.{{ $label2 }}.{{ $label3 }}.{{ $label4 }}</label>
+                                                                <label for="file-{{$loop->index . $loop->parent->index . $loop->parent->parent->index . $loop->parent->parent->parent->index}}" class="text-nowrap overflow-hidden pb-0 col-12 col-form-label">{{ $fileName }}.{{ $label }}.{{ $label2 }}.{{ $label3 }}.{{ $label4 }}</label>
                                                             @endif
                                                         @endforeach
                                                     @else
-                                                        <label class="text-nowrap overflow-hidden pb-0 col-12 col-form-label">{{ $fileName }}.{{ $label }}.{{ $label2 }}.{{ $label3 }}</label>
+                                                        <label for="file-{{$loop->index . $loop->parent->index . $loop->parent->parent->index}}" class="text-nowrap overflow-hidden pb-0 col-12 col-form-label">{{ $fileName }}.{{ $label }}.{{ $label2 }}.{{ $label3 }}</label>
                                                     @endif
                                                 @endforeach
                                             @else
-                                                <label class="text-nowrap overflow-hidden pb-0 col-12 col-form-label">{{ $fileName }}.{{ $label }}.{{ $label2 }}</label>
+                                                <label for="file-{{$loop->index . $loop->parent->index}}" class="text-nowrap overflow-hidden pb-0 col-12 col-form-label">{{ $fileName }}.{{ $label }}.{{ $label2 }}</label>
                                             @endif
                                         @endforeach
                                     @else
-                                        <label class="text-nowrap overflow-hidden pb-0 col-12 col-form-label">{{ $fileName }}.{{ $label }}</label>
+                                        <label for="file-{{$loop->index}}" class="text-nowrap overflow-hidden pb-0 col-12 col-form-label">{{ $fileName }}.{{ $label }}</label>
                                     @endif
                                 @endforeach
                             @endforeach
@@ -115,26 +115,26 @@
                                                         @foreach ($value3 as $label4 => $value4)
                                                             @if (is_array($value4))
                                                                 @foreach ($value4 as $label5 => $value5)
-                                                                    <input class="form-control-plaintext"
+                                                                    <input class="form-control-plaintext" id="file-{{$loop->index . $loop->parent->index . $loop->parent->parent->index . $loop->parent->parent->parent->index . $loop->parent->parent->parent->parent->index}}"
                                                                         name="strings[message][{{ $fileName }}][{{ $label }}][{{ $label2 }}][{{ $label3 }}][{{ $label4 }}][{{ $label5 }}]" type="text"
                                                                         value="{{ $value5 }}" readonly>
                                                                 @endforeach
                                                             @else
-                                                                <input class="form-control-plaintext" name="strings[message][{{ $fileName }}][{{ $label }}][{{ $label2 }}][{{ $label3 }}][{{ $label4 }}]" type="text"
+                                                                <input class="form-control-plaintext" id="file-{{$loop->index . $loop->parent->index . $loop->parent->parent->index . $loop->parent->parent->parent->index}}" name="strings[message][{{ $fileName }}][{{ $label }}][{{ $label2 }}][{{ $label3 }}][{{ $label4 }}]" type="text"
                                                                     value="{{ $value4 }}" readonly>
                                                             @endif
                                                         @endforeach
                                                     @else
-                                                        <input class="form-control-plaintext" name="strings[message][{{ $fileName }}][{{ $label }}][{{ $label2 }}][{{ $label3 }}]" type="text" value="{{ $value3 }}"
+                                                        <input class="form-control-plaintext" id="file-{{$loop->index . $loop->parent->index . $loop->parent->parent->index}}" name="strings[message][{{ $fileName }}][{{ $label }}][{{ $label2 }}][{{ $label3 }}]" type="text" value="{{ $value3 }}"
                                                             readonly>
                                                     @endif
                                                 @endforeach
                                             @else
-                                                <input class="form-control-plaintext" name="strings[message][{{ $fileName }}][{{ $label }}][{{ $label2 }}]" type="text" value="{{ $value2 }}" readonly>
+                                                <input class="form-control-plaintext" id="file-{{$loop->index . $loop->parent->index}}" name="strings[message][{{ $fileName }}][{{ $label }}][{{ $label2 }}]" type="text" value="{{ $value2 }}" readonly>
                                             @endif
                                         @endforeach
                                     @else
-                                        <input class="form-control-plaintext" name="strings[message][{{ $fileName }}][{{ $label }}]" type="text" value="{{ $value }}" readonly>
+                                        <input class="form-control-plaintext" id="file-{{$loop->index}}" name="strings[message][{{ $fileName }}][{{ $label }}]" type="text" value="{{ $value }}" readonly>
                                     @endif
                                 @endforeach
                             @endforeach
