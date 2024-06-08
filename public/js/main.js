@@ -2204,9 +2204,9 @@
         $(".expand-description-btn").click(function () {
             $(".product-description-container").toggleClass("expand");
             if ($(".product-description-container").hasClass("expand")) {
-                $(this).text("Thu gọn");
+                $(this).html(`<i class="fas fa-arrow-up"></i>`);
             } else {
-                $(this).text("Xem thêm");
+                $(this).html(`<i class="fas fa-arrow-down"></i>`);
             }
         });
     });

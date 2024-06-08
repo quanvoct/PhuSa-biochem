@@ -59,7 +59,7 @@
                                                         </form>
                                                     </div>
                                                     <div class="col col-lg-9">
-                                                        <p>{{ __('Hello') }} <strong>{{ Auth::user()->name }}</strong> ({{ __('not') }} <strong>{{ Auth::user()->name }}</strong>? <small><a href="{{ route('logout') }}"
+                                                        <p>{{ __('Hello') }} <strong>{{ Auth::user()->name }}</strong> ({{ __('Not :name', ['name' => '<strong>' . Auth::user()->name . '</strong>']) }} ? <small><a href="{{ route('logout') }}"
                                                                     onclick="event.preventDefault();document.getElementById('logout-form').submit();">
                                                                     {{ __('Logout') }}
                                                                 </a></small> )</p>
