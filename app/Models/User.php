@@ -186,6 +186,10 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Transaction::class, 'cashier_id');
     }
+
+    public function cart() {
+        return $this->hasOne(Cart::class);
+    }
     
     public function preferences()
     {

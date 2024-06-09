@@ -175,19 +175,26 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('password', [ProfileController::class, 'password'])->name('profile.password');
         Route::post('avatar', [ProfileController::class, 'avatar'])->name('profile.avatar');
     });
+
     Route::group(['prefix' => 'cart'], function () {
-        Route::get('/', [CartController::class, 'cart'])->name('cart.index');
+        Route::get('/', [CartController::class, 'index'])->name('cart.index');
         Route::get('checkout', [CartController::class, 'checkout'])->name('cart.checkout');
         Route::get('checkout/success', [CartController::class, 'checkout'])->name('cart.checkout.success');
+        Route::post('add', [CartController::class, 'add'])->name('cart.add');
+        Route::post('remove', [CartController::class, 'remove'])->name('cart.remove');
+        Route::post('clear', [CartController::class, 'clear'])->name('cart.clear');
     });
 });
 
 Route::group(['middleware' => 'language'], function () {
     Route::get('language/{lang?}', [LanguageController::class, 'change'])->name('language.change');
 });
-Route::get('/geolocation/country', [GeolocationController::class, 'getCountry'])->name('geolocation.country');
-Route::get('/geolocation/city', [GeolocationController::class, 'getCity'])->name('geolocation.city');
-Route::get('/geolocation/district', [GeolocationController::class, 'getDistrict'])->name('geolocation.district');
+
+Route::group(['prefix' => 'geolocation'], function () {
+    Route::get('country', [GeolocationController::class, 'getCountry'])->name('geolocation.country');
+    Route::get('city', [GeolocationController::class, 'getCity'])->name('geolocation.city');
+    Route::get('district', [GeolocationController::class, 'getDistrict'])->name('geolocation.district');
+});
 
 Route::get('/contact', [HomeController::class, 'contact'])->name('home.contact');
 Route::get('/about', [HomeController::class, 'about'])->name('home.about');

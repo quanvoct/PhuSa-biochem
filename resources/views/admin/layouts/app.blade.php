@@ -108,9 +108,9 @@
     <script src="{{ asset('admin/vendors/select2/select2.full.min.js') }}"></script>
     <script src="{{ asset('admin/vendors/select2/i18n/vi.js') }}"></script>
     {{-- Include moment JS --}}
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/moment.min.js"></script>
+    <script type="text/javascript" src="{{ asset('admin/vendors/momentJS/moment.js') }}"></script>
     {{-- Include sweetalert2 JS --}}
-    <script src="{{ asset('admin/vendors/sweetalert2/sweetalert2.all.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('admin/vendors/sweetalert2/sweetalert2.all.min.js') }}"></script>
     {{-- Include daterange picker JS --}}
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.min.js"></script>
     {{-- Include Toastify --}}

@@ -32,21 +32,21 @@
                     <div class="ltn__shop-details-inner mb-60">
                         <div class="row">
                             <div class="col-md-5">
-                                <div class="ltn__shop-details-img-gallery">
+                                <div class="ltn__shop-details-img-gallery sticky-top">
                                     <div class="ltn__shop-details-large-img">
-                                        @foreach ($product->getImagesUrlAttribute() as $index => $imageUrl)
+                                        @foreach ($product->imagesUrl as $index => $imageUrl)
                                             <div class="single-large-img">
                                                 <a data-rel="lightcase:myCollection" href="{{ $imageUrl }}">
-                                                    <img src="{{ $imageUrl }}" alt="Image">
+                                                    <img src="{{ $imageUrl }}" alt="{{ $product->name }}">
                                                 </a>
                                             </div>
                                         @endforeach
                                     </div>
-                                    @if (count($product->getImagesUrlAttribute()) > 1)
+                                    @if (count($product->imagesUrl) > 1)
                                         <div class="ltn__shop-details-small-img slick-arrow-2">
-                                            @foreach ($product->getImagesUrlAttribute() as $index => $imageUrl)
+                                            @foreach ($product->imagesUrl as $index => $imageUrl)
                                                 <div class="single-small-img">
-                                                    <img src="{{ $imageUrl }}" alt="Image">
+                                                    <img src="{{ $imageUrl }}" alt="{{ $product->name }}">
                                                 </div>
                                             @endforeach
                                         </div>
@@ -56,27 +56,27 @@
                             <div class="col-md-7">
                                 <div class="modal-product-info shop-details-info pl-0">
                                     <!-- <div class="product-ratting">
-                                                                <ul>
-                                                                    <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                                                    <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                                                    <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                                                    <li><a href="#"><i class="fas fa-star-half-alt"></i></a></li>
-                                                                    <li><a href="#"><i class="far fa-star"></i></a></li>
-                                                                    <li class="review-total"> <a href="#"> ( 95 Reviews )</a></li>
-                                                                </ul>
-                                                            </div> -->
-                                    <h4 class="ltn__secondary-color section-subtitle section-subtitle-2---">{{ $product->sku }}</h4>
+                                        <ul>
+                                            <li><a href="#"><i class="fas fa-star"></i></a></li>
+                                            <li><a href="#"><i class="fas fa-star"></i></a></li>
+                                            <li><a href="#"><i class="fas fa-star"></i></a></li>
+                                            <li><a href="#"><i class="fas fa-star-half-alt"></i></a></li>
+                                            <li><a href="#"><i class="far fa-star"></i></a></li>
+                                            <li class="review-total"> <a href="#"> ( 95 Reviews )</a></li>
+                                        </ul>
+                                    </div> -->
+                                    <h4 class="ltn__secondary-color section-subtitle section-subtitle-2---">{{ $product->sku }} @if(Auth::check()) <a href="{{ route('admin.product', ['key' => $product->id]) }}" class="btn btn-link text-decoration-none p-2"><i class="far fa-edit"></i> Sửa</a> @endif</h4>
                                     <!-- <div class="product-price">
-                                                                <span>1,500,000<sup>đ</sup></span>
-                                                            </div> -->
+                                        <span>1,500,000<sup>đ</sup></span>
+                                    </div> -->
                                     <h2 class="fs-2">{{ $product->name }}</h2>
                                     <div class="modal-product-meta ltn__product-details-menu-1">
                                         <ul>
                                             <li>
-                                                <strong>{{ __('Categories') }}:</strong>
+                                                <strong>{{ __('Catalogues') }}:</strong>
                                                 <span>
                                                     @foreach ($product->catalogues as $catalogue)
-                                                        <a href="{{ route('shop.index', ['catalogue' => $catalogue->slug, 'product' => '']) }}">
+                                                        <a href="{{ route('shop.index', ['catalogue' => $catalogue->slug]) }}">
                                                             {{ __($catalogue->name) }}
                                                         </a>
                                                     @endforeach
@@ -86,40 +86,49 @@
                                     </div>
                                     <div>{!! $product->excerpt !!}</div>
                                     <div class="ltn__shop-details-tab-inner-2 mt-4">
-                                        <h4 class="mb-0">{{ __('Select properties') }}</h4>
-                                        <div class="ltn__shop-details-tab-menu">
-                                            <div class="nav">
-                                                @foreach ($product->variables as $index => $variable)
-                                                    <a class="{{ $index === 0 ? 'active show' : '' }} me-2 p-2" data-bs-toggle="tab" href="#variable{{ $variable->id }}">
-                                                        {!! $variable->name !!}
-                                                    </a>
-                                                @endforeach
+                                        @if ($product->variables->first()->name)
+                                            <h4 class="mb-0">{{ __('Select properties') }}</h4>
+                                            <div class="ltn__shop-details-tab-menu">
+                                                <div class="nav">
+                                                    @foreach ($product->variables as $index => $variable)
+                                                        <a class="{{ $index === 0 ? 'active show' : '' }} me-2 p-2" data-bs-toggle="tab" href="#variable{{ $variable->id }}">
+                                                            {!! $variable->name !!}
+                                                        </a>
+                                                    @endforeach
+                                                </div>
                                             </div>
-                                        </div>
+                                        @endif
                                         <div class="tab-content">
                                             @foreach ($product->variables as $index => $variable)
                                                 <div class="tab-pane fade {{ $index === 0 ? 'active show' : '' }}" id="variable{{ $variable->id }}">
-                                                    <div class="ltn__shop-details-tab-content-inner">
-                                                        <div>{!! $variable->description !!}</div>
-                                                        <div class="ltn__secondary-color section-subtitle section-subtitle-2---" data-variable-id="{{ $variable->id }}">
-                                                            <span> {!! number_format($variable->price) !!}₫</span>
+                                                    <form class="cart-form" action="{{ route('cart.add') }}" method="post">
+                                                        @csrf
+                                                        <div class="ltn__shop-details-tab-content-inner">
+                                                            @if ($product->variables->first()->name)
+                                                                <div>{!! $variable->description !!}</div>
+                                                            @endif
+                                                            <div class="ltn__secondary-color section-subtitle section-subtitle-2---" data-variable-id="{{ $variable->id }}">
+                                                                <span> {!! number_format($variable->price) !!}₫</span> @if(Auth::check()) <a href="{{ route('admin.product', ['key' => $product->id]) }}" class="btn btn-link text-decoration-none p-2"><i class="far fa-edit"></i> Sửa</a> @endif
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="ltn__product-details-menu-2">
-                                                        <ul>
-                                                            <li>
-                                                                <div class="cart-plus-minus">
-                                                                    <input class="cart-plus-minus-box" name="qtybutton" type="text" value="01">
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                <a class="theme-btn-1 btn btn-effect-1" data-bs-toggle="modal" data-bs-target="#add_to_cart_modal" href="#" title="Add to Cart">
-                                                                    <i class="fas fa-shopping-cart"></i>
-                                                                    <span>{{ __('ADD TO CART') }}</span>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
+                                                        <div class="ltn__product-details-menu-2">
+                                                            <ul class="d-flex">
+                                                                <li>
+                                                                    <div class="cart-plus-minus">
+                                                                        <input class="cart-plus-minus-box" name="quantity" type="text" value="1">
+                                                                    </div>
+                                                                </li>
+                                                                <li>
+                                                                    <input name="price" type="hidden" value="{{ $variable->price }}">
+                                                                    <input name="variable_id" type="hidden" value="{{ $variable->id }}">
+                                                                    <button class="theme-btn-1 btn btn-effect-1 btn-add-to-cart" type="submit" title="Add to Cart">
+                                                                        <i class="fas fa-shopping-cart"></i>
+                                                                        <span>{{ __('ADD TO CART') }}</span>
+                                                                    </button>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </form>
                                                 </div>
                                             @endforeach
                                         </div>
@@ -139,7 +148,9 @@
                                             <a class="" data-bs-toggle="tab" href="#liton_tab_details_specifications">{{ __('Specifications') }}</a>
                                         @endif
                                         <a class="" data-bs-toggle="tab" href="#liton_tab_details_guide">{{ __('Ordering guide') }}</a>
-                                        <a class="" data-bs-toggle="tab" href="#liton_tab_details_review">{{ __('Review') }}</a>
+                                        @if (isset($product) && $product->allow_review)
+                                            <a class="" data-bs-toggle="tab" href="#liton_tab_details_review">{{ __('Review') }}</a>
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="tab-content">

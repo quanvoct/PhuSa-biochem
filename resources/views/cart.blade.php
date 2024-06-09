@@ -1,10 +1,10 @@
 @extends('layouts.app')
 @section('title')
-{{ $pageName }}
+    {{ $pageName }}
 @endsection
 @section('content')
     <!-- BREADCRUMB AREA START -->
-    <div class="ltn__breadcrumb-area text-left bg-overlay-white-30 bg-image "  data-bs-bg="img/bg/14.jpg">
+    <div class="ltn__breadcrumb-area text-left bg-overlay-white-30 bg-image " data-bs-bg="img/bg/14.jpg">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
@@ -12,7 +12,7 @@
                         <h1 class="page-title">{{ $pageName }}</h1>
                         <div class="ltn__breadcrumb-list">
                             <ul>
-                                <li><a href="{{ route('home.index') }}"><span class="ltn__secondary-color"><i class="fas fa-home"></i></span> {{__('Home')}}</a></li>
+                                <li><a href="{{ route('home.index') }}"><span class="ltn__secondary-color"><i class="fas fa-home"></i></span> {{ __('Home') }}</a></li>
                                 <li>{{ $pageName }}</li>
                             </ul>
                         </div>
@@ -28,116 +28,132 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
+                    @if (session('response'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="fa-solid fa-xmark"></i>
+                            {!! session('response') !!}
+                            <button class="btn-close" data-bs-dismiss="alert" type="button" aria-label="Close"></button>
+                        </div>
+                    @endif
                     <div class="shoping-cart-inner">
                         <div class="shoping-cart-table table-responsive">
                             <table class="table">
-                                <!-- <thead>
-                                    <th class="cart-product-remove">Remove</th>
-                                    <th class="cart-product-image">Image</th>
-                                    <th class="cart-product-info">Product</th>
-                                    <th class="cart-product-price">Price</th>
-                                    <th class="cart-product-quantity">Quantity</th>
-                                    <th class="cart-product-subtotal">Subtotal</th>
-                                </thead> -->
-                                <tbody>
-                                    <tr>
-                                        <td class="cart-product-remove">x</td>
-                                        <td class="cart-product-image">
-                                            <a href="{{ route('shop.index') }}"><img src="{{ asset('img/product/product-demo-2.jpg') }}" alt="#"></a>
-                                        </td>
-                                        <td class="cart-product-info">
-                                            <h4><a href="{{ route('shop.index') }}">Digital Stethoscope</a></h4>
-                                        </td>
-                                        <td class="cart-product-price">750,000<sup>đ</sup></td>
-                                        <td class="cart-product-quantity">
-                                            <div class="cart-plus-minus">
-                                                <input type="text" value="02" name="qtybutton" class="cart-plus-minus-box">
-                                            </div>
-                                        </td>
-                                        <td class="cart-product-subtotal">1.500,000<sup>đ</sup></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="cart-product-remove">x</td>
-                                        <td class="cart-product-image">
-                                            <a href="{{ route('shop.index') }}"><img src="{{ asset('img/product/product-demo-6.jpg') }}" alt="#"></a>
-                                        </td>
-                                        <td class="cart-product-info">
-                                            <h4><a href="{{ route('shop.index') }}">Cosmetic Containers</a></h4>
-                                        </td>
-                                        <td class="cart-product-price">950,000<sup>đ</sup></td>
-                                        <td class="cart-product-quantity">
-                                            <div class="cart-plus-minus">
-                                                <input type="text" value="02" name="qtybutton" class="cart-plus-minus-box">
-                                            </div>
-                                        </td>
-                                        <td class="cart-product-subtotal">1,900,000<sup>đ</sup></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="cart-product-remove">x</td>
-                                        <td class="cart-product-image">
-                                            <a href="{{ route('shop.index') }}"><img src="{{ asset('img/product/product-demo-10.jpg') }}" alt="#"></a>
-                                        </td>
-                                        <td class="cart-product-info">
-                                            <h4><a href="{{ route('shop.index') }}">Antiseptic Spray</a></h4>
-                                        </td>
-                                        <td class="cart-product-price">650,000<sup>đ</sup></td>
-                                        <td class="cart-product-quantity">
-                                            <div class="cart-plus-minus">
-                                                <input type="text" value="1" name="qtybutton" class="cart-plus-minus-box">
-                                            </div>
-                                        </td>
-                                        <td class="cart-product-subtotal">650,000<sup>đ</sup></td>
-                                    </tr>
-                                    <tr class="cart-coupon-row">
-                                        <td colspan="6">
-                                            <div class="cart-coupon">
-                                                <input type="text" name="cart-coupon" placeholder="{{ __('Coupon code') }}">
-                                                <button type="submit" class="btn theme-btn-2 btn-effect-2">{{ __('Apply Coupon') }}</button>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <button type="submit" class="btn theme-btn-2 btn-effect-2-- disabled">{{ __('Update Cart') }}</button>
-                                        </td>
-                                    </tr>
-                                </tbody>
+                                {{-- <thead>
+                                    <th class="cart-product-remove" style="width:1%">Remove</th>
+                                    <th class="cart-product-image" style="width:7%">Image</th>
+                                    <th class="cart-product-info" style="width: 50%">Product</th>
+                                    <th class="cart-product-price" style="width: 15%">Price</th>
+                                    <th class="cart-product-quantity" style="width: 15%">Quantity</th>
+                                    <th class="cart-product-subtotal" style="width: 5%">Subtotal</th>
+                                </thead> --}}
+                                @if (session('cart'))
+                                    @if (session('cart')->count)
+                                        @foreach (session('cart')->items as $item)
+                                            <tr>
+                                                <td class="cart-product-remove px-0">
+                                                    <form action="{{ route('cart.remove') }}" method="post">
+                                                        @csrf
+                                                        <input name="variable_id" type="hidden" value="{{ $item->variable_id }}">
+                                                        <button class="btn btn-close btn-link text-decoration-none px-4" type="submit"></button>
+                                                    </form>
+                                                </td>
+                                                <td class="cart-product-image px-0">
+                                                    <a href="{{ $item->variable->product->url }}"><img src="{{ $item->variable->product->imageUrl }}"
+                                                            alt="{{ $item->variable->product->sku . ($item->variable->sub_sku != null ? $item->variable->sub_sku : '') }} - {{ $item->variable->product->name . ($item->variable->name != null ? ' - ' . $item->variable->name : '') }}"></a>
+                                                </td>
+                                                <td class="cart-product-info text-start w-50">
+                                                    <h4 class="mb-0"><a href="{{ $item->variable->product->url }}">{{ $item->variable->product->sku . ' - ' . $item->variable->product->name }}</a></h4>
+                                                    <p class="text-secondary mb-0">{{ ($item->variable->sub_sku != null ? $item->variable->sub_sku : '') . ($item->variable->name != null ? ' - ' . $item->variable->name : '') }}</p>
+                                                </td>
+                                                <td class="cart-product-price text-end px-3" style="width: 15% !important">{{ number_format($item->price) }}đ &nbsp;&nbsp;&times;</td>
+                                                <td class="cart-product-quantity px-0">
+                                                    <form action="{{ route('cart.add') }}" method="post">
+                                                        @csrf
+                                                        <input type="hidden" name="variable_id" value="{{ $item->variable_id }}">
+                                                        <div class="cart-plus-minus">
+                                                            <input class="cart-plus-minus-box" name="quantity" type="text" value="{{ $item->quantity }}">
+                                                        </div>
+                                                    </form>
+                                                </td>
+                                                <td class="cart-product-subtotal text-end" style="width: 15% !important">{{ number_format($item->quantity * $item->price) }}đ</td>
+                                            </tr>
+                                        @endforeach
+                                        <tr class="cart-coupon-row">
+                                            <td colspan="6">
+                                                <div class="cart-coupon d-flex">
+                                                    <input name="cart-coupon" type="text" placeholder="{{ __('Coupon code') }}">
+                                                    <button class="btn theme-btn-2 btn-effect-2" type="submit">{{ __('Apply Coupon') }}</button>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <button class="btn theme-btn-2 btn-effect-2-- disabled" type="submit">{{ __('Update Cart') }}</button>
+                                            </td>
+                                        </tr>
+                                    @else
+                                        <tr>
+                                            <td class="text-center" colspan="6">{{ __('Cart empty') }}</td>
+                                        </tr>
+                                    @endif
+                                @endif
                             </table>
                         </div>
-                        <div class="shoping-cart-total mt-50">
-                            <h4>{{ __('Cart Totals') }}</h4>
-                            <table class="table">
-                                <tbody>
-                                    <tr>
-                                        <td>{{ __('Cart Subtotal') }}<sup>(3)</sup></td>
-                                        <td>750,000<sup>đ</sup></td>
-                                    </tr>
-                                    <tr>
+                        @if (session('cart') && session('cart')->count)
+                            <div class="shoping-cart-total mt-50">
+                                <h4>{{ __('Cart Totals') }}</h4>
+                                <table class="table">
+                                    <tbody>
+                                        <tr>
+                                            <td>{{ __('Cart Subtotal') }}
+                                                <sup>
+                                                    @if (session('cart'))
+                                                        {{ number_format(session('cart')->count) }}
+                                                    @endif
+                                                </sup>
+                                            </td>
+                                            <td>
+                                                @if (session('cart'))
+                                                    {{ number_format(session('cart')->total) }}đ
+                                                @endif
+                                            </td>
+                                        </tr>
+                                        {{-- <tr>
                                         <td>{{ __('Shipping and Handing') }}</td>
                                         <td>750,000<sup>đ</sup></td>
-                                    </tr>
-                                    <tr>
+                                    </tr> --}}
+                                        {{-- <tr>
                                         <td>{{ __('Discount') }}</td>
                                         <td>0<sup>đ</sup></td>
-                                    </tr>
-                                    <tr>
+                                    </tr> --}}
+                                        {{-- <tr>
                                         <td>{{ __('VAT') }}</td>
                                         <td>0<sup>đ</sup></td>
-                                    </tr>
-                                    <tr>
+                                    </tr> --}}
+                                        {{-- <tr>
                                         <td><strong>{{ __('Order Total') }}</strong></td>
                                         <td><strong>2.750,000<sup>đ</sup></strong></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <div class="btn-wrapper text-right">
-                                <a href="{{ route('cart.checkout') }}" class="theme-btn-1 btn btn-effect-1">{{ __('Proceed to checkout') }}</a>
+                                    </tr> --}}
+                                    </tbody>
+                                </table>
+                                <div class="btn-wrapper text-right">
+                                    <a class="theme-btn-1 btn btn-effect-1" href="{{ route('cart.checkout') }}">{{ __('Proceed to checkout') }}</a>
+                                </div>
                             </div>
-                        </div>
+                        @endif
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <!-- SHOPING CART AREA END -->
+@endsection
 
-   
-    @endsection
+@push('scripts')
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $(document).on('click', '.qtybutton', function (e) {
+                e.preventDefault();
+                $(this).closest('form').submit()
+            })
+        })
+    </script>
+@endpush

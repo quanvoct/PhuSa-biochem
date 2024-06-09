@@ -15,8 +15,8 @@ class VariablesSedder extends Seeder
     public function run()
     {
         $variables = [
-            ['Trọn bộ', 1, 'full', 'Trọn bộ máy điện di đứng VE100', 've100.png', 22000000, 20, 14, 30, 4, 1],
-            ['Trọn bộ', 6, 'full', 'Trọn bộ máy điện di DNS E100', NULL, 27500000, 18, 14, 25, 2.7, 1],
+            [null, 1, null, 'Trọn bộ máy điện di đứng VE100', 've100.png', 22000000, 20, 14, 30, 4, 1],
+            [null, 6, null, 'Trọn bộ máy điện di DNS E100', NULL, 27500000, 18, 14, 25, 2.7, 1],
             ['E gen Positive Control', 13, 'E gen Positive Control', '<table class="table table-striped table-hover"> <tr> <td>Mã sản phẩm</td> <td>E gen Positive Control</td> </tr> <tr> <td>Quy cách</td> <td>50 µl</td> </tr> <tr> <td>Thời gian giao hàng</td> <td>5-7 ngày</td> </tr> </table>', NULL, 2000000, NULL, NULL, NULL, 2.5, 1],
             ['RdRp gen Positive Control', 13, 'RdRp gen Positive Control', '<table class="table table-striped table-hover"> <tr> <td>Mã sản phẩm</td> <td>RdRp gen Positive Control </td> </tr> <tr> <td>Quy cách</td> <td>50 µl </td> </tr> <tr> <td>Thời gian giao hàng</td> <td>5-7 ngày </td> </tr> </table>', NULL, 2000000, NULL, NULL, NULL, 2.5, 1],
             ['RP gen Positive Control', 13, 'RP gen Positive Control', '<table class="table table-striped table-hover"> <tr> <td>Mã sản phẩm</td> <td>RP gen Positive Control </td> </tr> <tr> <td>Quy cách</td> <td>50 µl </td> </tr> <tr> <td>Thời gian giao hàng</td> <td>5-7 ngày </td> </tr> </table>', NULL, 2000000, NULL, NULL, NULL, 2.5, 1],

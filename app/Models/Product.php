@@ -14,7 +14,7 @@ class Product extends Model
 {
     use HasFactory, SoftDeletes;
     protected $table = 'products';
-    protected $appends = array('imageUrl', 'imagesUrl', 'statusStr');
+    protected $appends = array('url', 'imageUrl', 'imagesUrl', 'statusStr');
     protected $fillable = [
         'name', 'sku', 'slug', 'author_id', 'excerpt', 'description',
         'gallery', 'sort', 'unit', 'specs',
@@ -137,13 +137,9 @@ class Product extends Model
         return explode(',', $this->keyword);
     }
 
-    public function upsales()
+    public function getUrlAttribute()
     {
-        $upsales = explode('|', $this->upsales);
-        foreach ($upsales as $key => $upsale) {
-            $upsale = self::find($upsale);
-        }
-        return $upsales;
+        return route('shop.index', ['catalogue' => $this->catalogues->first()->slug, 'product' => $this->slug]);
     }
 
     public function getImagesUrlAttribute()

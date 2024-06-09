@@ -15,8 +15,6 @@ use Illuminate\Validation\Rule;
 
 class ProductController extends Controller
 {
-    const NAME = 'sản phẩm';
-
     public function __construct()
     {
         $this->middleware('auth');

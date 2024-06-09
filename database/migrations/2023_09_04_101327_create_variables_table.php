@@ -15,7 +15,7 @@ class CreateVariablesTable extends Migration
     {
         Schema::create('variables', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 191)->index();
+            $table->string('name', 191)->nullable();
             $table->unsignedBigInteger('product_id');
             $table->string('sub_sku')->nullable();
             $table->text('description')->nullable();

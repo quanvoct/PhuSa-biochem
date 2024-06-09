@@ -205,9 +205,15 @@
                                             <a class="ltn__utilize-toggle" href="#ltn__utilize-cart-menu">
                                                 <span class="mini-cart-icon">
                                                     <i class="icon-shopping-cart"></i>
-                                                    <sup>2</sup>
+                                                    @if (session('cart'))
+                                                        <sup>{{ session('cart')->count }}</sup>
+                                                    @endif
                                                 </span>
-                                                <h6><span>{{ __('Your Cart') }}</span> <span class="ltn__secondary-color text-lowercase">890.000<sup>đ</sup></span>
+                                                <h6><span>{{ __('Your Cart') }}</span> <span class="ltn__secondary-color text-lowercase">
+                                                        @if (session('cart'))
+                                                            {{ number_format(session('cart')->total) }}đ
+                                                        @endif
+                                                    </span>
                                                 </h6>
                                             </a>
                                         </div>
@@ -250,7 +256,7 @@
                             <!-- CATEGORY-MENU-LIST START -->
                             <div class="ltn__category-menu-wrap ltn__category-dropdown-hide ltn__category-menu-with-header-menu">
                                 <div class="ltn__category-menu-title">
-                                    <h2 class="section-bg-1--- ltn__secondary-bg text-color-white">{{ __('Categories') }}</h2>
+                                    <h2 class="section-bg-1--- ltn__secondary-bg text-color-white">{{ __('Catalogues') }}</h2>
                                 </div>
                                 <div class="ltn__category-menu-toggle ltn__one-line-active">
                                     <ul>
@@ -334,69 +340,54 @@
         </header>
         <!-- HEADER AREA END -->
 
-        <!-- Utilize Cart Menu Start -->
-        <div class="ltn__utilize ltn__utilize-cart-menu" id="ltn__utilize-cart-menu">
-            <div class="ltn__utilize-menu-inner ltn__scrollbar">
-                <div class="ltn__utilize-menu-head">
-                    <span class="ltn__utilize-menu-title">{{ __('Cart') }}</span>
-                    <button class="ltn__utilize-close">×</button>
-                </div>
-                <div class="mini-cart-product-area ltn__scrollbar">
-                    <div class="mini-cart-item clearfix">
-                        <div class="mini-cart-img">
-                            <a href="#"><img src="{{ asset('img/product/product-demo-1.jpg') }}" alt="Image"></a>
-                            <span class="mini-cart-item-delete"><i class="icon-cancel"></i></span>
-                        </div>
-                        <div class="mini-cart-info">
-                            <h6><a href="#">{{ __('Antiseptic Spray') }}</a></h6>
-                            <span class="mini-cart-quantity">1 x 190.000<sup>đ</sup></span>
-                        </div>
+        @if (Request::path() != 'cart')
+            <!-- Utilize Cart Menu Start -->
+            <div class="ltn__utilize ltn__utilize-cart-menu" id="ltn__utilize-cart-menu">
+                <div class="ltn__utilize-menu-inner ltn__scrollbar">
+                    <div class="ltn__utilize-menu-head">
+                        <span class="ltn__utilize-menu-title">{{ __('Cart') }}</span>
+                        <button class="ltn__utilize-close">×</button>
                     </div>
-                    <div class="mini-cart-item clearfix">
-                        <div class="mini-cart-img">
-                            <a href="#"><img src="{{ asset('img/product/product-demo-8.jpg') }}" alt="Image"></a>
-                            <span class="mini-cart-item-delete"><i class="icon-cancel"></i></span>
-                        </div>
-                        <div class="mini-cart-info">
-                            <h6><a href="#">{{ __('Digital Stethoscope') }}</a></h6>
-                            <span class="mini-cart-quantity">1 x 190.000<sup>đ</sup></span>
-                        </div>
+                    <div class="mini-cart-product-area ltn__scrollbar">
+                        @if (session('cart'))
+                            @foreach (session('cart')->items as $item)
+                                <div class="mini-cart-item clearfix">
+                                    <div class="mini-cart-img">
+                                        <a href="{{ $item->variable->product->url }}"><img src="{{ $item->variable->product->imageUrl }}" alt="Image"></a>
+                                        <form action="{{ route('cart.remove') }}" method="post">
+                                            @csrf
+                                            <input name="variable_id" type="hidden" value="{{ $item->variable_id }}">
+                                            <button class="mini-cart-item-delete" type="submit"><i class="icon-cancel"></i></button>
+                                        </form>
+                                    </div>
+                                    <div class="mini-cart-info">
+                                        <h6 class="mb-0"><a href="{{ $item->variable->product->url }}">{{ $item->variable->product->sku . ' - ' . $item->variable->product->name }}</a></h6>
+                                        <small class="text-secondary mb-0">{{ ($item->variable->sub_sku != null ? $item->variable->sub_sku : '') . ($item->variable->name != null ? ' - ' . $item->variable->name : '') }}</small>
+                                        <span class="mini-cart-quantity">{{ $item->quantity }} &times; {{ number_format($item->price) }}đ</span>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @endif
                     </div>
-                    <div class="mini-cart-item clearfix">
-                        <div class="mini-cart-img">
-                            <a href="#"><img src="{{ asset('img/product/product-demo-7.jpg') }}" alt="Image"></a>
-                            <span class="mini-cart-item-delete"><i class="icon-cancel"></i></span>
+                    <div class="mini-cart-footer">
+                        <div class="mini-cart-sub-total">
+                            <h5>{{ __('Subtotal:') }} <span>
+                                    @if (session('cart'))
+                                        {{ number_format(session('cart')->total) }}đ
+                                    @endif
+                                </span></h5>
                         </div>
-                        <div class="mini-cart-info">
-                            <h6><a href="#">{{ __('Cosmetic Containers') }}</a></h6>
-                            <span class="mini-cart-quantity">1 x 190.000<sup>đ</sup></span>
+                        <div class="btn-wrapper">
+                            <a class="theme-btn-1 btn btn-effect-1 p-3" href="{{ route('cart.index') }}">{{ __('View Cart') }}</a>
+                            <a class="theme-btn-2 btn btn-effect-2 p-3" href="{{ route('cart.checkout') }}">{{ __('Checkout') }}</a>
                         </div>
+                        {{-- <p>{{ __('Free Shipping on All Orders Over') }} 1.000.000đ!</p> --}}
                     </div>
-                    <div class="mini-cart-item clearfix">
-                        <div class="mini-cart-img">
-                            <a href="#"><img src="{{ asset('img/product/product-demo-2.jpg') }}" alt="Image"></a>
-                            <span class="mini-cart-item-delete"><i class="icon-cancel"></i></span>
-                        </div>
-                        <div class="mini-cart-info">
-                            <h6><a href="#">{{ __('Thermometer Gun') }}</a></h6>
-                            <span class="mini-cart-quantity">1 x 190.000<sup>đ</sup></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="mini-cart-footer">
-                    <div class="mini-cart-sub-total">
-                        <h5>{{ __('Subtotal:') }} <span>2.190.000<sup>đ</sup></span></h5>
-                    </div>
-                    <div class="btn-wrapper">
-                        <a class="theme-btn-1 btn btn-effect-1 p-3" href="{{ route('cart.index') }}">{{ __('View Cart') }}</a>
-                        <a class="theme-btn-2 btn btn-effect-2 p-3" href="{{ route('cart.checkout') }}">{{ __('Checkout') }}</a>
-                    </div>
-                    <p>{{ __('Free Shipping on All Orders Over') }} 1.000.000<sup>đ</sup>!</p>
-                </div>
 
+                </div>
             </div>
-        </div>
-        <!-- Utilize Cart Menu End -->
+            <!-- Utilize Cart Menu End -->
+        @endif
 
         <!-- Utilize Mobile Menu Start -->
         <div class="ltn__utilize ltn__utilize-mobile-menu" id="ltn__utilize-mobile-menu">
@@ -453,7 +444,11 @@
                             <a href="{{ route('cart.index') }}" title="Shoping Cart">
                                 <span class="utilize-btn-icon">
                                     <i class="fas fa-shopping-cart"></i>
-                                    <sup>5</sup>
+                                    <sup>
+                                        @if (session('cart'))
+                                            {{ number_format(session('cart')->count) }}
+                                        @endif
+                                    </sup>
                                 </span>
                                 {{ __('Shoping Cart') }}
                             </a>
@@ -490,35 +485,35 @@
                                 </div>
                                 <div class="footer-address">
                                     <ul>
-                                        @if(isset(session('settings')['company_address']))
-                                        <li>
-                                            <div class="footer-address-icon">
-                                                <i class="icon-placeholder"></i>
-                                            </div>
-                                            <div class="footer-address-info">
-                                                <p>{{ __('Address') }}: {{ session('settings')['company_address'] }}</p>
-                                            </div>
-                                        </li>
+                                        @if (isset(session('settings')['company_address']))
+                                            <li>
+                                                <div class="footer-address-icon">
+                                                    <i class="icon-placeholder"></i>
+                                                </div>
+                                                <div class="footer-address-info">
+                                                    <p>{{ __('Address') }}: {{ session('settings')['company_address'] }}</p>
+                                                </div>
+                                            </li>
                                         @endif
-                                        @if(isset(session('settings')['company_phone']))
-                                        <li>
-                                            <div class="footer-address-icon">
-                                                <i class="bi bi-headset"></i>
-                                            </div>
-                                            <div class="footer-address-info">
-                                                <p>{{ __('Customer service') }}: <a href="tel:{{ session('settings')['company_phone'] }}">{{ session('settings')['company_phone'] }}</a></p>
-                                            </div>
-                                        </li>
+                                        @if (isset(session('settings')['company_phone']))
+                                            <li>
+                                                <div class="footer-address-icon">
+                                                    <i class="bi bi-headset"></i>
+                                                </div>
+                                                <div class="footer-address-info">
+                                                    <p>{{ __('Customer service') }}: <a href="tel:{{ session('settings')['company_phone'] }}">{{ session('settings')['company_phone'] }}</a></p>
+                                                </div>
+                                            </li>
                                         @endif
-                                        @if(isset(session('settings')['company_email']))
-                                        <li>
-                                            <div class="footer-address-icon">
-                                                <i class="icon-mail"></i>
-                                            </div>
-                                            <div class="footer-address-info">
-                                                <p>{{ __('Email') }}: <a href="mailto:{{ session('settings')['company_email'] }}">{{ session('settings')['company_email'] }}</a></p>
-                                            </div>
-                                        </li>
+                                        @if (isset(session('settings')['company_email']))
+                                            <li>
+                                                <div class="footer-address-icon">
+                                                    <i class="icon-mail"></i>
+                                                </div>
+                                                <div class="footer-address-info">
+                                                    <p>{{ __('Email') }}: <a href="mailto:{{ session('settings')['company_email'] }}">{{ session('settings')['company_email'] }}</a></p>
+                                                </div>
+                                            </li>
                                         @endif
                                     </ul>
                                 </div>
@@ -631,189 +626,6 @@
             </div>
         </footer>
         <!-- FOOTER AREA END -->
-
-        <!-- MODAL AREA START (Quick View Modal) -->
-        <div class="ltn__modal-area ltn__quick-view-modal-area">
-            <div class="modal fade" id="quick_view_modal" tabindex="-1">
-                <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button class="close" data-bs-dismiss="modal" type="button" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                                <!-- <i class="fas fa-times"></i> -->
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="ltn__quick-view-modal-inner">
-                                <div class="modal-product-item">
-                                    <div class="row">
-                                        <div class="col-lg-6 col-12">
-                                            <div class="modal-product-img">
-                                                <img src="{{ asset('img/product/product-demo-1.jpg') }}" alt="#">
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-6 col-12">
-                                            <div class="modal-product-info">
-                                                <div class="product-ratting">
-                                                    <ul>
-                                                        <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                                        <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                                        <li><a href="#"><i class="fas fa-star"></i></a></li>
-                                                        <li><a href="#"><i class="fas fa-star-half-alt"></i></a></li>
-                                                        <li><a href="#"><i class="far fa-star"></i></a></li>
-                                                        <li class="review-total"> <a href="#"> ( 95 Reviews )</a></li>
-                                                    </ul>
-                                                </div>
-                                                <h3>{{ __('Digital Stethoscope') }}</h3>
-                                                <div class="product-price">
-                                                    <span>350,000<sup>đ</sup></span>
-                                                    <!-- <del>$165.00</del> -->
-                                                </div>
-                                                <div class="modal-product-meta ltn__product-details-menu-1">
-                                                    <ul>
-                                                        <li>
-                                                            <strong>{{ __('Categories:') }}</strong>
-                                                            <span>
-                                                                <a href="#">Parts</a>
-                                                                <a href="#">Car</a>
-                                                                <a href="#">Seat</a>
-                                                                <a href="#">Cover</a>
-                                                            </span>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <div class="ltn__product-details-menu-2">
-                                                    <ul>
-                                                        <li>
-                                                            <div class="cart-plus-minus">
-                                                                <input class="cart-plus-minus-box" name="qtybutton" type="text" value="02">
-                                                            </div>
-                                                        </li>
-                                                        <li>
-                                                            <a class="theme-btn-1 btn btn-effect-1" data-bs-toggle="modal" data-bs-target="#add_to_cart_modal" href="#" title="Add to Cart">
-                                                                <i class="fas fa-shopping-cart"></i>
-                                                                <span>{{ __('ADD TO CART') }}</span>
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <div class="ltn__product-details-menu-3">
-                                                    <ul>
-                                                        <li>
-                                                            <a class="" data-bs-toggle="modal" data-bs-target="#liton_wishlist_modal" href="#" title="Wishlist">
-                                                                <i class="far fa-heart"></i>
-                                                                <span>{{ __('Add to Wishlist') }}</span>
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a class="" data-bs-toggle="modal" data-bs-target="#quick_view_modal" href="#" title="Compare">
-                                                                <i class="fas fa-exchange-alt"></i>
-                                                                <span>{{ __('Compare') }}</span>
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <hr>
-                                                <div class="ltn__social-media">
-                                                    <ul>
-                                                        <li>Share:</li>
-                                                        <li><a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a></li>
-                                                        <li><a href="#" title="Twitter"><i class="fab fa-twitter"></i></a></li>
-                                                        <li><a href="#" title="Linkedin"><i class="fab fa-linkedin"></i></a></li>
-                                                        <li><a href="#" title="Instagram"><i class="fab fa-instagram"></i></a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- MODAL AREA END -->
-
-        <!-- MODAL AREA START (Add To Cart Modal) -->
-        <div class="ltn__modal-area ltn__add-to-cart-modal-area">
-            <div class="modal fade" id="add_to_cart_modal" tabindex="-1">
-                <div class="modal-dialog modal-md" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button class="close" data-bs-dismiss="modal" type="button" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="ltn__quick-view-modal-inner">
-                                <div class="modal-product-item">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="modal-product-img">
-                                                <img src="{{ asset('img/product/product-demo-1.jpg') }}" alt="#">
-                                            </div>
-                                            <div class="modal-product-info">
-                                                <h5><a href="{{ route('shop.index', ['product' => 'slug']) }}">Digital Stethoscope</a></h5>
-                                                <p class="added-cart"><i class="fa fa-check-circle"></i>
-                                                    {{ __('Successfully
-                                                                                                                                                                                                                                                                                                                                                                                                                            added to your Cart') }}
-                                                </p>
-                                                <div class="btn-wrapper">
-                                                    <a class="theme-btn-1 btn btn-effect-1"
-                                                        href="{{ route('cart.index') }}">{{ __('View
-                                                                                                                                                                                                                                                                                                                                                                                                                                                            Cart') }}</a>
-                                                    <a class="theme-btn-2 btn btn-effect-2" href="{{ route('cart.checkout') }}">{{ __('Checkout') }}</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- MODAL AREA END -->
-
-        <!-- MODAL AREA START (Wishlist Modal) -->
-        <div class="ltn__modal-area ltn__add-to-cart-modal-area">
-            <div class="modal fade" id="liton_wishlist_modal" tabindex="-1">
-                <div class="modal-dialog modal-md" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button class="close" data-bs-dismiss="modal" type="button" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="ltn__quick-view-modal-inner">
-                                <div class="modal-product-item">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="modal-product-img">
-                                                <img src="{{ asset('img/product/product-demo-1.jpg') }}" alt="#">
-                                            </div>
-                                            <div class="modal-product-info">
-                                                <h5><a href="{{ route('shop.index', ['product' => 'slug']) }}">Digital Stethoscope</a></h5>
-                                                <p class="added-cart"><i class="fa fa-check-circle"></i> {{ __('Successfully added to your Wishlist') }}</p>
-                                                <div class="btn-wrapper">
-                                                    <a class="theme-btn-1 btn btn-effect-1" href="#">{{ __('View Wishlist') }}</a>
-                                                </div>
-                                            </div>
-                                            <!-- additional-info -->
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- MODAL AREA END -->
-
     </div>
     <!-- Body main wrapper end -->
 
@@ -827,12 +639,31 @@
         </div>
     </div>
     <!-- preloader area end -->
+    <!-- All JS Plugins -->
+    <script src="{{ asset('js/plugins.js') }}"></script>
+    {{-- Include Toastify --}}
+    <script src="{{ asset('admin/vendors/toastify/toastify.js') }}"></script>
+    <!-- Main JS -->
+    <script src="{{ asset('js/main.js') }}"></script>
+    {{-- Include moment JS --}}
+    <script type="text/javascript" src="{{ asset('admin/vendors/momentJS/moment.js') }}"></script>
+    {{-- input image JSCompressor --}}
+    <script src="{{ asset('admin/vendors/compressorjs/compressor.min.js') }}"></script>
+    {{-- Include Select2 --}}
+    <script src="{{ asset('vendors/select2/select2.full.min.js') }}"></script>
+    <script src="{{ asset('vendors/select2/i18n/vi.js') }}"></script>
     <script type="text/javascript">
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        moment.locale("vi");
         const config = {
             routes: {
                 login: `{{ route('login') }}`,
                 placeholder: `asset('admin/images/placeholder.webp')`
-            }, 
+            },
             select2: {
                 ajax: {
                     processResults: function(data, params) {
@@ -856,19 +687,62 @@
             }
         }
     </script>
-    <!-- All JS Plugins -->
-    <script src="{{ asset('js/plugins.js') }}"></script>
-    {{-- Include Toastify --}}
-    <script src="{{ asset('admin/vendors/toastify/toastify.js') }}"></script>
-    <!-- Main JS -->
-    <script src="{{ asset('js/main.js') }}"></script>
-    {{-- input image JSCompressor --}}
-    <script src="{{ asset('admin/vendors/compressorjs/compressor.min.js') }}"></script>
-    {{-- Include Select2 --}}
-    <script src="{{ asset('vendors/select2/select2.full.min.js') }}"></script>
-    <script src="{{ asset('vendors/select2/i18n/vi.js') }}"></script>
-
     @stack('scripts')
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $(document).on('click', '.btn-add-to-cart', function(e) {
+                e.preventDefault();
+                const form = $(this).closest('form')
+                submitForm(form).done(function(response) {
+                    form.find('[type=submit]:last').prop("disabled", false).html('<i class="fas fa-shopping-cart"></i> <span>ADD TO CART</span>');
+                    updateMiniCart(response.cart);
+                    $("body").addClass("ltn__utilize-open");
+                    $(".ltn__utilize-overlay").fadeIn();
+                    $("#ltn__utilize-cart-menu").addClass("ltn__utilize-open");
+                })
+            })
+
+            function updateMiniCart(cart) {
+                // Update mini cart icon
+                $('.mini-cart-icon sup').add('.ltn__utilize-buttons sup').text(cart.count);
+                $('.mini-cart-icon h6 .ltn__secondary-color').text(number_format(cart.total) + 'đ');
+
+                // Update cart menu
+                var miniCartHtml = '';
+                cart.items.forEach(function(item) {
+                    miniCartHtml += `
+                        <div class="mini-cart-item clearfix">
+                            <div class="mini-cart-img">
+                                <a href="${item.variable.product.url}"><img src="${item.variable.product.imageUrl}" alt="${item.variable.product.sku + (item.variable.sub_sku != null ? item.variable.sub_sku : '')} - ${item.variable.product.name + (item.variable.name != null ? ' - ' + item.variable.name : '')}"></a>
+                                <form action="{{ route('cart.remove') }}" method="post">
+                                    @csrf
+                                    <input name="variable_id" type="hidden" value="${item.variable_id}">
+                                    <button class="mini-cart-item-delete" type="submit"><i class="icon-cancel"></i></button>
+                                </form>
+                            </div>
+                            <div class="mini-cart-info">
+                                <h6><a href="${item.variable.product.url}">${item.variable.product.sku + (item.variable.sub_sku != null ? item.variable.sub_sku : '')} - ${item.variable.product.name + (item.variable.name != null ? ' - ' + item.variable.name : '')}</a></h6>
+                                <span class="mini-cart-quantity">${item.quantity} &times; ${number_format(item.price)}đ</span>
+                            </div>
+                        </div>`;
+                });
+                $('.mini-cart-product-area').html(miniCartHtml);
+
+                // Update subtotal
+                $('.mini-cart-sub-total span').text(number_format(cart.total) + 'đ');
+            }
+
+            // Handle item removal from mini cart
+            $(document).on('click', '.mini-cart-item-delete', function(e) {
+                e.preventDefault();
+                const form = $(this).closest('form')
+                submitForm(form).done(function(response) {
+                    form.find('[type=submit]:last').prop("disabled", false).html('<i class="icon-cancel"></i>');
+                    updateMiniCart(response.cart);
+                })
+            })
+        });
+    </script>
 </body>
 
 </html>
