@@ -40,7 +40,7 @@
                         </li>
                         <li>
                             <div class="showing-product-number text-right">
-                                <span>{{ __('Showing') }} {{ $products->firstItem() }}–{{ $products->lastItem() }} {{ __('of') }} {{ $products->total() }} {{ __('results') }}</span>
+                                <span>{{ __('Showing :first - :last of :total products', ['first' => $products->firstItem(), 'last' => $products->lastItem(), 'total' => $products->total()]) }}</span>
                             </div>
                         </li>
                         <li>

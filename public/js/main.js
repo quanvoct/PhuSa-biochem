@@ -2204,9 +2204,9 @@
         $(".expand-description-btn").click(function () {
             $(".product-description-container").toggleClass("expand");
             if ($(".product-description-container").hasClass("expand")) {
-                $(this).html(`<i class="fas fa-arrow-up"></i>`);
+                $(this).html($(this).attr('data-collapse'));
             } else {
-                $(this).html(`<i class="fas fa-arrow-down"></i>`);
+                $(this).html($(this).attr('data-reveal'));
             }
         });
     });

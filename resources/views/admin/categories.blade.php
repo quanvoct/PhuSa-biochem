@@ -1,19 +1,19 @@
 @extends('admin.layouts.app')
 @section('title')
-    {{ $pageName }}
+    {!! __($pageName) !!}
 @endsection
 @section('content')
     <div class="page-heading">
         <div class="page-title">
             <div class="row">
                 <div class="col-12 col-md-6 order-md-1 order-last">
-                    <h5 class="text-uppercase">{{ $pageName }}</h5>
+                    <h5 class="text-uppercase">{!! __($pageName) !!}</h5>
                 </div>
                 <div class="col-12 col-md-6 order-md-2 order-first">
                     <nav class="breadcrumb-header float-start float-lg-end" aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{ __('Dashboard') }}</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">{{ $pageName }}</li>
+                            <li class="breadcrumb-item active" aria-current="page">{!! __($pageName) !!}</li>
                         </ol>
                     </nav>
                 </div>

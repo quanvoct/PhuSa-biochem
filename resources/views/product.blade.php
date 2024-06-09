@@ -149,7 +149,7 @@
                                                 {!! $product->description !!}
                                             </div>
                                         </div>
-                                        <button class="btn btn-effect-1 text-uppercase theme-btn-1 expand-description-btn m-3">{{ __('Read more') }}</button>
+                                        <button class="btn btn-effect-1 text-uppercase theme-btn-1 expand-description-btn m-3" data-collapse="{{ __('Collapse') }}" data-reveal="{{ __('Read more') }}">{{ __('Read more') }}</button>
                                     </div>
                                     @if (!empty($specs))
                                         <div class="tab-pane fade" id="liton_tab_details_specifications">

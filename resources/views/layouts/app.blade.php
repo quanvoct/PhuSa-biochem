@@ -385,7 +385,7 @@
                 </div>
                 <div class="mini-cart-footer">
                     <div class="mini-cart-sub-total">
-                        <h5>{{ __('Subtotal:') }} <span>2.190.000<sup>đ</sup></span></h5>
+                        <h5>{{ __('Subtotal') }}: <span>2.190.000<sup>đ</sup></span></h5>
                     </div>
                     <div class="btn-wrapper">
                         <a class="theme-btn-1 btn btn-effect-1 p-3" href="{{ route('cart.index') }}">{{ __('View Cart') }}</a>

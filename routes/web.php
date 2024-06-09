@@ -183,7 +183,7 @@ Route::group(['middleware' => 'auth'], function () {
 });
 
 Route::group(['middleware' => 'language'], function () {
-    Route::get('language/{lang?}', [LanguageController::class, 'change'])->name('language.change');
+    Route::get('language/{lang?}', [HomeController::class, 'change'])->name('language.change');
 });
 Route::get('/geolocation/country', [GeolocationController::class, 'getCountry'])->name('geolocation.country');
 Route::get('/geolocation/city', [GeolocationController::class, 'getCity'])->name('geolocation.city');

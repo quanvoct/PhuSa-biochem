@@ -98,7 +98,7 @@
                                     </div>
                                     <div class="ltn__blog-brief">
                                         <h3 class="ltn__blog-title"><a href="{{ route('home.index', ['page' => 'posts', 'category' => $relate->category->code, 'post' => $relate->code]) }}">{!! $relate->title !!}</a></h3>
-                                        <p>{!! ($relate->excerpt) ? Illuminate\Support\Str::limit($relate->excerpt, 60) : Illuminate\Support\Str::limit($relate->content, 60) !!}</p>
+                                        <p>{!! $relate->excerpt ? Illuminate\Support\Str::limit(strip_tags($relate->excerpt), 60) : Illuminate\Support\Str::limit(strip_tags($relate->content), 60) !!}</p>
                                         <div class="ltn__blog-meta-btn">
                                             <div class="ltn__blog-meta">
                                                 <ul>

@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Catalogue;
 use App\Models\Category;
+use App\Models\Language;
 use App\Models\Post;
+use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -38,7 +40,7 @@ class HomeController extends Controller
                             abort(404);
                         }
                     } else {
-                        $pageName = $category->name;
+                        $pageName = __($category->name);
                         return view('category', compact('pageName', 'category'));
                     }
                 } else {
@@ -104,5 +106,13 @@ class HomeController extends Controller
             ->get();
         $pageName = __('About');
         return view('about', compact('pageName', 'categories'));
+    }
+    public function change(Request $request)
+    {
+        app()->setLocale($request->language, config('app.locale'));
+        Session::put('language', $request->language);
+        $language = Language::whereCode($request->language)->first();
+        Session::put('settings', Setting::where('language_id', $language->id)->pluck('value', 'key'));
+        return redirect()->back();
     }
 }

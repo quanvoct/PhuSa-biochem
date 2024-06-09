@@ -145,12 +145,4 @@ class LanguageController extends Controller
         return redirect()->route('admin.language', ['key' => $language->code])->with('response', $response);
     }
 
-    public function change(Request $request)
-    {
-        app()->setLocale($request->language, config('app.locale'));
-        Session::put('language', $request->language);
-        $language = Language::whereCode($request->language)->first();
-        Session::put('settings', Setting::where('language_id', $language->id)->pluck('value', 'key'));
-        return redirect()->back();
-    }
 }

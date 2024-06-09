@@ -42,7 +42,7 @@
                                     </div>
                                     <div class="ltn__blog-brief">
                                         <h3 class="ltn__blog-title"><a href="{{ route('home.index', ['page' => 'posts', 'category' => $post->category->code, 'post' => $post->code]) }}">{!! $post->title !!}</a></h3>
-                                        <p>{!! $post->excerpt ? Illuminate\Support\Str::limit($post->excerpt, 60) : Illuminate\Support\Str::limit($post->content, 60) !!}</p>
+                                        <p>{!! $post->excerpt ? Illuminate\Support\Str::limit(strip_tags($post->excerpt), 60) : Illuminate\Support\Str::limit(strip_tags($post->content), 60) !!}</p>
                                         <div class="ltn__blog-meta-btn">
                                             <div class="ltn__blog-meta">
                                                 <ul>
