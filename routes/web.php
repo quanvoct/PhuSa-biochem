@@ -181,6 +181,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('checkout', [CartController::class, 'checkout'])->name('cart.checkout');
         Route::get('checkout/success', [CartController::class, 'checkout'])->name('cart.checkout.success');
         Route::post('add', [CartController::class, 'add'])->name('cart.add');
+        Route::post('update', [CartController::class, 'update'])->name('cart.update');
         Route::post('remove', [CartController::class, 'remove'])->name('cart.remove');
         Route::post('clear', [CartController::class, 'clear'])->name('cart.clear');
     });

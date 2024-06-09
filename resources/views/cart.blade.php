@@ -49,7 +49,7 @@
                                 @if (session('cart'))
                                     @if (session('cart')->count)
                                         @foreach (session('cart')->items as $item)
-                                            <tr>
+                                            <tr class="cart-item">
                                                 <td class="cart-product-remove px-0">
                                                     <form action="{{ route('cart.remove') }}" method="post">
                                                         @csrf
@@ -62,14 +62,14 @@
                                                             alt="{{ $item->variable->product->sku . ($item->variable->sub_sku != null ? $item->variable->sub_sku : '') }} - {{ $item->variable->product->name . ($item->variable->name != null ? ' - ' . $item->variable->name : '') }}"></a>
                                                 </td>
                                                 <td class="cart-product-info text-start w-50">
-                                                    <h4 class="mb-0"><a href="{{ $item->variable->product->url }}">{{ $item->variable->product->sku . ' - ' . $item->variable->product->name }}</a></h4>
-                                                    <p class="text-secondary mb-0">{{ ($item->variable->sub_sku != null ? $item->variable->sub_sku : '') . ($item->variable->name != null ? ' - ' . $item->variable->name : '') }}</p>
+                                                    <h4 class="mb-0 p-0"><a href="{{ $item->variable->product->url }}">{{ $item->variable->product->sku . ' - ' . $item->variable->product->name }}</a></h4>
+                                                    <p class="text-secondary mb-0 p-0">{{ ($item->variable->sub_sku != null ? $item->variable->sub_sku : '') . ($item->variable->name != null ? ' - ' . $item->variable->name : '') }}</p>
                                                 </td>
                                                 <td class="cart-product-price text-end px-3" style="width: 15% !important">{{ number_format($item->price) }}đ &nbsp;&nbsp;&times;</td>
                                                 <td class="cart-product-quantity px-0">
-                                                    <form action="{{ route('cart.add') }}" method="post">
+                                                    <form action="{{ route('cart.update') }}" method="post">
                                                         @csrf
-                                                        <input type="hidden" name="variable_id" value="{{ $item->variable_id }}">
+                                                        <input name="variable_id" type="hidden" value="{{ $item->variable_id }}">
                                                         <div class="cart-plus-minus">
                                                             <input class="cart-plus-minus-box" name="quantity" type="text" value="{{ $item->quantity }}">
                                                         </div>
@@ -86,7 +86,7 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                <button class="btn theme-btn-2 btn-effect-2-- disabled" type="submit">{{ __('Update Cart') }}</button>
+                                                <button class="btn theme-btn-2 btn-effect-2-- btn-update-cart" type="button">{{ __('Update Cart') }}</button>
                                             </td>
                                         </tr>
                                     @else
@@ -150,9 +150,51 @@
 @push('scripts')
     <script type="text/javascript">
         $(document).ready(function() {
-            $(document).on('click', '.qtybutton', function (e) {
+            $(document).on('click', '.qtybutton', function(e) {
                 e.preventDefault();
-                $(this).closest('form').submit()
+                const btn = $(this),
+                    table = $(this).parents('table')
+                submitForm($(this).closest('form')).done(function(response) {
+                    table.find('tr.cart-item').remove()
+                    $('.shoping-cart-total table tr td sup').text(response.cart.count).parent().next().text(number_format(response.cart.total) + 'đ')
+                    $.each(response.cart.items, function(i, item) {
+                        table.prepend(`
+                            <tr class="cart-item">
+                                <td class="cart-product-remove px-0">
+                                    <form action="{{ route('cart.remove') }}" method="post">
+                                        @csrf
+                                        <input name="variable_id" type="hidden" value="${item.variable.id}">
+                                        <button class="btn btn-close btn-link text-decoration-none px-4" type="submit"></button>
+                                    </form>
+                                </td>
+                                <td class="cart-product-image px-0">
+                                    <a href="${item.variable.product.url}"><img src="${item.variable.product.imageUrl}"
+                                            alt="${ item.variable.product.sku + (item.variable.sub_sku != null ? item.variable.sub_sku : '') } - ${ item.variable.product.name + (item.variable.name != null ? ' - ' + item.variable.name : '') }"></a>
+                                </td>
+                                <td class="cart-product-info text-start w-50">
+                                    <h4 class="mb-0 p-0"><a href="${response}">${ item.variable.product.sku + ' - ' + item.variable.product.name }</a></h4>
+                                    <p class="text-secondary mb-0 p-0">${ (item.variable.sub_sku != null ? item.variable.sub_sku : '') + (item.variable.name != null ? ' - ' + item.variable.name : '') }</p>
+                                </td>
+                                <td class="cart-product-price text-end px-3" style="width: 15% !important">${ number_format(item.price) }đ &nbsp;&nbsp;&times;</td>
+                                <td class="cart-product-quantity px-0">
+                                    <form action="{{ route('cart.update') }}" method="post">
+                                        @csrf
+                                        <input type="hidden" name="variable_id" value="${item.variable.id}">
+                                        <div class="cart-plus-minus">
+                                            <div class="dec cursor-pointer qtybutton">
+                                                <i class="fas fa-minus"></i>
+                                            </div>
+                                            <input class="cart-plus-minus-box" name="quantity" type="text" value="${ item.quantity }">
+                                            <div class="inc cursor-pointer qtybutton">
+                                                <i class="fas fa-plus"></i>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </td>
+                                <td class="cart-product-subtotal text-end" style="width: 15% !important">${ number_format(item.quantity * item.price) }đ</td>
+                            </tr>`)
+                    })
+                })
             })
         })
     </script>

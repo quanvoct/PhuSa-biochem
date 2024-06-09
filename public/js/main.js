@@ -1970,7 +1970,7 @@
         -------------------------------------------------------- */
         $(".cart-plus-minus").prepend('<div class="dec cursor-pointer qtybutton"><i class="fas fa-minus"></i></div>');
         $(".cart-plus-minus").append('<div class="inc cursor-pointer qtybutton"><i class="fas fa-plus"></i></div>');
-        $(".qtybutton").on("click", function () {
+        $(document).on("click", ".qtybutton", function () {
             var $button = $(this);
             var oldValue = $button.parent().find("input").val();
             if ($button.hasClass('inc')) {

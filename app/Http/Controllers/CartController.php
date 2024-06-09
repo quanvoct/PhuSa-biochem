@@ -48,7 +48,7 @@ class CartController extends Controller
 
     public function add(Request $request)
     {
-        // try {
+        try {
             $cart = Cart::firstOrCreate(['user_id' => Auth::id()]);
             $item = CartItem::firstOrNew(['variable_id' => $request->variable_id]);
             $item->cart_id = $cart->id;
@@ -60,21 +60,59 @@ class CartController extends Controller
 
             //Update session
             Session::put('cart', Auth::user()->cart);
+            $response = [
+                'status' => 'success',
+                'msg' => __('Successfully added :product to cart', ['product' => $item->variable->product->sku . ($item->variable->sub_sku ?? '') . ' - ' . $item->variable->product->name . ($item->variable->name ? ' - ' . $item->variable->name : '')]),
+                'cart' => $this->get()
+            ];
             if ($request->ajax()) {
-                $response = [
-                    'status' => 'success',
-                    'msg' => __('Successfully added :product to cart', ['product' => $item->variable->product->sku . ($item->variable->sub_sku ?? '') . ' - ' . $item->variable->product->name . ($item->variable->name ? ' - ' . $item->variable->name : '')]),
-                    'cart' => $this->get()
-                ];
                 return response()->json($response, 200);
             } else {
-                return redirect()->back()->with('response', __('Successfully added :product to cart', ['product' => $item->variable->product->sku . ($item->variable->sub_sku ?? '') . ' - ' . $item->variable->product->name . ($item->variable->name ? ' - ' . $item->variable->name : '')]));
+                return redirect()->back()->with('response', $response);
             }
-        // } catch (\Exception $e) {
-        //     // Log the error or handle it accordingly
-        //     Log::error(__('Failed to add item to cart: :error', ['error' => $e->getMessage()]));
-        //     return null;
-        // }
+        } catch (\Exception $e) {
+            // Log the error or handle it accordingly
+            Log::error(__('Failed to add item to cart: :error', ['error' => $e->getMessage()]));
+            return null;
+        }
+    }
+
+    public function update(Request $request)
+    {
+        try {
+            $item = CartItem::whereVariable_id($request->variable_id)->first();
+            $msg = '';
+            if($item) {
+                if(is_numeric($request->quantity) && $request->quantity != 0) {
+                    $item->quantity += $request->quantity - $item->quantity;
+                    $item->options = $request->options ?? $item->options;
+                    $item->promotion_id = $request->promotion_id ?? $item->promotion_id;
+                    $item->save();
+                    $msg = __('Successfully added :product to cart', ['product' => $item->variable->product->sku . ($item->variable->sub_sku ?? '') . ' - ' . $item->variable->product->name . ($item->variable->name ? ' - ' . $item->variable->name : '')]);
+                } else {
+                    $item->delete();
+                    $variable = Variable::find($request->variable_id);
+                    $msg = __('Successfully removed :product from cart', ['product' => $variable->product->sku . ($variable->sub_sku ?? '') . ' - ' . $variable->product->name . ($variable->name ? ' - ' . $variable->name : '')]);
+                }
+            }
+
+            //Update session
+            Session::put('cart', Auth::user()->cart);
+            $response = [
+                'status' => 'success',
+                'msg' => $msg,
+                'cart' => $this->get()
+            ];
+            if ($request->ajax()) {
+                return response()->json($response, 200);
+            } else {
+                return redirect()->back()->with('response', $response);
+            }
+        } catch (\Exception $e) {
+            // Log the error or handle it accordingly
+            Log::error(__('Failed to add item to cart: :error', ['error' => $e->getMessage()]));
+            return null;
+        }
     }
 
     public function remove(Request $request)
@@ -86,16 +124,16 @@ class CartController extends Controller
             //Update session
             Session::put('cart', Auth::user()->cart);
 
+            $response = [
+                'status' => 'success',
+                'msg' => __('Successfully removed :product from cart', ['product' => $variable->product->sku . ($variable->sub_sku ?? '') . ' - ' . $variable->product->name . ($variable->name ? ' - ' . $variable->name : '')]),
+                'cart' => $this->get()
+            ];
             if ($request->ajax()) {
-                $response = [
-                    'status' => 'success',
-                    'msg' => __('Successfully removed :product from cart', ['product' => $variable->product->sku . ($variable->sub_sku ?? '') . ' - ' . $variable->product->name . ($variable->name ? ' - ' . $variable->name : '')]),
-                    'cart' => $this->get()
-                ];
+                return response()->json($response, 200);
             } else {
-                return redirect()->back()->with('response', __('Successfully removed :product from cart', ['product' => $variable->product->sku . ($variable->sub_sku ?? '') . ' - ' . $variable->product->name . ($variable->name ? ' - ' . $variable->name : '')]));
+                return redirect()->back()->with('response', $response);
             }
-            return response()->json($response, 200);
         } catch (\Exception $e) {
             // Log the error or handle it accordingly
             Log::error(__('Failed to remove item from cart: :error', ['error' => $e->getMessage()]));
@@ -108,15 +146,15 @@ class CartController extends Controller
             Auth::user()->cart->items->delete();
             session()->forget('cart');
 
+            $response = [
+                'status' => 'success',
+                'msg' => __('Successfully cleared cart'),
+                'cart' => $this->get()
+            ];
             if ($request->ajax()) {
-                $response = [
-                    'status' => 'success',
-                    'msg' => __('Successfully cleared cart'),
-                    'cart' => $this->get()
-                ];
                 return response()->json($response, 200);
             } else {
-                return redirect()->back()->with('response', __('Successfully cleared cart'));
+                return redirect()->back()->with('response', $response);
             }
         } catch (\Exception $e) {
             // Log the error or handle it accordingly
