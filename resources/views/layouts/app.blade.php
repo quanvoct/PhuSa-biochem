@@ -117,9 +117,9 @@
                                         <i class="icon-phone"></i>
                                     </div>
                                     <div class="header-feature-info">
-                                        @if (isset(session('settings')['company_phone']))
+                                        @if (isset(session('settings')['company_hotline']))
                                             <h6>Phone</h6>
-                                            <p><a href="tel:(+84)931035935">{{ session('settings')['company_phone'] }}</a></p>
+                                            <p><a href="tel:{{ session('settings')['company_hotline'] }}">{{ session('settings')['company_hotline'] }}</a></p>
                                         @endif
                                     </div>
                                 </div>
@@ -323,12 +323,12 @@
                         </div>
                         <div class="col-lg-2 align-self-center d-none d-xl-block">
                             <div class="header-contact-info text-end">
-                                @if (isset(session('settings')['company_phone']))
-                                    <a class="font-weight-6 ltn__primary-color" href="tel:{{ session('settings')['company_phone'] }}">
+                                @if (isset(session('settings')['company_hotline']))
+                                    <a class="font-weight-6 ltn__primary-color" href="tel:{{ session('settings')['company_hotline'] }}">
                                         <span class="ltn__secondary-color">
                                             <i class="icon-call font-weight-7"></i>
                                         </span>
-                                        {{ session('settings')['company_phone'] }}
+                                        {{ session('settings')['company_hotline'] }}
                                     </a>
                                 @endif
                             </div>
@@ -432,14 +432,37 @@
                 </div>
                 <div class="ltn__utilize-buttons ltn__utilize-buttons-2">
                     <ul>
-                        <li>
-                            <a href="#" title="{{ __('My Account') }}">
-                                <span class="utilize-btn-icon">
-                                    <i class="far fa-user"></i>
-                                </span>
-                                {{ __('My Account') }}
-                            </a>
-                        </li>
+                        @guest
+                            @if (Route::has('login'))
+                                <li>
+                                    <a href="{{ route('login') }}" title="{{ __('Sign in') }}">
+                                        <span class="utilize-btn-icon">
+                                            <i class="fas fa-sign-in-alt"></i>
+                                        </span>
+                                        {{ __('Sign in') }}
+                                    </a>
+                                </li>
+                            @endif
+                            @if (Route::has('register'))
+                                <li>
+                                    <a href="{{ route('register') }}" title="{{ __('Register') }}">
+                                        <span class="utilize-btn-icon">
+                                            <i class="fas fa-user-plus"></i>
+                                        </span>
+                                        {{ __('Register') }}
+                                    </a>
+                                </li>
+                            @endif
+                        @else
+                            <li>
+                                <a href="{{ route('profile.index') }}" title="{{ __('My Account') }}">
+                                    <span class="utilize-btn-icon">
+                                        <i class="far fa-user"></i>
+                                    </span>
+                                    {{ __('My Account') }}
+                                </a>
+                            </li>
+                        @endguest
                         <li>
                             <a href="{{ route('cart.index') }}" title="Shoping Cart">
                                 <span class="utilize-btn-icon">

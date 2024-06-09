@@ -318,24 +318,22 @@
     <div class="ltn__call-to-action-area section-bg-1 bg-image pt-120 pb-120" data-bs-bg="{{ asset('img/bg/31.jpg') }}">
         <div class="container">
             <div class="row">
-                <div class="col-lg-7">
+                <div class="col-lg-8">
                     <div class="call-to-action-inner text-color-white--- text-center---">
                         <div class="section-title-area ltn__section-title-2--- text-center---">
                             <h6 class="ltn__secondary-color">{{ __('Todays Hot Offer') }}</h6>
-                            <h1 class="section-title">{{ __('Monthly promotional campaign') }}</h1>
+                            <h1 class="section-title">{{ __('Recurrent promotional campaign') }}</h1>
                             <p>{{ __('Don`t miss out on the opportunity to receive promotions today from PhuSa Biochem.') }}</p>
                         </div>
-                        <div class="ltn__countdown ltn__countdown-3 bg-white--" data-countdown="2024/08/31"></div>
+                        <div class="ltn__countdown ltn__countdown-3 bg-white--" data-countdown="2024/09/30"></div>
                         <div class="btn-wrapper animated">
                             <a class="theme-btn-1 btn btn-effect-1 text-uppercase" href="{{ route('home.contact') }}">{{ __('Book Now') }}</a>
-                            <a class="ltn__secondary-color text-decoration-underline"
-                                href="{{ route('shop.index') }}">{{ __('Deal of The
-                                                                                                                                                                                Day') }}</a>
+                            {{-- <a class="ltn__secondary-color text-decoration-underline"
+                                href="{{ route('shop.index') }}">{{ __('Deal of The Day') }}</a> --}}
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-5">
-                    <!-- <img src="{{ asset('img/banner/15.png') }}" alt="#"> -->
                 </div>
             </div>
         </div>
@@ -466,7 +464,7 @@
                                 </div>
                                 <div class="ltn__blog-brief">
                                     <h3 class="ltn__blog-title"><a href="{{ route('home.index', ['page' => 'posts', 'category' => $post->category->code, 'post' => $post->code]) }}">{!! $post->title !!}</a></h3>
-                                    <p>{!! $post->excerpt ? Illuminate\Support\Str::limit($post->excerpt, 60) : Illuminate\Support\Str::limit($post->content, 60) !!}</p>
+                                    <p>{!! $post->excerpt ? Illuminate\Support\Str::limit(strip_tags($post->excerpt), 60) : Illuminate\Support\Str::limit(strip_tags($post->content), 60) !!}</p>
                                     <div class="ltn__blog-meta-btn">
                                         <div class="ltn__blog-meta">
                                             <ul>

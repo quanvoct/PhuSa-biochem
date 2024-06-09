@@ -116,8 +116,8 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="section-title-area ltn__section-title-2--- text-center">
-                        <h1 class="section-title">{{ __('Core Features') }}</h1>
-                        <p>{{ __('With the desire to evaluate the price and restructuring structure of the Company`s operations, aiming to better meet the needs of the market and customers in the new development period. The Company`s Board of Directors decided to establish Phu Sa Biochem Joint Stock Company (PHUSA Biochem). We have:') }}
+                        <h1 class="section-title">{{ __('Core Values') }}</h1>
+                        <p>{{ __('With the desire to evaluate the price and restructuring structure of the Company`s operations, aiming to better meet the needs of the market and customers in the new development period. The Company`s Board of Directors decided to establish Phu Sa Biochem Joint Stock Company (PHUSA Biochem). We have') }}:
                         </p>
                     </div>
                 </div>
@@ -131,7 +131,7 @@
                         <div class="ltn__feature-info">
                             <h4>{{ __('Exclusive production and distribution of Oligo/Primers') }}</h4>
                             <p>{{ __('Lorem ipsum dolor sit ame it, consectetur adipisicing elit, sed do eiusmod te mp or
-                                                                                    incididunt ut labore.') }}</p>
+                                                                                                                incididunt ut labore.') }}</p>
                         </div>
                     </div>
                 </div>
@@ -143,7 +143,7 @@
                         <div class="ltn__feature-info">
                             <h4>{{ __('Biological chemicals') }}</h4>
                             <p>{{ __('Lorem ipsum dolor sit ame it, consectetur adipisicing elit, sed do eiusmod te mp or
-                                                                                    incididunt ut labore.') }}</p>
+                                                                                                                incididunt ut labore.') }}</p>
                         </div>
                     </div>
                 </div>
@@ -155,7 +155,7 @@
                         <div class="ltn__feature-info">
                             <h4>{{ __('Sequencing Services') }}</h4>
                             <p>{{ __('Lorem ipsum dolor sit ame it, consectetur adipisicing elit, sed do eiusmod te mp or
-                                                                                    incididunt ut labore.') }}</p>
+                                                                                                                incididunt ut labore.') }}</p>
                         </div>
                     </div>
                 </div>
@@ -167,7 +167,7 @@
                         <div class="ltn__feature-info">
                             <h4>{{ __('Gene Synthesis Service') }}</h4>
                             <p>{{ __('Lorem ipsum dolor sit ame it, consectetur adipisicing elit, sed do eiusmod te mp or
-                                                                                    incididunt ut labore.') }}</p>
+                                                                                                                incididunt ut labore.') }}</p>
                         </div>
                     </div>
                 </div>
@@ -179,7 +179,7 @@
                         <div class="ltn__feature-info">
                             <h4>{{ __('Laboratory equipment') }}</h4>
                             <p>{{ __('Lorem ipsum dolor sit ame it, consectetur adipisicing elit, sed do eiusmod te mp or
-                                                                                    incididunt ut labore.') }}</p>
+                                                                                                                incididunt ut labore.') }}</p>
                         </div>
                     </div>
                 </div>
@@ -191,7 +191,7 @@
                         <div class="ltn__feature-info">
                             <h4>{{ __('Diagnostic kit') }}</h4>
                             <p>{{ __('Lorem ipsum dolor sit ame it, consectetur adipisicing elit, sed do eiusmod te mp or
-                                                                                    incididunt ut labore.') }}</p>
+                                                                                                                incididunt ut labore.') }}</p>
                         </div>
                     </div>
                 </div>
@@ -203,15 +203,12 @@
                         <div class="ltn__feature-info">
                             <h4>{{ __('Other Biochem services') }}</h4>
                             <p>{{ __('Lorem ipsum dolor sit ame it, consectetur adipisicing elit, sed do eiusmod te mp or
-                                                                                    incididunt ut labore.') }}</p>
+                                                                                                                incididunt ut labore.') }}</p>
                         </div>
                     </div>
                 </div>
                 <div class="col-12 mt-3">
-                    <p>{{ __('With the orientation of diversifying products and focusing on quality, step by step
-                                                            improvement we will bring to our customers and partners high quality products and services
-                                                            at affordable prices and fast delivery. in the Vietnamese market and Southeast Asian
-                                                            countries, meeting the needs of customers in the field of Biology - Chemistry.') }}
+                    <p>{{ __('With the orientation of diversifying products and focusing on quality, step by step improvement we will bring to our customers and partners high quality products and services at affordable prices and fast delivery. in the Vietnamese market and Southeast Asian countries, meeting the needs of customers in the field of Biology - Chemistry.') }}
                     </p>
                 </div>
             </div>
@@ -442,7 +439,7 @@
                                 </div>
                                 <div class="ltn__blog-brief">
                                     <h3 class="ltn__blog-title"><a href="{{ route('home.index', ['page' => 'posts', 'category' => $post->category->code, 'post' => $post->code]) }}">{!! $post->title !!}</a></h3>
-                                    <p>{!! $post->excerpt ? Illuminate\Support\Str::limit($post->excerpt, 60) : Illuminate\Support\Str::limit($post->content, 60) !!}</p>
+                                    <p>{!! $post->excerpt ? Illuminate\Support\Str::limit(strip_tags($post->excerpt), 60) : Illuminate\Support\Str::limit(strip_tags($post->content), 60) !!}</p>
                                     <div class="ltn__blog-meta-btn">
                                         <div class="ltn__blog-meta">
                                             <ul>

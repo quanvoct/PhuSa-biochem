@@ -59,29 +59,29 @@
                                                         </form>
                                                     </div>
                                                     <div class="col col-lg-9">
-                                                        <p>{{ __('Hello') }} <strong>{{ Auth::user()->name }}</strong> ({{ __('not') }} <strong>{{ Auth::user()->name }}</strong>? <small><a href="{{ route('logout') }}"
+                                                        <p>{{ __('Hello') }} <strong>{{ Auth::user()->name }}</strong> ({{ __('Not :name', ['name' => Auth::user()->name ]) }} ? <small><a href="{{ route('logout') }}"
                                                                     onclick="event.preventDefault();document.getElementById('logout-form').submit();">
                                                                     {{ __('Logout') }}
                                                                 </a></small> )</p>
                                                     </div>
                                                 </div>
-                                                <p>{{ __('Full name:') }} <strong>{{ Auth::user()->name }}</strong></p>
+                                                <p>{{ __('Full name') }}: <strong>{{ Auth::user()->name }}</strong></p>
                                                 @if (Auth::user()->gender)
-                                                    <p>{{ __('Gender:') }} <strong>{{ Auth::user()->getGenderStrAttribute() }}</strong></p>
+                                                    <p>{{ __('Gender') }}: <strong>{{ Auth::user()->getGenderStrAttribute() }}</strong></p>
                                                 @endif
                                                 @if (Auth::user()->birthday)
-                                                    <p>{{ __('Birthday:') }} <strong>{{ \Carbon\Carbon::parse(Auth::user()->birthday)->format('d-m-Y') }}</strong></p>
+                                                    <p>{{ __('Birthday') }}: <strong>{{ \Carbon\Carbon::parse(Auth::user()->birthday)->format('d-m-Y') }}</strong></p>
                                                 @endif
-                                                <p>{{ __('Email:') }} <strong>{{ Auth::user()->email }}</strong></p>
-                                                <p>{{ __('Phone:') }} <strong>{{ Auth::user()->phone }}</strong></p>
+                                                <p>{{ __('Email') }}: <strong>{{ Auth::user()->email }}</strong></p>
+                                                <p>{{ __('Phone') }}: <strong>{{ Auth::user()->phone }}</strong></p>
                                                 @if (Auth::user()->address)
-                                                    <p>{{ __('Address:') }} <strong>{{ Auth::user()->address }}</strong></p>
+                                                    <p>{{ __('Address') }}: <strong>{{ Auth::user()->address }}</strong></p>
                                                 @endif
                                                 @if (Auth::user()->country)
-                                                    <p>{{ __('Country:') }} <strong>{{ Auth::user()->country }}</strong></p>
+                                                    <p>{{ __('Location') }}: <strong>{{ Auth::user()->city }} - {{ Auth::user()->country }}</strong></p>
                                                 @endif
                                                 @if (Auth::user()->zip)
-                                                    <p>{{ __('Zip:') }} <strong>{{ Auth::user()->zip }}</strong></p>
+                                                    <p>{{ __('Zip Code') }}: <strong>{{ Auth::user()->zip }}</strong></p>
                                                 @endif
                                             </div>
                                         </div>
@@ -120,7 +120,7 @@
                                                         <div class="card-body">
                                                             <div class="row align-items-center">
                                                                 <div class="col-sm-3">
-                                                                    <h6 class="mb-0">{{ __('Full name:') }}</h6>
+                                                                    <h6 class="mb-0">{{ __('Full name') }}:</h6>
                                                                 </div>
                                                                 <div class="col-sm-9 text-secondary">
                                                                     <input class="form-control mb-2 @error('name') is-invalid @enderror" id="profile-name" name="name" type="text" value="{{ Auth::user()->name ?? old('name') }}">
@@ -133,7 +133,7 @@
                                                             </div>
                                                             <div class="row align-items-center">
                                                                 <div class="col-sm-3">
-                                                                    <h6 class="mb-0">{{ __('Gender:') }}</h6>
+                                                                    <h6 class="mb-0">{{ __('Gender') }}:</h6>
                                                                 </div>
                                                                 <div class="col-sm-9 text-secondary">
                                                                     <div class="input-item">
@@ -147,7 +147,7 @@
                                                             </div>
                                                             <div class="row align-items-center">
                                                                 <div class="col-sm-3">
-                                                                    <h6 class="mb-0">{{ __('Birthday:') }}</h6>
+                                                                    <h6 class="mb-0">{{ __('Birthday') }}:</h6>
                                                                 </div>
                                                                 <div class="col-sm-9 text-secondary">
                                                                     <input class="form-control mb-2 @error('birthday') is-invalid @enderror" id="user-birthday" name="birthday" type="date"
@@ -161,7 +161,7 @@
                                                             </div>
                                                             <div class="row align-items-center">
                                                                 <div class="col-sm-3">
-                                                                    <h6 class="mb-0">{{ __('Email:') }}</h6>
+                                                                    <h6 class="mb-0">{{ __('Email') }}:</h6>
                                                                 </div>
                                                                 <div class="col-sm-9 text-secondary">
                                                                     <input class="form-control mb-2 @error('email') is-invalid @enderror" id="profile-email" name="email" type="email" value="{{ Auth::user()->email ?? old('email') }}"
@@ -175,7 +175,7 @@
                                                             </div>
                                                             <div class="row align-items-center">
                                                                 <div class="col-sm-3">
-                                                                    <h6 class="mb-0">{{ __('Phone:') }}</h6>
+                                                                    <h6 class="mb-0">{{ __('Phone') }}:</h6>
                                                                 </div>
                                                                 <div class="col-sm-9 text-secondary">
                                                                     <input class="form-control mb-2 @error('phone') is-invalid @enderror" id="profile-phone" name="phone" type="text" value="{{ Auth::user()->phone ?? old('phone') }}"
@@ -189,7 +189,7 @@
                                                             </div>
                                                             <div class="row align-items-center">
                                                                 <div class="col-sm-3">
-                                                                    <h6 class="mb-0">{{ __('Address:') }}</h6>
+                                                                    <h6 class="mb-0">{{ __('Address') }}:</h6>
                                                                 </div>
                                                                 <div class="col-sm-9 text-secondary">
                                                                     <input class="form-control mb-2 @error('address') is-invalid @enderror @error('address') is-invalid @enderror" id="profile-address" name="address" type="text" placeholder="{{ __('address') }}"
@@ -203,22 +203,22 @@
                                                             </div>
                                                             <div class="row align-items-center">
                                                                 <div class="col-sm-3">
-                                                                    <h6 class="mb-0">{{ __('Location:') }}</h6>
+                                                                    <h6 class="mb-0">{{ __('Location') }}:</h6>
                                                                 </div>
                                                                 <div class="col-sm-9 text-secondary">
                                                                     <div class="row">
                                                                         <div class="col-12 col-md-6">
-                                                                            <select class="form-select select2 mb-2" id="user-country" name="country" data-placeholder="{{ __('Chọn quốc gia') }}"></select>
+                                                                            <select class="form-select select2 mb-2" id="user-country" name="country" data-placeholder="{{ __('Select country') }}"></select>
                                                                         </div>
                                                                         <div class="col-12 col-md-6">
-                                                                            <select class="form-select select2 mb-2" id="user-city" name="city" data-placeholder="{{ __('Chọn thành phố') }}"></select>
+                                                                            <select class="form-select select-style select2 mb-2" id="user-city" name="city" data-placeholder="{{ __('Choose the city') }}"></select>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="row align-items-center">
                                                                 <div class="col-sm-3">
-                                                                    <h6 class="mb-0">{{ __('Zip Code:') }}</h6>
+                                                                    <h6 class="mb-0">{{ __('Zip Code') }}:</h6>
                                                                 </div>
                                                                 <div class="col-sm-9 text-secondary">
                                                                     <input class="form-control mb-2" id="user-zip" name="zip" type="text" placeholder="{{ __('Zip Portal Code') }}"  value="{{ Auth::user()->zip ?? old('zip') }}">
@@ -231,7 +231,7 @@
                                                             </div>
                                                             <div class="row align-items-center">
                                                                 <div class="col-sm-3">
-                                                                    <h6 class="mb-0">{{ __('Password:') }}</h6>
+                                                                    <h6 class="mb-0">{{ __('Password') }}:</h6>
                                                                 </div>
                                                                 <div class="col-sm-9 text-secondary">
                                                                     <input class="form-control mb-2 @error('password') is-invalid @enderror" id="profile-password" name="password" type="password" placeholder="{{ __('confirmation password') }}"
@@ -270,7 +270,7 @@
                                                         <div class="card-body">
                                                             <div class="row align-items-center">
                                                                 <div class="col-sm-3">
-                                                                    <h6 class="mb-0">{{ __('Current password:') }}</h6>
+                                                                    <h6 class="mb-0">{{ __('Current password') }}:</h6>
                                                                 </div>
                                                                 <div class="col-sm-9 text-secondary">
                                                                     <input class="form-control mb-2 @error('current_password') is-invalid @enderror" id="profile-current-password" name="current_password" type="password">
@@ -283,7 +283,7 @@
                                                             </div>
                                                             <div class="row align-items-center">
                                                                 <div class="col-sm-3">
-                                                                    <h6 class="mb-0">{{ __('New password:') }}</h6>
+                                                                    <h6 class="mb-0">{{ __('New password') }}:</h6>
                                                                 </div>
                                                                 <div class="col-sm-9 text-secondary">
                                                                     <input class="form-control mb-2 @error('password') is-invalid @enderror" name="password" type="password" autocomplete="new-password">
@@ -296,7 +296,7 @@
                                                             </div>
                                                             <div class="row align-items-center">
                                                                 <div class="col-sm-3">
-                                                                    <h6 class="mb-0">{{ __('Confirm new password:') }}</h6>
+                                                                    <h6 class="mb-0">{{ __('Confirm new password') }}:</h6>
                                                                 </div>
                                                                 <div class="col-sm-9 text-secondary">
                                                                     <input class="form-control mb-2 @error('password') is-invalid @enderror" name="password_confirmation" type="password" autocomplete="new-password">

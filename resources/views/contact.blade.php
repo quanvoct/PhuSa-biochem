@@ -33,7 +33,7 @@
                             <img src="{{ asset('img/icons/10.png') }}" alt="Icon Image">
                         </div>
                         <h3>{{ __('Email Address') }}</h3>
-                        @if(isset(session('settings')['company_email']) && session('settings')['company_email'])
+                        @if(isset(session('settings')['company_email']))
                             <p>{{ session('settings')['company_email'] }}<br></p>
                         @endif
                     </div>
@@ -68,7 +68,7 @@
                         </div>
                         <h3>{{ __('Business code') }}</h3>
                         @if (isset(session('settings')['company_tax_id']) && isset(session('settings')['company_tax_meta']))
-                            <p>{{ session('settings')['company_tax_id'] }}{{ session('settings')['company_tax_meta'] }}</p>
+                            <p>{{ session('settings')['company_tax_id'] }} {{ session('settings')['company_tax_meta'] }}</p>
                         @endif
                     </div>
                 </div>

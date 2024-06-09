@@ -40,13 +40,13 @@
                             </li>
                             <li>
                                 <div class="showing-product-number text-right">
-                                    <span>{{ __('Showing') }} {{ $products->firstItem() }}–{{ $products->lastItem() }} {{ __('of') }} {{ $products->total() }} {{ __('results') }}</span>
+                                    <span>{{ __('Showing :first - :last of :total products', ['first' => $products->firstItem(), 'last' => $products->lastItem(), 'total' => $products->total()]) }}</span>
                                 </div>
                             </li>
                             <li>
                                 <div class="short-by text-center">
                                     <select class="nice-select">
-                                        <option>{{ __('Default Sorting') }}</option>
+                                        <option>{{ __('Default') }}</option>
                                         <option>{{ __('Sort by popularity') }}</option>
                                         <option>{{ __('Sort by new arrivals') }}</option>
                                         <option>{{ __('Sort by price: low to high') }}</option>
