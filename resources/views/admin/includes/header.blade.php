@@ -10,14 +10,14 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto me-3 mb-2 mb-lg-0">
-                    @if (Session::get('language')->code == 'en')
+                    @if (Session::get('language') == 'en')
                         <li class="nav-item dropdown me-1 d-flex align-items-center">
                             <a class="nav-link" href="{{ route('language.change', ['language' => 'vn']) }}">
                                 <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg" width="24px"/> {{ __('Vietnamese') }}
                             </a>
                         </li>
                     @endif
-                    @if (Session::get('language')->code == 'vn')
+                    @if (Session::get('language') == 'vn')
                         <li class="nav-item dropdown me-1 d-flex align-items-center">
                             <a class="nav-link" href="{{ route('language.change', ['language' => 'en']) }}">
                                 <img src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Flag_of_the_United_States.svg" width="24px"/> {{ __('English') }}
