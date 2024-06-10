@@ -2,6 +2,9 @@
 @section('title')
     {{ $pageName }}
 @endsection
+@push('url')
+    {{$url ? '?url=' . $url : ''}}
+@endpush
 @section('content')
     <!-- BREADCRUMB AREA START -->
     <div class="ltn__breadcrumb-area text-left bg-overlay-white-30 bg-image" data-bs-bg="{{ asset('img/bg/14.jpg') }}">
@@ -123,7 +126,7 @@
                                                                     <input name="variable_id" type="hidden" value="{{ $variable->id }}">
                                                                     <button class="theme-btn-1 btn btn-effect-1 btn-add-to-cart" type="submit" title="Add to Cart">
                                                                         <i class="fas fa-shopping-cart"></i>
-                                                                        <span>{{ __('ADD TO CART') }}</span>
+                                                                        <span>{{ __('ADD TO CART')}}</span>
                                                                     </button>
                                                                 </li>
                                                             </ul>

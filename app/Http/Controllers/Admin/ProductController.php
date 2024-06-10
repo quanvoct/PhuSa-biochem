@@ -80,10 +80,8 @@ class ProductController extends Controller
                         if ($request->ajax()) {
                             $result = $product;
                         } else {
-                            if ($product) {
-                                $pageName = $product->name;
-                                return view('admin.product', compact('pageName', 'catalogues', 'product'));
-                            }
+                            $pageName = $product->name;
+                            return view('admin.product', compact('pageName', 'catalogues', 'product'));
                         }
                     } else {
                         return redirect()->route('admin.product', ['key' => 'new']);
@@ -170,7 +168,7 @@ class ProductController extends Controller
         $request->validate($rules);
 
         if (!empty(Auth::user()->can(User::CREATE_PRODUCT, User::UPDATE_PRODUCT))) {
-            if($request->has('specs_key') && $request->has('specs_value')) {
+            if ($request->has('specs_key') && $request->has('specs_value')) {
                 $specs = collect($request->specs_key)->zip($request->specs_value)->map(function ($item) {
                     return [$item[0] => $item[1]];
                 })->collapse()->toJson();
@@ -333,11 +331,11 @@ class ProductController extends Controller
         if (Auth::user()->can(User::DELETE_PRODUCT)) {
             foreach ($request->choices as $key => $id) {
                 $obj = Product::find($id);
-                    $obj->revision();
-                    DB::table('catalogue_product')->where('product_id', $obj->id)->delete();
-                    $obj->delete();
-                    LogController::create("xóa", 'product', $obj->id);
-                    array_push($success, $obj->name);
+                $obj->revision();
+                DB::table('catalogue_product')->where('product_id', $obj->id)->delete();
+                $obj->delete();
+                LogController::create("xóa", 'product', $obj->id);
+                array_push($success, $obj->name);
             }
             $response = array(
                 'status' => 'success',

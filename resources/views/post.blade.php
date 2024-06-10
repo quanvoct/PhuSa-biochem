@@ -2,6 +2,9 @@
 @section('title')
 {{ $pageName }}
 @endsection
+@push('url')
+    {{isset($url) ? '?url=' . $url : ''}}
+@endpush
 @section('content')
 <!-- BREADCRUMB AREA START -->
 <div class="ltn__breadcrumb-area text-left bg-overlay-white-30 bg-image " data-bs-bg="{{ asset('img/bg/14.jpg') }}">

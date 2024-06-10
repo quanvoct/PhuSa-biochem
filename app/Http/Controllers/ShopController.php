@@ -33,9 +33,16 @@ class ShopController extends Controller
             if ($request->product) {
                 $product = Product::whereNull('revision')->where('status', '>', 0)->whereSlug($request->product)->first();
                 if ($product) {
+                    $code = (session('language') == 'en') ? 'vn' : 'en';
+                    $translate = $product->getTranslateByLanguageCode($code);
+                    if($translate) {
+                        $url = $translate->translate->url;
+                    } else {
+                        $url = 0;
+                    }
                     $pageName = $product->name;
                     $specs = json_decode($product->specs, true);
-                    return view('product', compact('pageName', 'product', 'catalogue', 'specs'));
+                    return view('product', compact('pageName', 'url', 'product', 'catalogue', 'specs'));
                 } else {
                     abort(404);
                 }

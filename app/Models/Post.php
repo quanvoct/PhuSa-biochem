@@ -41,7 +41,7 @@ class Post extends Model
         return $this->hasMany(PostTranslation::class, 'translate_id');
     }
 
-    public function translated() //bài dịch
+    public function translates() //bài dịch
     {
         return $this->hasManyThrough(
             Post::class,
@@ -51,6 +51,14 @@ class Post extends Model
             'id',
             'translate_id'
         );
+    }
+
+    public function getTranslateByLanguageCode($code)
+    {
+        return $this->post_translations()
+            ->whereHas('language', function($query) use ($code) {
+                $query->where('code', $code);
+            })->first();
     }
 
     public function languages()
@@ -143,6 +151,11 @@ class Post extends Model
         Post::whereIn('id', $posts)->get()->each(function ($post, $key) use ($languages, $posts) {
             $post->syncLanguages($languages, $posts);
         });
+    }
+
+    public function getUrlAttribute()
+    {
+        return route('home.index', ['page' => 'p', 'category' => $this->category->code, 'post' => $this->code]);
     }
 
     public function getStatusStrAttribute()

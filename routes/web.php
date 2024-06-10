@@ -188,7 +188,7 @@ Route::group(['middleware' => 'auth'], function () {
 });
 
 Route::group(['middleware' => 'language'], function () {
-    Route::get('language/{lang?}', [HomeController::class, 'change'])->name('language.change');
+    Route::get('language/{language?}', [HomeController::class, 'change'])->name('language.change');
 });
 
 Route::group(['prefix' => 'geolocation'], function () {

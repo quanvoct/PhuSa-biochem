@@ -6,6 +6,7 @@ use App\Models\Catalogue;
 use App\Models\Category;
 use App\Models\Language;
 use App\Models\Post;
+use App\Models\PostTranslation;
 use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -34,8 +35,15 @@ class HomeController extends Controller
                     if ($request->post) {
                         $post = Post::whereStatus(1)->where('category_id', $category->id)->whereCode($request->post)->first();
                         if ($post) {
+                            $code = (session('language') == 'en') ? 'en' : 'vn';
+                            $translate = $post->getTranslateByLanguageCode($code);
+                            if ($translate) {
+                                $url = $translate->translate->url;
+                            } else {
+                                $url = 0;
+                            }
                             $pageName = $post->title;
-                            return view('post', compact('pageName', 'post'));
+                            return view('post', compact('pageName', 'url', 'post'));
                         } else {
                             abort(404);
                         }
@@ -107,12 +115,18 @@ class HomeController extends Controller
         $pageName = __('About');
         return view('about', compact('pageName', 'categories'));
     }
+
+
     public function change(Request $request)
     {
-        app()->setLocale($request->language, config('app.locale'));
-        Session::put('language', $request->language);
-        $language = Language::whereCode($request->language)->first();
+        app()->setLocale(trim($request->language), config('app.locale'));
+        $language = Language::whereCode(trim($request->language))->first();
+        Session::put('language', trim($request->language));
         Session::put('settings', Setting::where('language_id', $language->id)->pluck('value', 'key'));
-        return redirect()->back();
+        if ($request->has('url')) {
+            return redirect()->away($request->url);
+        } else {
+            return redirect()->back();
+        }
     }
 }

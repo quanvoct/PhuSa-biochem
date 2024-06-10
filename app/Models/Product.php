@@ -56,7 +56,7 @@ class Product extends Model
         return $this->hasMany(ProductTranslation::class, 'translate_id');
     }
 
-    public function translated() //bài dịch
+    public function translates() //bài dịch
     {
         return $this->hasManyThrough(
             Product::class,
@@ -66,6 +66,14 @@ class Product extends Model
             'id',
             'translate_id'
         );
+    }
+
+    public function getTranslateByLanguageCode($languageCode)
+    {
+        return $this->product_translations()
+            ->whereHas('language', function($query) use ($languageCode) {
+                $query->where('code', $languageCode);
+            })->first();
     }
 
     public function languages()

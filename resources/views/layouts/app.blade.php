@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-js" lang="zxx">
+<html class="no-js" lang="{{ config('app.locale') }}">
 
 <head>
     <meta charset="utf-8">
@@ -63,15 +63,15 @@
                                                 <ul>
                                                     @if (Session::get('language') == 'en')
                                                         <li>
-                                                            <a class="dropdown-item" href="{{ route('language.change', ['language' => 'vn']) }}">
-                                                                <span class="active-currency">{{ __('Vietnamese') }}</span>
+                                                            <a class="dropdown-item" href="{{ route('language.change', ['language' => 'vn']) }}@stack('url')">
+                                                                <span class="active-currency"><img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg" width="18px"/> {{ __('Vietnamese') }}</span>
                                                             </a>
                                                         </li>
                                                     @endif
                                                     @if (Session::get('language') == 'vn')
                                                         <li>
-                                                            <a class="dropdown-item" href="{{ route('language.change', ['language' => 'en']) }}">
-                                                                <span class="active-currency">{{ __('English') }}</span>
+                                                            <a class="dropdown-item" href="{{ route('language.change', ['language' => 'en']) }}@stack('url')">
+                                                                <span class="active-currency"><img src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Flag_of_the_United_States.svg" width="18px"/> {{ __('English') }}</span>
                                                             </a>
                                                         </li>
                                                     @endif
@@ -264,7 +264,7 @@
                                         <li class="ltn__category-menu-item ltn__category-menu-drop">
                                             <a href="{{ route('shop.index') }}">{{ __('All Products') }}</a>
                                         </li>
-                                        @if (Illuminate\Support\Facades\Session::has('catalogues'))
+                                        @if (session()->has('catalogues'))
                                             @foreach (session('catalogues')->where('status', 1)->whereNull('parent_id') as $catalogue)
                                                 <li class="ltn__category-menu-item ltn__category-menu-drop">
                                                     <a class="cursor-pointer">{{ __($catalogue->name) }} </a>

@@ -150,7 +150,7 @@
 @push('scripts')
     <script type="text/javascript">
         $(document).ready(function() {
-            $(document).on('click', '.qtybutton', function(e) {
+            $(document).on('click change', '.qtybutton, .cart-plus-minus-box', function(e) {
                 e.preventDefault();
                 const btn = $(this),
                     table = $(this).parents('table')

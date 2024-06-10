@@ -20,7 +20,6 @@ class isAdmin
     public function handle(Request $request, Closure $next)
     {
         if (Auth::user()->can(User::ACCESS_ADMIN)) {
-            Session::put('ip', $request->ip());
             return $next($request);
         } else {
             abort(403);

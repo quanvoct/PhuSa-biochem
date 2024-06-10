@@ -9,10 +9,24 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <ul class="navbar-nav ms-auto me-3 mb-2 mb-lg-0">
+                    @if (Session::get('language')->code == 'en')
+                        <li class="nav-item dropdown me-1 d-flex align-items-center">
+                            <a class="nav-link" href="{{ route('language.change', ['language' => 'vn']) }}">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Vietnam.svg" width="24px"/> {{ __('Vietnamese') }}
+                            </a>
+                        </li>
+                    @endif
+                    @if (Session::get('language')->code == 'vn')
+                        <li class="nav-item dropdown me-1 d-flex align-items-center">
+                            <a class="nav-link" href="{{ route('language.change', ['language' => 'en']) }}">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Flag_of_the_United_States.svg" width="24px"/> {{ __('English') }}
+                            </a>
+                        </li>
+                    @endif
                     {{-- <li class="nav-item dropdown me-1 d-flex align-items-center">
                         <a class="nav-link active dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">
-                            <input type="text" id="search" placeholder="🔍 Search">
+                            <input type="text" id="search" placeholder="Search">
                         </a>
                     </li> 
                     <li class="nav-item dropdown me-3">

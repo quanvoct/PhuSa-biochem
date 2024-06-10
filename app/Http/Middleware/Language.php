@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Http;
 
 use Closure;
 use Illuminate\Http\Request;
@@ -19,8 +20,11 @@ class Language
      */
     public function handle($request, Closure $next)
     {
-        $language = Session::get('language', config('app.locale'));
-        app()->setLocale($language, config('app.locale'));
+        Session::put('ip', $request->ip());
+        $geolocation = Http::get('https://ipinfo.io/' . $request->ip() . '/json?token=d89e4a0555c438')->json();
+        $code = isset($geolocation['country']) && strtolower($geolocation['country']) == 'vn' ? 'vn' : 'en';
+        $language = Session::get('language', $code);
+        app()->setLocale($language, $code);
         Session::put('language', $language);
 
         return $next($request);
